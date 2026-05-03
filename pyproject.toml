@@ -9,6 +9,3 @@ dependencies = [
     "pandas>=3.0.2",
     "s3fs>=2026.3.0",
 ]
-
-[build-backend]
-uv
