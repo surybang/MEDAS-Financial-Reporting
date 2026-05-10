@@ -6,6 +6,9 @@ from pathlib import Path
 from loguru import logger
 import sys
 
+import pandera.pandas as pa
+from pandera.pandas import Column, Check, DataFrameSchema
+
 # Logger
 LOG_LEVEL = os.environ.get("LOG_LEVEL", "INFO")
 
@@ -118,3 +121,11 @@ INDICATORS = [
     },
     {"row": 54, "formule": "SUM", "args": "E52:E53"},
 ]
+
+DATA_SCHEMA = DataFrameSchema({
+    "type_client": Column(str, Check(lambda s: s.isin(["PP", "PM"])), nullable=False),
+    "score":       Column(str, Check(lambda s: s.isin(["V", "O", "R"])), nullable=True),
+    "score_prev":  Column(str, Check(lambda s: s.isin(["V", "O", "R"])), nullable=True),
+    "id_agent":    Column(str, nullable=False),
+    "drc_complet": Column(bool, nullable=False),
+})
