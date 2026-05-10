@@ -3,14 +3,14 @@
 import os
 from datetime import datetime
 from pathlib import Path
-from loguru import Logger
+from loguru import logger
 import sys
 
-# --- Logger ---
+# Logger
 LOG_LEVEL = os.environ.get("LOG_LEVEL", "INFO")
 
-Logger.remove()
-Logger.add(
+logger.remove()
+logger.add(
     sys.stderr,
     level=LOG_LEVEL,
     format="<green>{time:YYYY-MM-DD HH:mm:ss}</green> | <level>{level}</level> | {message}",
@@ -21,7 +21,10 @@ DATA_URL = "https://minio.lab.sspcloud.fr/fabienhos/MEDAS-FinancialReporting/dat
 
 # MinIO
 S3_ENDPOINT = os.environ["AWS_S3_ENDPOINT"]
-S3_BUCKET = os.environ["S3_BUCKET"]
+AWS_ACCESS_KEY_ID = os.environ["AWS_ACCESS_KEY_ID"]
+AWS_SECRET_ACCESS_KEY = os.environ["AWS_SECRET_ACCESS_KEY"]
+AWS_SESSION_TOKEN = os.environ["AWS_SESSION_TOKEN"]
+S3_BUCKET = "fabienhos"
 
 # Chemins MinIO
 S3_DATA_PROCESSED_KEY = "MEDAS-FinancialReporting/data/processed/financial_data.parquet"
