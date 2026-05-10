@@ -6,7 +6,6 @@ from pathlib import Path
 from loguru import logger
 import sys
 
-import pandera.pandas as pa
 from pandera.pandas import Column, Check, DataFrameSchema
 
 # Logger
