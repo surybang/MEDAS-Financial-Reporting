@@ -26,6 +26,7 @@ from medas_financial_reporting.financial_reporting import (
 
 
 def get_fs() -> s3fs.S3FileSystem:
+    """Retourne un S3FileSystem à partir des paramètres."""
     endpoint = S3_ENDPOINT
     if not endpoint.startswith("https://"):
         endpoint = f"https://{endpoint}"
@@ -38,11 +39,12 @@ def get_fs() -> s3fs.S3FileSystem:
 
 
 def init_minio_structure(fs: s3fs.S3FileSystem, bucket):
+    """Génère la structure attendue pour le projet dans le stockage distant si elle n'existe pas."""
     folders = [
-        f"{bucket}/MEDAS-FinancialReporting/data/proccesed/.keep",
-        f"{bucket}/MEDAS-FinancialReporting/data/raw/.keep",
-        f"{bucket}/MEDAS-FinancialReporting/template/.keep",
-        f"{bucket}/MEDAS-FinancialReporting/output/.keep",
+        f"{bucket}/MEDAS-FinancialReporting/data/proccesed/",
+        f"{bucket}/MEDAS-FinancialReporting/data/raw/",
+        f"{bucket}/MEDAS-FinancialReporting/template/",
+        f"{bucket}/MEDAS-FinancialReporting/output/",
     ]
 
     for path in folders:
@@ -50,7 +52,7 @@ def init_minio_structure(fs: s3fs.S3FileSystem, bucket):
             with fs.open(path, "wb") as f:
                 f.write(b"")
                 logger.debug(f"Dossier créé : {path}")
-        logger.info("Structure minio déjà existante")
+    logger.info("Structure minio déjà existante")
 
 
 def parse_args():
