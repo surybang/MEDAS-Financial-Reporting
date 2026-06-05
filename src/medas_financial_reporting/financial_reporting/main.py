@@ -41,7 +41,7 @@ def get_fs() -> s3fs.S3FileSystem:
 def init_minio_structure(fs: s3fs.S3FileSystem, bucket):
     """Génère la structure attendue pour le projet dans le stockage distant si elle n'existe pas."""
     folders = [
-        f"{bucket}/MEDAS-FinancialReporting/data/proccesed/",
+        f"{bucket}/MEDAS-FinancialReporting/data/processed/",
         f"{bucket}/MEDAS-FinancialReporting/data/raw/",
         f"{bucket}/MEDAS-FinancialReporting/template/",
         f"{bucket}/MEDAS-FinancialReporting/output/",
