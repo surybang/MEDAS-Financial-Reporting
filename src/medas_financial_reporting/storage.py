@@ -9,7 +9,6 @@ from medas_financial_reporting.config import (
     AWS_ACCESS_KEY_ID,
     AWS_SECRET_ACCESS_KEY,
     AWS_SESSION_TOKEN,
-    S3_BUCKET,
     S3_TEMPLATE_KEY,
     S3_OUTPUT_KEY,
     S3_DATA_PROCESSED_KEY,
@@ -32,12 +31,12 @@ def get_fs() -> s3fs.S3FileSystem:
     )
 
 
-def download_template(fs: s3fs.S3FileSystem) -> None:
+def download_template(fs: s3fs.S3FileSystem, bucket: str) -> None:
     """Télécharge le template Excel depuis MinIO."""
     LOCAL_TMP_DIR.mkdir(exist_ok=True)
     logger.info(f"Téléchargement du template depuis {S3_TEMPLATE_KEY}")
     try:
-        fs.get(f"{S3_BUCKET}/{S3_TEMPLATE_KEY}", str(LOCAL_TEMPLATE))
+        fs.get(f"{bucket}/{S3_TEMPLATE_KEY}", str(LOCAL_TEMPLATE))
         logger.success("Template téléchargé")
     except Exception as e:
         logger.critical(f"Impossible de télécharger le template : {e}")
