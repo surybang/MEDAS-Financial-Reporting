@@ -1,21 +1,10 @@
 """Entry point for the financial reporting pipeline."""
 
-import s3fs
-from loguru import logger
 import argparse
 
 from medas_financial_reporting.config import (
-    S3_ENDPOINT,
-    AWS_ACCESS_KEY_ID,
-    AWS_SECRET_ACCESS_KEY,
-    AWS_SESSION_TOKEN,
     S3_BUCKET,
-    S3_TEMPLATE_KEY,
-    S3_DATA_PROCESSED_KEY,
-    S3_OUTPUT_KEY,
     LOCAL_TMP_DIR,
-    LOCAL_TEMPLATE,
-    LOCAL_OUTPUT,
 )
 from medas_financial_reporting.financial_reporting import (
     write_data_to_excel,
@@ -23,36 +12,13 @@ from medas_financial_reporting.financial_reporting import (
     get_data,
     clean_data,
 )
-
-
-def get_fs() -> s3fs.S3FileSystem:
-    """Retourne un S3FileSystem à partir des paramètres."""
-    endpoint = S3_ENDPOINT
-    if not endpoint.startswith("https://"):
-        endpoint = f"https://{endpoint}"
-    return s3fs.S3FileSystem(
-        endpoint_url=endpoint,
-        key=AWS_ACCESS_KEY_ID,
-        secret=AWS_SECRET_ACCESS_KEY,
-        token=AWS_SESSION_TOKEN,
-    )
-
-
-def init_minio_structure(fs: s3fs.S3FileSystem, bucket):
-    """Génère la structure attendue pour le projet dans le stockage distant si elle n'existe pas."""
-    folders = [
-        f"{bucket}/MEDAS-FinancialReporting/data/processed/",
-        f"{bucket}/MEDAS-FinancialReporting/data/raw/",
-        f"{bucket}/MEDAS-FinancialReporting/template/",
-        f"{bucket}/MEDAS-FinancialReporting/output/",
-    ]
-
-    for path in folders:
-        if not fs.exists(path):
-            with fs.open(path, "wb") as f:
-                f.write(b"")
-                logger.debug(f"Dossier créé : {path}")
-    logger.info("Structure minio déjà existante")
+from medas_financial_reporting import (
+    init_minio_structure,
+    get_fs,
+    download_template,
+    upload_reporting,
+    save_processed_data,
+)
 
 
 def parse_args():
@@ -85,24 +51,17 @@ def main() -> None:
     df = clean_data(df)
 
     # Sauvegarder les données nettoyées sur MinIO
-    logger.info("Sauvegarde des données nettoyées")
-    with fs.open(f"{bucket}/{S3_DATA_PROCESSED_KEY}", "wb") as f:
-        df.to_parquet(f)
-    logger.success("Données nettoyées sauvegardées")
+    save_processed_data(fs, df, bucket)
 
     # Télécharger le template
-    logger.info("Téléchargement du template")
-    fs.get(f"{bucket}/{S3_TEMPLATE_KEY}", str(LOCAL_TEMPLATE))
-    logger.success("Template téléchargé")
+    download_template(fs)
 
     # Insérer les données et remplir les indicateurs
     write_data_to_excel(df)
     fill_indicators()
 
-    # Uploader le reporting final
-    logger.info("Upload du reporting vers MinIO")
-    fs.put(str(LOCAL_OUTPUT), f"{S3_BUCKET}/{S3_OUTPUT_KEY}")
-    logger.success("Reporting disponible sur MinIO")
+    # Uploader le reporting sur MinIO
+    upload_reporting(fs, bucket)
 
 
 if __name__ == "__main__":
