@@ -1,36 +1,15 @@
 """Reporting generation functions."""
 
-import s3fs
+from pathlib import Path
 from openpyxl import load_workbook
 from loguru import logger
 
 from medas_financial_reporting.config import (
-    S3_BUCKET,
-    S3_TEMPLATE_KEY,
-    S3_OUTPUT_KEY,
     LOCAL_TEMPLATE,
     LOCAL_OUTPUT,
-    LOCAL_TMP_DIR,
     SHEET_INDICATORS,
     INDICATORS,
 )
-
-
-def download_template(fs: s3fs.S3FileSystem) -> None:
-    """
-    Télécharge le template Excel depuis MinIO vers le dossier temporaire.
-
-    Args:
-        fs: Filesystem S3.
-    """
-    LOCAL_TMP_DIR.mkdir(exist_ok=True)
-    logger.info(f"Téléchargement du template depuis {S3_TEMPLATE_KEY}")
-    try:
-        fs.get(f"{S3_BUCKET}/{S3_TEMPLATE_KEY}", str(LOCAL_TEMPLATE))
-        logger.success("Template téléchargé")
-    except Exception as e:
-        logger.critical(f"Impossible de télécharger le template : {e}")
-        raise RuntimeError(f"Impossible de télécharger le template : {e}") from e
 
 
 def write_data_to_excel(df) -> None:
@@ -57,11 +36,17 @@ def write_data_to_excel(df) -> None:
         raise RuntimeError(f"Impossible d'insérer les données : {e}") from e
 
 
-def fill_indicators(data_sheet: str = "DATA") -> None:
+def fill_indicators(
+    input_path: Path | str = LOCAL_TEMPLATE,
+    output_path: Path | str = LOCAL_OUTPUT,
+    data_sheet: str = "DATA",
+) -> None:
     """
     Remplit les indicateurs dans la feuille Indicateurs.
 
     Args:
+        input_path: Chemin vers le fichier Excel source.
+        output_path: Chemin vers le fichier Excel de sortie.
         data_sheet: Nom de la feuille de données.
     """
     logger.info("Remplissage des indicateurs")
@@ -78,7 +63,7 @@ def fill_indicators(data_sheet: str = "DATA") -> None:
     def formula_sum(range_str: str) -> str:
         return f"=SUM({range_str})"
 
-    wb = load_workbook(LOCAL_TEMPLATE)
+    wb = load_workbook(input_path)
     ws = wb[SHEET_INDICATORS]
 
     for item in INDICATORS:
@@ -92,22 +77,6 @@ def fill_indicators(data_sheet: str = "DATA") -> None:
         else:
             raise ValueError(f"Formule inconnue : {item['formule']}")
 
-    wb.save(LOCAL_OUTPUT)
+    wb.save(output_path)
     wb.close()
-    logger.success(f"Reporting généré : {LOCAL_OUTPUT}")
-
-
-def upload_reporting(fs: s3fs.S3FileSystem) -> None:
-    """
-    Upload le reporting final vers MinIO.
-
-    Args:
-        fs: Filesystem S3.
-    """
-    logger.info(f"Upload du reporting vers {S3_OUTPUT_KEY}")
-    try:
-        fs.put(str(LOCAL_OUTPUT), f"{S3_BUCKET}/{S3_OUTPUT_KEY}")
-        logger.success("Reporting uploadé")
-    except Exception as e:
-        logger.error(f"Impossible d'uploader le reporting : {e}")
-        raise RuntimeError(f"Impossible d'uploader le reporting : {e}") from e
+    logger.success(f"Reporting généré : {output_path}")
