@@ -25,3 +25,9 @@ dev = [
 
 [project.scripts]
 reporting = "medas_financial_reporting.financial_reporting.main:main"
+
+[tool.coverage.run]
+omit = [
+    "src/medas_financial_reporting/financial_reporting/main.py",
+    "src/storage.py"
+]
