@@ -29,5 +29,11 @@ reporting = "medas_financial_reporting.financial_reporting.main:main"
 [tool.coverage.run]
 omit = [
     "src/medas_financial_reporting/financial_reporting/main.py",
-    "src/storage.py"
+    "src/medas_financial_reporting/storage.py"
+]
+
+[tool.pytest.ini_options]
+markers = [
+    "unit: tests unitaires",
+    "integration: tests intégration",
 ]
