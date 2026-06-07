@@ -36,6 +36,7 @@ def sample_df():
 
 class TestFillIndicators:
 
+    @pytest.mark.unit
     def test_countif_formula(self, minimal_workbook):
         fill_indicators(input_path=minimal_workbook, output_path=minimal_workbook)
         wb = load_workbook(minimal_workbook, data_only=False)
@@ -43,6 +44,7 @@ class TestFillIndicators:
         assert ws["E8"].value == '=COUNTIF(DATA!B:B, "PP")'
         wb.close()
 
+    @pytest.mark.unit
     def test_sum_formula(self, minimal_workbook):
         """Vérifie que la formule SUM est correctement générée."""
         fill_indicators(input_path=minimal_workbook, output_path=minimal_workbook)
@@ -59,6 +61,7 @@ class TestFillIndicators:
         assert ws["E14"].value == '=COUNTIFS(DATA!B:B, "PP", DATA!D:D, "V")'
         wb.close()
 
+    @pytest.mark.unit
     def test_unknown_formula_raises(self, minimal_workbook):
         """Une formule inconnue dans INDICATORS lève une ValueError."""
         from medas_financial_reporting import config
@@ -71,6 +74,7 @@ class TestFillIndicators:
 
 class TestWriteDataToExcel:
 
+    @pytest.mark.unit
     def test_data_inserted(self, minimal_workbook, sample_df):
         """Vérifie que les données sont bien insérées dans la feuille DATA."""
         from medas_financial_reporting.config import LOCAL_TEMPLATE, LOCAL_TMP_DIR
