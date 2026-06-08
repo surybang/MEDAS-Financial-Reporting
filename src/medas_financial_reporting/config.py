@@ -22,10 +22,10 @@ logger.add(
 DATA_URL = "https://minio.lab.sspcloud.fr/fabienhos/MEDAS-FinancialReporting/data/raw/financial_data.parquet"  # noqa: E501
 
 # MinIO
-S3_ENDPOINT = os.environ["AWS_S3_ENDPOINT"]
-AWS_ACCESS_KEY_ID = os.environ["AWS_ACCESS_KEY_ID"]
-AWS_SECRET_ACCESS_KEY = os.environ["AWS_SECRET_ACCESS_KEY"]
-AWS_SESSION_TOKEN = os.environ["AWS_SESSION_TOKEN"]
+S3_ENDPOINT = os.environ.get("AWS_S3_ENDPOINT", "")
+AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID", "")
+AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY", "")
+AWS_SESSION_TOKEN = os.environ.get("AWS_SESSION_TOKEN", "")
 S3_BUCKET = "fabienhos"
 
 # Chemins MinIO
