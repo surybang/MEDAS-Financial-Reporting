@@ -21,6 +21,7 @@ build-backend = "uv_build"
 dev = [
     "pytest>=9.0.3",
     "pytest-cov>=7.1.0",
+    "ruff>=0.15.16",
 ]
 
 [project.scripts]
@@ -37,3 +38,10 @@ markers = [
     "unit: tests unitaires",
     "integration: tests intégration",
 ]
+
+[tool.ruff]
+line-length = 88
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
