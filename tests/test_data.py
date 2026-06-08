@@ -9,13 +9,15 @@ from medas_financial_reporting.financial_reporting.data import clean_data
 @pytest.fixture
 def raw_df():
     """DataFrame minimal simulant les données brutes."""
-    return pd.DataFrame({
-        "type_client":  ["PP", "PM", "PP"],
-        "score":        ["V",  None,  "R"],
-        "score_prev":   [None, "O",   None],
-        "id_agent":     ["AUTO", "AGT001", "AUTO"],
-        "drc_complet":  [True, False, True],
-    })
+    return pd.DataFrame(
+        {
+            "type_client": ["PP", "PM", "PP"],
+            "score": ["V", None, "R"],
+            "score_prev": [None, "O", None],
+            "id_agent": ["AUTO", "AGT001", "AUTO"],
+            "drc_complet": [True, False, True],
+        }
+    )
 
 
 def test_clean_data_fills_score(raw_df):

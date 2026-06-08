@@ -5,8 +5,8 @@ import pandera.pandas as pa
 from loguru import logger
 
 from medas_financial_reporting.config import (
-    DATA_URL,
     DATA_SCHEMA,
+    DATA_URL,
 )
 
 

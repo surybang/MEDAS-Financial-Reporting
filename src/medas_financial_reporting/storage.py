@@ -1,20 +1,20 @@
 """Storage functions for MinIO interactions."""
 
+import pandas as pd
 import s3fs
 from loguru import logger
-import pandas as pd
 
 from medas_financial_reporting.config import (
-    S3_ENDPOINT,
     AWS_ACCESS_KEY_ID,
     AWS_SECRET_ACCESS_KEY,
     AWS_SESSION_TOKEN,
-    S3_TEMPLATE_KEY,
-    S3_OUTPUT_KEY,
-    S3_DATA_PROCESSED_KEY,
+    LOCAL_OUTPUT,
     LOCAL_TEMPLATE,
     LOCAL_TMP_DIR,
-    LOCAL_OUTPUT,
+    S3_DATA_PROCESSED_KEY,
+    S3_ENDPOINT,
+    S3_OUTPUT_KEY,
+    S3_TEMPLATE_KEY,
 )
 
 
@@ -55,7 +55,7 @@ def upload_reporting(fs: s3fs.S3FileSystem, bucket: str) -> None:
 
 
 def init_minio_structure(fs: s3fs.S3FileSystem, bucket):
-    """Génère la structure attendue pour le projet dans le stockage distant si elle n'existe pas."""
+    """Génère la structure attendue pour le projet dans le stockage distant si elle n'existe pas."""  # noqa: E501
     folders = [
         f"{bucket}/MEDAS-FinancialReporting/data/processed/",
         f"{bucket}/MEDAS-FinancialReporting/data/raw/",

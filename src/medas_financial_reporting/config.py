@@ -1,12 +1,12 @@
 """Configuration file for the project."""
 
 import os
+import sys
 from datetime import datetime
 from pathlib import Path
-from loguru import logger
-import sys
 
-from pandera.pandas import Column, Check, DataFrameSchema
+from loguru import logger
+from pandera.pandas import Check, Column, DataFrameSchema
 
 # Logger
 LOG_LEVEL = os.environ.get("LOG_LEVEL", "INFO")
@@ -15,7 +15,7 @@ logger.remove()
 logger.add(
     sys.stderr,
     level=LOG_LEVEL,
-    format="<green>{time:YYYY-MM-DD HH:mm:ss}</green> | <level>{level}</level> | {message}",
+    format="<green>{time:YYYY-MM-DD HH:mm:ss}</green> | <level>{level}</level> | {message}",  # noqa: E501
 )
 
 # Données source
@@ -121,10 +121,16 @@ INDICATORS = [
     {"row": 54, "formule": "SUM", "args": "E52:E53"},
 ]
 
-DATA_SCHEMA = DataFrameSchema({
-    "type_client": Column(str, Check(lambda s: s.isin(["PP", "PM"])), nullable=False),
-    "score":       Column(str, Check(lambda s: s.isin(["V", "O", "R"])), nullable=True),
-    "score_prev":  Column(str, Check(lambda s: s.isin(["V", "O", "R"])), nullable=True),
-    "id_agent":    Column(str, nullable=False),
-    "drc_complet": Column(bool, nullable=False),
-})
+DATA_SCHEMA = DataFrameSchema(
+    {
+        "type_client": Column(
+            str, Check(lambda s: s.isin(["PP", "PM"])), nullable=False
+        ),
+        "score": Column(str, Check(lambda s: s.isin(["V", "O", "R"])), nullable=True),
+        "score_prev": Column(
+            str, Check(lambda s: s.isin(["V", "O", "R"])), nullable=True
+        ),
+        "id_agent": Column(str, nullable=False),
+        "drc_complet": Column(bool, nullable=False),
+    }
+)

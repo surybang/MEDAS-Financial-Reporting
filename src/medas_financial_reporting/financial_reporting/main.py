@@ -2,32 +2,29 @@
 
 import argparse
 
+from medas_financial_reporting import (
+    download_template,
+    get_fs,
+    init_minio_structure,
+    save_processed_data,
+    upload_reporting,
+)
 from medas_financial_reporting.config import (
-    S3_BUCKET,
     LOCAL_TMP_DIR,
+    S3_BUCKET,
 )
 from medas_financial_reporting.financial_reporting import (
-    write_data_to_excel,
+    clean_data,
     fill_indicators,
     get_data,
-    clean_data,
-)
-from medas_financial_reporting import (
-    init_minio_structure,
-    get_fs,
-    download_template,
-    upload_reporting,
-    save_processed_data,
+    write_data_to_excel,
 )
 
 
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--bucket",
-        type=str,
-        default=S3_BUCKET,
-        help="Nom de votre bucket"
+        "--bucket", type=str, default=S3_BUCKET, help="Nom de votre bucket"
     )
     return parser.parse_args()
 

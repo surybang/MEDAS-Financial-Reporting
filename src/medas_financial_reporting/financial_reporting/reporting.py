@@ -1,14 +1,15 @@
 """Reporting generation functions."""
 
 from pathlib import Path
-from openpyxl import load_workbook
+
 from loguru import logger
+from openpyxl import load_workbook
 
 from medas_financial_reporting.config import (
-    LOCAL_TEMPLATE,
-    LOCAL_OUTPUT,
-    SHEET_INDICATORS,
     INDICATORS,
+    LOCAL_OUTPUT,
+    LOCAL_TEMPLATE,
+    SHEET_INDICATORS,
 )
 
 

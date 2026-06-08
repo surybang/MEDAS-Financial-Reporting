@@ -1,8 +1,8 @@
 # tests/test_integration.py
 """Tests d'intégration."""
 
-import pytest
 import pandas as pd
+import pytest
 
 from medas_financial_reporting.financial_reporting.data import get_data
 

@@ -25,17 +25,18 @@ def minimal_workbook(tmp_path):
 @pytest.fixture
 def sample_df():
     """DataFrame minimal simulant les données nettoyées."""
-    return pd.DataFrame({
-        "type_client": ["PP", "PM"],
-        "score":       ["V",  "S"],
-        "score_prev":  ["N",  "O"],
-        "id_agent":    ["AUTO", "MANUEL"],
-        "drc_complet": [True, False],
-    })
+    return pd.DataFrame(
+        {
+            "type_client": ["PP", "PM"],
+            "score": ["V", "S"],
+            "score_prev": ["N", "O"],
+            "id_agent": ["AUTO", "MANUEL"],
+            "drc_complet": [True, False],
+        }
+    )
 
 
 class TestFillIndicators:
-
     @pytest.mark.unit
     def test_countif_formula(self, minimal_workbook):
         fill_indicators(input_path=minimal_workbook, output_path=minimal_workbook)
@@ -65,6 +66,7 @@ class TestFillIndicators:
     def test_unknown_formula_raises(self, minimal_workbook):
         """Une formule inconnue dans INDICATORS lève une ValueError."""
         from medas_financial_reporting import config
+
         original = config.INDICATORS.copy()
         config.INDICATORS.append({"row": 99, "formule": "UNKNOWN", "args": []})
         with pytest.raises(ValueError, match="Formule inconnue"):
@@ -73,12 +75,13 @@ class TestFillIndicators:
 
 
 class TestWriteDataToExcel:
-
     @pytest.mark.unit
     def test_data_inserted(self, minimal_workbook, sample_df):
         """Vérifie que les données sont bien insérées dans la feuille DATA."""
-        from medas_financial_reporting.config import LOCAL_TEMPLATE, LOCAL_TMP_DIR
         import shutil
+
+        from medas_financial_reporting.config import LOCAL_TEMPLATE, LOCAL_TMP_DIR
+
         LOCAL_TMP_DIR.mkdir(exist_ok=True)
         shutil.copy(minimal_workbook, LOCAL_TEMPLATE)
 
