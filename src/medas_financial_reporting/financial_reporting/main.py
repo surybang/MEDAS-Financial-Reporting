@@ -1,7 +1,5 @@
 """Entry point for the financial reporting pipeline."""
 
-import argparse
-
 from medas_financial_reporting import (
     download_template,
     get_fs,
@@ -21,18 +19,9 @@ from medas_financial_reporting.financial_reporting import (
 )
 
 
-def parse_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--bucket", type=str, default=S3_BUCKET, help="Nom de votre bucket"
-    )
-    return parser.parse_args()
-
-
 def main() -> None:
-    # Parser les paramètres pour la reproductibilité
-    args = parse_args()
-    bucket = args.bucket
+
+    bucket = S3_BUCKET
 
     LOCAL_TMP_DIR.mkdir(exist_ok=True)
     # Intialiser le filesystem
