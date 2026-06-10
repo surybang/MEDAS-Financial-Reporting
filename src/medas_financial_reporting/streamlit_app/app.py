@@ -37,7 +37,7 @@ PALETTE = {
 }
 
 
-@st.cache_data
+@st.cache_data(ttl=3600)
 def load_data() -> pd.DataFrame:
     """Charge les données nettoyées depuis MinIO."""
     fs = get_fs()
@@ -45,7 +45,7 @@ def load_data() -> pd.DataFrame:
         return pd.read_parquet(f)
 
 
-@st.cache_data
+@st.cache_data(ttl=3600)
 def load_reporting() -> bytes:
     """Charge le reporting final depuis MinIO."""
     fs = get_fs()
