@@ -26,7 +26,7 @@ S3_ENDPOINT = os.environ.get("AWS_S3_ENDPOINT", "")
 AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID", "")
 AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY", "")
 AWS_SESSION_TOKEN = os.environ.get("AWS_SESSION_TOKEN", "")
-S3_BUCKET = "fabienhos"
+S3_BUCKET = os.environ.get("S3_BUCKET", "fabienhos")
 
 # Chemins MinIO
 S3_DATA_PROCESSED_KEY = "MEDAS-FinancialReporting/data/processed/financial_data.parquet"
