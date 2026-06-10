@@ -3,11 +3,17 @@ name: CI
 on:
   push:
     branches:
-      - "**"
+      - main
+      - development
+      - feat-*
   pull_request:
     branches:
       - main
       - development
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   ci:
@@ -19,6 +25,8 @@ jobs:
 
       - name: 🛠 Installer uv
         uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
 
       - name: 🐍 Installer Python
         uses: actions/setup-python@v5
