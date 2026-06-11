@@ -78,16 +78,8 @@ class TestWriteDataToExcel:
     @pytest.mark.unit
     def test_data_inserted(self, minimal_workbook, sample_df):
         """Vérifie que les données sont bien insérées dans la feuille DATA."""
-        import shutil
-
-        from medas_financial_reporting.config import LOCAL_TEMPLATE, LOCAL_TMP_DIR
-
-        LOCAL_TMP_DIR.mkdir(exist_ok=True)
-        shutil.copy(minimal_workbook, LOCAL_TEMPLATE)
-
-        write_data_to_excel(sample_df)
-
-        wb = load_workbook(LOCAL_TEMPLATE, data_only=False)
+        write_data_to_excel(sample_df, input_path=minimal_workbook)
+        wb = load_workbook(minimal_workbook, data_only=False)
         ws = wb["DATA"]
         assert ws.cell(row=1, column=1).value == "type_client"
         assert ws.cell(row=2, column=1).value == "PP"
