@@ -20,12 +20,14 @@ def raw_df():
     )
 
 
+@pytest.mark.unit
 def test_clean_data_fills_score(raw_df):
     """Les NaN de score sont remplacés par S."""
     result = clean_data(raw_df)
     assert result["score"].iloc[1] == "S"
 
 
+@pytest.mark.unit
 def test_clean_data_fills_score_prev(raw_df):
     """Les NaN de score_prev sont remplacés par N."""
     result = clean_data(raw_df)
@@ -33,6 +35,7 @@ def test_clean_data_fills_score_prev(raw_df):
     assert result["score_prev"].iloc[2] == "N"
 
 
+@pytest.mark.unit
 def test_clean_data_id_agent(raw_df):
     """Les agents non AUTO sont remplacés par MANUEL."""
     result = clean_data(raw_df)
@@ -40,6 +43,7 @@ def test_clean_data_id_agent(raw_df):
     assert result["id_agent"].iloc[1] == "MANUEL"
 
 
+@pytest.mark.unit
 def test_clean_data_no_nulls(raw_df):
     """Après nettoyage, score et score_prev ne contiennent plus de NaN."""
     result = clean_data(raw_df)
@@ -47,6 +51,7 @@ def test_clean_data_no_nulls(raw_df):
     assert result["score_prev"].isna().sum() == 0
 
 
+@pytest.mark.unit
 def test_clean_data_preserves_rows(raw_df):
     """clean_data ne supprime pas de lignes."""
     result = clean_data(raw_df)

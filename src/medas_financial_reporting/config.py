@@ -6,7 +6,7 @@ from datetime import datetime
 from pathlib import Path
 
 from loguru import logger
-from pandera.pandas import Check, Column, DataFrameSchema
+from pandera.pandas import Check, Column, DataFrameSchema, Timestamp
 
 # Logger
 LOG_LEVEL = os.environ.get("LOG_LEVEL", "INFO")
@@ -123,14 +123,17 @@ INDICATORS = [
 
 DATA_SCHEMA = DataFrameSchema(
     {
+        "client_id": Column(int, nullable=False),
         "type_client": Column(
             str, Check(lambda s: s.isin(["PP", "PM"])), nullable=False
         ),
+        "date_adhesion": Column(Timestamp, nullable=False),
         "score": Column(str, Check(lambda s: s.isin(["V", "O", "R"])), nullable=True),
         "score_prev": Column(
             str, Check(lambda s: s.isin(["V", "O", "R"])), nullable=True
         ),
         "id_agent": Column(str, nullable=False),
         "drc_complet": Column(bool, nullable=False),
-    }
+    },
+    strict=True,
 )
