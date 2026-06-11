@@ -40,6 +40,7 @@ omit = [
 markers = [
     "unit: tests unitaires",
     "integration: tests intégration",
+    "e2e: tests end-to-end",
 ]
 
 [tool.ruff]
