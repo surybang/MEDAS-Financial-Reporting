@@ -54,6 +54,7 @@ class TestFillIndicators:
         assert ws["E10"].value == "=SUM(E8:E9)"
         wb.close()
 
+    @pytest.mark.unit
     def test_countifs_formula(self, minimal_workbook):
         """Vérifie que la formule COUNTIFS est correctement générée."""
         fill_indicators(input_path=minimal_workbook, output_path=minimal_workbook)
@@ -64,14 +65,14 @@ class TestFillIndicators:
 
     @pytest.mark.unit
     def test_unknown_formula_raises(self, minimal_workbook):
-        """Une formule inconnue dans INDICATORS lève une ValueError."""
-        from medas_financial_reporting import config
-
-        original = config.INDICATORS.copy()
-        config.INDICATORS.append({"row": 99, "formule": "UNKNOWN", "args": []})
+        """Une formule inconnue lève une ValueError."""
+        bad_indicators = [{"row": 99, "formule": "UNKNOWN", "args": []}]
         with pytest.raises(ValueError, match="Formule inconnue"):
-            fill_indicators(input_path=minimal_workbook, output_path=minimal_workbook)
-        config.INDICATORS = original
+            fill_indicators(
+                input_path=minimal_workbook,
+                output_path=minimal_workbook,
+                indicators=bad_indicators,
+            )
 
 
 class TestWriteDataToExcel:

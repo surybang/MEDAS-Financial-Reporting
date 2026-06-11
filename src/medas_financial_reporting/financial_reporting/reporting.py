@@ -42,6 +42,7 @@ def fill_indicators(
     input_path: Path | str = LOCAL_TEMPLATE,
     output_path: Path | str = LOCAL_OUTPUT,
     data_sheet: str = "DATA",
+    indicators: list[dict] = INDICATORS,
 ) -> None:
     """
     Remplit les indicateurs dans la feuille Indicateurs.
@@ -68,7 +69,7 @@ def fill_indicators(
     wb = load_workbook(input_path)
     ws = wb[SHEET_INDICATORS]
 
-    for item in INDICATORS:
+    for item in indicators:
         cell = f"E{item['row']}"
         if item["formule"] == "COUNTIF":
             ws[cell] = formula_countif(*item["args"][0])
