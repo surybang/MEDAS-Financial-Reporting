@@ -1,0 +1,25 @@
+---
+title: "Streamlit"
+---
+
+::: {.callout-warning}
+## En cours de rédaction
+Cette section est encore à l'état de brouillon, son contenu va évoluer.
+:::
+
+intro à ce qu’est streamlit (description/définition) partager notre création, parle de data product, ouvert à une large game d’utilisateur via des apps webs
+
+data product, data markeplace, self bi, metabase / superset, mériterait peut-être son propre repo pour afficher tout type de reporting et pas seulement celui qu’on construit ensemble, à nosu de décider de la gouvernance (1 streamlit pour 1 métier pour X reportings différent)
+
+- on ne gère pas l’authent non plus
+- on veut quand même montrer qu’on peut logger
+
+créer un entrypoint dans pyproject.toml
+
+```toml
+[project.scripts]
+reporting = "medas_financial_reporting.financial_reporting.main:main"
+app = "medas_financial_reporting.streamlit_app.app:main"
+```
+
+Lancer l’application avec `uv run app`

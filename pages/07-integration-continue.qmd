@@ -1,0 +1,157 @@
+---
+title: "Intégration Continue (CI)"
+---
+
+Parmi les avantages des tests que nous avons évoqués, il y avait la prévention des régressions. Mais si vous avez bien suivi, vous vous demandez peut-être comment des tests lancés manuellement peuvent prévenir quoi que ce soit. Après tout, rien ne vous empêche de ne pas les lancer du tout.
+
+![image.png](../images/image-13.png)
+
+C'est là qu'intervient l'**intégration continue**. L'idée est la suivante : automatiser un ensemble de vérifications et d'actions à chaque fois que du code est poussé sur GitHub. Dans notre cas on va commencer par automatiser trois choses : le formatage du code, le lint et les tests unitaires. Mais la CI peut aller bien plus loin et c'est bien ce dont j’ai l’intention de vous montrer plus tard, entre autre : construire et publier une image Docker, déclencher un déploiement automatique via ArgoCD. C'est un outil central dans n'importe quelle équipe data ou software moderne. Plus personne ne peut merger du code cassé, mal formaté ou qui ne respecte pas les règles du projet sans que la CI ne le détecte.
+
+Je n'ai pas la prétention de tout vous expliquer sur ce sujet qui est vaste. Ce que je veux vous montrer ici, c'est comment mettre en place une CI simple et efficace qui nous aidera dans notre développement data. Pour aller plus loin, je vous redirige vers le blog de Stéphane Robert qui en parle bien mieux que moi :
+
+- [GitHub Actions](https://blog.stephane-robert.info/docs/pipeline-cicd/github/workflows/)
+- [YAML](https://blog.stephane-robert.info/docs/developper/autres-langages/yaml/)
+
+Puisque nous utilisons GitHub, nous allons utiliser **GitHub Actions**. Le principe est le suivant : on crée un dossier `.github/workflows/` à la racine du projet dans lequel on place des fichiers YAML qui décrivent les actions à exécuter. YAML signifie *Yet Another Markup Language* c'est un format de configuration que vous retrouverez partout dans l'écosystème DevOps.
+
+```bash
+mkdir -p .github/workflows
+touch .github/workflows/ci.yaml
+```
+
+## ruff
+
+Avant de passer à l'écriture de la CI, je vous invite à rajouter `ruff` en dépendance de développement dans votre projet :
+
+```bash
+uv add --dev ruff
+```
+
+Puis à le configurer dans votre `pyproject.toml` :
+
+TODO : consignes pour créer 
+
+```toml
+[tool.ruff]
+line-length = 88
+target-version = "py313"
+exclude = ["notebooks/"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+```
+
+Quelques mots sur cette configuration. `line-length = 88` est la longueur de ligne maximale, c'est la valeur par défaut de `black` et elle est devenue une convention dans l'écosystème Python. `target-version = "py313"` indique à `ruff` la version de Python cible pour adapter ses règles. 
+On exclut au passage les notebooks du linting via `exclude = ["notebooks/"]`, un notebook est par nature un espace d'exploration, il serait contre-productif d'y appliquer les mêmes règles qu'en production. Enfin `select` définit les catégories de règles à appliquer : `E` pour les erreurs de style PEP8, `F` pour les erreurs logiques détectées par `pyflakes` (variables non utilisées, imports manquants...) et `I` pour le tri automatique des imports.
+
+INFO
+
+description de ruff + rappel qu’on en a parlé en cours 
+
+## ci.yaml
+
+TODO: rajouter commande création fichier ci.yaml + consignes sur la partie + lien vers une doc officielle
+
+Notre CI va effectuer trois vérifications à chaque push sur une branche : le formatage du code, le lint avec `ruff` et les tests unitaires avec `pytest`. Vous remarquerez que les tests d'intégration sont exclus puisqu’ils nécessitent une connexion réseau et des credentials MinIO qu'on ne va pas exposer dans la CI pour des raisons de sécurité évidentes. 
+
+```yaml
+name: CI
+
+on:
+  push:
+    branches:
+      - "**"
+  pull_request:
+    branches:
+      - main
+      - development
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📦 Cloner le dépôt
+        uses: actions/checkout@v4
+
+      - name: 🛠 Installer uv
+        uses: astral-sh/setup-uv@v6
+
+      - name: 🐍 Installer Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: 📜 Installer les dépendances
+        run: uv sync --all-groups
+
+      - name: ✅ Vérifier le formatage avec ruff
+        run: uv run ruff format --check .
+
+      - name: 🔍 Lint avec ruff
+        run: uv run ruff check .
+
+      - name: 🧪 Lancer les tests unitaires
+        run: uv run pytest -m unit
+```
+
+Concernant la structure du fichier, retenez que la partie supérieure (`on`) permet de spécifier le **quand** et le **où** : sur quel événement et sur quelles branches la CI se déclenche. La partie `jobs` spécifie le **quoi** : les étapes à exécuter dans l'ordre.
+
+Vous noterez qu'on indique à GitHub d'utiliser `ubuntu-latest`. De cette manière, on permet à GitHub d’instancier ce qu'on appelle un **runner,**  une petite machine virtuelle éphémère qui exécute les étapes de votre CI. Vous n'avez rien à gérer, GitHub s'en occupe. (Merci GitHub)
+
+Commitez et pushez votre code, puis rendez-vous dans l'onglet **Actions** de votre repo sur GitHub. Vous devriez voir votre première CI se lancer. D’abord félicitations parce que vous venez peut-être de lancer votre toute première CI par contre c’est pas de chance, elle ne fonctionne pas. 
+
+![image.png](../images/image-14.png)
+
+Pas d’inquiétude, c'est une bonne nouvelle : la CI a détecté que le code n'était pas formaté comme il le devrait. Vous vous dites alors peut-être : "*mais on connaît la commande pour reformater le code proprement, pourquoi on ne l'utilise pas directement dans la CI ?*" Je vous répondrai qu'hérétiques que vous êtes, la CI n'a pas pour vocation de modifier votre code et ne devrait jamais le faire. Je vous laisse imaginer toutes les complications que ça pourrait engendrer : des modifications automatiques sur des branches, des commits générés par la CI, des conflits en cascade. Pour y remédier, on utilise un autre outil : `prek`  (spoiler).
+
+## prek
+
+On va utiliser **prek**, un gestionnaire de hooks Git. Mais c'est quoi un hook ? C'est simplement une action qui se déclenche automatiquement à un moment précis de votre workflow Git. Dans notre cas, on veut qu'avant chaque `git commit`, le code soit automatiquement vérifié et formaté. Si quelque chose ne va pas, le commit est bloqué. Vous corrigez, vous recommittez. Plus personne ne pousse du code mal formaté sans s'en rendre compte.
+
+Info
+
+Pourquoi `prek` plutôt que `pre-commit`, l'outil historique ? Parce qu'il est écrit en Rust, donc beaucoup plus rapide (on a déjà parlé de la “*Rustisation*” de Python en cours 👀) et qu'il utilise `uv` pour gérer ses dépendances, ce qui tombe bien puisque c'est déjà notre outil de référence.
+
+Installez `prek` via `uv` :
+
+```bash
+uv tool install prek
+export PATH="/home/onyxia/.local/bin:$PATH" # si vous n'êtes pas sur Onyxia, bon courage
+prek install
+```
+
+Créez ensuite un fichier `.pre-commit-config.yaml` à la racine du projet :
+
+```yaml
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.11.0
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+```
+
+Testez en lançant manuellement les hooks sur tout le projet :
+
+```bash
+prek run --all-files
+```
+
+`prek` a lancé les commandes ruff pour vous, par contre plusieurs lignes ne peuvent pas être résolues automatiquement, c’est notamment le cas des erreurs E501, lorsqu’une ligne est “trop longue”. 
+
+![image.png](../images/image-15.png)
+
+C'est parfois acceptable d'avoir une ligne longue, notamment pour une docstring sur une seule ligne. L'astuce à utiliser avec parcimonie est de rajouter le commentaire `# noqa: E501` à la fin de la ligne concernée pour dire à `ruff` de l'ignorer : (notez bien qu’il faut deux espaces entre le dernier caractère et votre commentaire)
+
+```python
+"""Génère la structure attendue pour le projet dans le stockage distant si elle n'existe pas."""  # noqa: E501
+```
+
+Une fois que tout est corrigé, je vous invite à refaire vos commits et à push votre code pour vérifier que la CI accepte les changements.
+
+![image.png](../images/image-16.png)
+
+Si tout est ok, vous pouvez également lancer une PR pour merger votre avancement sur la branche development et pushez également sur main.

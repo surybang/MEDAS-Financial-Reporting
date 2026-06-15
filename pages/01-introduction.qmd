@@ -1,0 +1,51 @@
+---
+title: "Introduction"
+---
+
+Je vous propose de briser la glace directement et de répondre à la question 
+que tout le monde se pose.
+
+# Pourquoi Python plutôt que Power BI ou Tableau ?
+
+Ma réponse est la suivante : ce ne sont pas les bons outils pour ce cas d'usage.
+
+`Power BI`, `Tableau` et leurs équivalents sont des outils de **BI analytics** : 
+ils permettent de construire des indicateurs et de partager des rapports en interne. 
+Mais ils ont des limites structurelles dans un contexte réglementaire :
+
+- **Partage externe difficile.** Envoyer un rapport à un partenaire via transfert 
+sécurisé n'est pas leur cas d'usage premier.
+
+- **Format de sortie contraint.** Ces outils sont conçus pour l'agrégation et la 
+visualisation. Dès que le rapport attend des cellules précises, des formules Excel 
+natives ou des onglets structurés selon un format imposé par le régulateur, ils 
+montrent leurs limites. On ne *génère* pas un fichier `.xlsx` avec Power BI : 
+on produit un dashboard. Ce n'est pas la même chose.
+
+- **Auditabilité limitée.** Un outil de BI repose souvent sur des manipulations 
+manuelles ou semi-manuelles en amont (le code DAX jamais audité). Avec Python, toute la chaîne de la donnée 
+brute jusqu'au fichier final est du **code versionnable, auditable et rejouable**. 
+Dans un contexte réglementaire, c'est un argument fort : vous pouvez démontrer 
+exactement comment le chiffre en cellule `B12` a été produit, à quelle date 
+et à partir de quelle source.
+
+# *"Je ne travaille pas dans un contexte réglementaire donc ça ne m'intéresse pas"*
+
+Vous auriez tort. Ce que je vous propose ici n'est pas un *skill* limité à la 
+génération d'un reporting réglementaire : c'est une **méthode au standard de 
+production d'applications data modernes**.
+
+Le cas d'usage peut changer. Dashboard interactif, API, pipeline ETL ou mise en 
+production d'un modèle prédictif : tous reposent sur le même socle.
+
+- Du code versionné
+- Un environnement reproductible
+- Une chaîne de déploiement automatisée
+
+C'est ce **pattern** que vous allez apprendre ici.
+
+Si tout est ok pour vous, on peut commencer. 🙂
+
+::: {style="text-align: center;"}
+![](https://images.rtl.fr/funradio/www/841113-bilbo-le-hobbit.gif)
+:::

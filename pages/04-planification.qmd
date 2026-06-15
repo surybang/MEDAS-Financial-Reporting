@@ -1,0 +1,124 @@
+---
+title: "Planifions notre construction"
+---
+
+Avant de commencer à coder il faut savoir quoi coder. Nous avons déjà établi notre cible avec un premier schéma mais celui-ci présente une vue macro de la structure de notre projet. Je vous propose de faire un premier *dive* dans cette dernière.
+
+## Qu'est-ce qu'un package ?
+
+Qu'est-ce qui définit concrètement un package en Python ? Est-ce qu'il suffit de créer un dossier et d'y mettre des fichiers `.py` ?
+
+Pas tout à fait. Un dossier seul ne suffit pas : il faut également un fichier `__init__.py` à l'intérieur. Mais ce n'est pas tout car en Python le mot *package* recouvre en réalité deux notions qui se chevauchent et qu'il est important de distinguer.
+
+**Le package au sens import** est un dossier contenant un fichier `__init__.py`. Ce fichier, même vide, indique à Python que ce dossier est un module importable. Sans lui vous pouvez avoir tous les `.py` que vous voulez dans un dossier : Python ne saura pas qu'il peut en importer le contenu. C'est ce qui vous permettra d'écrire `from medas_financial_reporting.financial_reporting.data import get_data` depuis n'importe où dans votre projet.
+
+**Le package au sens distribution** est une unité de code empaquetée et installable. C'est ce que vous installez avec `pip install` ou `uv add`. Dans ce sens `pandas`, `openpyxl` et `streamlit` sont des packages. Cette configuration se fait dans le fichier `pyproject.toml`.
+
+Dans notre projet les deux notions se rejoignent : nous allons créer des packages Python structurés et les configurer dans `pyproject.toml` pour qu'ils soient installables proprement dans notre environnement. C'est justement l'un des avantages du **src layout** que nous allons adopter par la suite.
+
+## Comment décider ce qui constitue un package ?
+
+::: {style="text-align: center;"}
+![](https://kaamelott-gifboard.fr/gifs/peut-pas-vraiment-savoir.gif)
+:::
+
+Il n'y a pas de règle absolue : c'est une question de cohésion. On regroupe dans un même package ce qui a une responsabilité commune et qui a du sens à être utilisé ensemble. Le bon découpage est celui qui rend votre code lisible et maintenable. Gardez ces trois *guidelines* en mémoire :
+
+**Ce qui change ensemble reste ensemble.** Si deux modules sont toujours modifiés en même temps c'est qu'ils appartiennent probablement au même package.
+
+**Ce qui est réutilisable séparément mérite son propre package.** La génération du reporting et l'application `Streamlit` ont des cycles de vie différents. Nous pourrions très bien remplacer `Streamlit` par `Flask`, `Reflex` ou `Django` sans toucher au reporting. Nous pourrions même décider que l'interface web sera en JavaScript avec `React`. Il faut donc les séparer.
+
+**La responsabilité unique.** `financial_reporting` génère un fichier Excel à partir des données. `streamlit_app` expose le reporting à un utilisateur. Si vous n'arrivez pas à résumer la responsabilité d'un package en une phrase c'est peut-être parce qu'il en fait trop.
+
+Avant de regarder la structure ci-dessous faites l'exercice d'imaginer vous-même l'arborescence du projet.
+
+::: {.callout-caution}
+## À vous de jouer
+Créez l'arborescence du projet en respectant les contraintes suivantes :
+
+- Un dossier `src/` contenant votre package Python
+- Deux sous-packages : un pour le reporting et un pour l'interface utilisateur
+- Chaque package doit avoir son `__init__.py`
+- Un dossier `tests/` à la racine
+- Un dossier `notebooks/` à la racine
+- Les autres éléments du projet à la racine
+:::
+
+<details>
+<summary>Structure du projet</summary>
+
+```{.markdown}
+MEDAS-Financial-Reporting/          # nom du repo GitHub (tirets autorisés)
+├── src/
+│   └── medas_financial_reporting/  # nom du package Python (underscores, minuscules)
+│       ├── __init__.py
+│       ├── config.py               # URLs, chemins, indicateurs partagés
+│       ├── storage.py              # Fonctions pour interagir avec MinIO
+│       ├── financial_reporting/
+│       │   ├── __init__.py
+│       │   ├── main.py             # Orchestration de la génération
+│       │   ├── data.py             # get_data(), clean_data()
+│       │   └── reporting.py        # fill_indicators()
+│       └── streamlit_app/
+│           ├── __init__.py
+│           └── app.py              # Interface de consultation
+├── tests/
+│   ├── test_data.py
+│   └── test_reporting.py
+├── notebooks/
+│   └── notebook.ipynb
+├── pyproject.toml
+├── uv.lock
+└── README.md
+```
+
+::: {.callout-note}
+## Tirets ou underscores ?
+Le repo GitHub s'appelle `MEDAS-Financial-Reporting` : les tirets sont la convention GitHub. Le package Python s'appelle `medas_financial_reporting` : le tiret est un opérateur de soustraction en Python et ne peut donc pas faire partie d'un identifiant. On utilise des underscores et des minuscules conformément à la PEP8.
+:::
+
+</details>
+
+## Le src layout : pourquoi ce niveau intermédiaire ?
+
+Pourquoi avoir un dossier `medas_financial_reporting/` à l'intérieur de `src/` alors qu'on a déjà un dossier racine `MEDAS-Financial-Reporting/` ?
+
+La réponse vient de la distinction entre les deux notions évoquées plus tôt.
+
+Le dossier racine `MEDAS-Financial-Reporting/` est l'enveloppe du dépôt Git : il contient le `pyproject.toml`, le `README.md`, les `notebooks/` et les `tests/`. Ce n'est pas du code importable.
+
+Le dossier `src/medas_financial_reporting/` est le package importable, celui que Python chargera quand vous écrirez `from medas_financial_reporting.financial_reporting.data import get_data`.
+
+La *Python Packaging Authority* [^pypa] décrit le src layout comme le fait de déplacer le code destiné à être importable dans un sous-dossier typiquement nommé `src/`, séparé de la racine du projet. Ce séparateur évite un piège classique : sans lui Python trouve votre code directement à la racine et l'importe même s'il n'est pas installé ce qui peut masquer des erreurs de packaging.
+
+<details>
+<summary>Solution automatique avec `uv` depuis le template</summary>
+::: {.callout-tip}
+## Initialiser le projet avec `uv`
+
+Si vous partez du template proposé, vous pouvez générer le src layout automatiquement avec `uv` plutôt que de tout créer à la main.
+
+Commencez par supprimer les fichiers de configuration existants puis lancez l'initialisation :
+
+```bash
+rm pyproject.toml uv.lock
+uv init --package .
+```
+
+`uv` va créer le dossier `src/` avec votre package et réécrire un `pyproject.toml` correctement configuré. Vérifiez ensuite que le dossier généré sous `src/` s'appelle bien `medas_financial_reporting` avec des underscores. Si `uv` a utilisé des tirets renommez-le :
+
+```bash
+mv src/medas-financial-reporting src/medas_financial_reporting
+```
+
+Il ne reste plus qu'à créer les sous-packages et les dossiers manquants :
+
+```bash
+mkdir -p src/medas_financial_reporting/{financial_reporting,streamlit_app}
+touch src/medas_financial_reporting/{financial_reporting,streamlit_app}/__init__.py
+mkdir tests notebooks
+```
+:::
+</details>
+
+[^pypa]: [Python Packaging Authority](https://packaging.python.org/en/latest/overview/)
