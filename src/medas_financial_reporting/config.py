@@ -6,7 +6,7 @@ from datetime import datetime
 from pathlib import Path
 
 from loguru import logger
-from pandera.pandas import Check, Column, DataFrameSchema
+from pandera.pandas import Check, Column, DataFrameSchema, Timestamp
 
 # Logger
 LOG_LEVEL = os.environ.get("LOG_LEVEL", "INFO")
@@ -26,7 +26,7 @@ S3_ENDPOINT = os.environ.get("AWS_S3_ENDPOINT", "")
 AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID", "")
 AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY", "")
 AWS_SESSION_TOKEN = os.environ.get("AWS_SESSION_TOKEN", "")
-S3_BUCKET = "fabienhos"
+S3_BUCKET = os.environ.get("S3_BUCKET", "fabienhos")
 
 # Chemins MinIO
 S3_DATA_PROCESSED_KEY = "MEDAS-FinancialReporting/data/processed/financial_data.parquet"
@@ -123,14 +123,17 @@ INDICATORS = [
 
 DATA_SCHEMA = DataFrameSchema(
     {
+        "client_id": Column(int, nullable=False),
         "type_client": Column(
             str, Check(lambda s: s.isin(["PP", "PM"])), nullable=False
         ),
+        "date_adhesion": Column(Timestamp, nullable=False),
         "score": Column(str, Check(lambda s: s.isin(["V", "O", "R"])), nullable=True),
         "score_prev": Column(
             str, Check(lambda s: s.isin(["V", "O", "R"])), nullable=True
         ),
         "id_agent": Column(str, nullable=False),
         "drc_complet": Column(bool, nullable=False),
-    }
+    },
+    strict=True,
 )

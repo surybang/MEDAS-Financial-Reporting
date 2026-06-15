@@ -4,3 +4,9 @@ __pycache__/
 tmp/
 .ruff_cache/
 .pytest_cache/
+
+/.quarto/
+*.html
+*_files
+_site/
+**/*.quarto_ipynb

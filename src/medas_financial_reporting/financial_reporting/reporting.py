@@ -2,6 +2,7 @@
 
 from pathlib import Path
 
+import pandas as pd
 from loguru import logger
 from openpyxl import load_workbook
 
@@ -13,19 +14,19 @@ from medas_financial_reporting.config import (
 )
 
 
-def write_data_to_excel(df) -> None:
+def write_data_to_excel(
+    df: pd.DataFrame, input_path: Path | str = LOCAL_TEMPLATE
+) -> None:
     """
     Insère le DataFrame dans la feuille DATA du template.
 
     Args:
         df: DataFrame nettoyé.
     """
-    import pandas as pd
-
     logger.info("Insertion des données dans le template")
     try:
         with pd.ExcelWriter(
-            LOCAL_TEMPLATE,
+            input_path,
             mode="a",
             engine="openpyxl",
             if_sheet_exists="replace",
@@ -41,6 +42,7 @@ def fill_indicators(
     input_path: Path | str = LOCAL_TEMPLATE,
     output_path: Path | str = LOCAL_OUTPUT,
     data_sheet: str = "DATA",
+    indicators: list[dict] = INDICATORS,
 ) -> None:
     """
     Remplit les indicateurs dans la feuille Indicateurs.
@@ -67,7 +69,7 @@ def fill_indicators(
     wb = load_workbook(input_path)
     ws = wb[SHEET_INDICATORS]
 
-    for item in INDICATORS:
+    for item in indicators:
         cell = f"E{item['row']}"
         if item["formule"] == "COUNTIF":
             ws[cell] = formula_countif(*item["args"][0])

@@ -1,0 +1,22 @@
+---
+title: "Docker"
+---
+
+::: {.callout-warning}
+## En cours de rédaction
+Cette section est encore à l'état de brouillon, son contenu va évoluer.
+:::
+
+Plusieurs façon d’utiliser docker
+
+labs + semblerait qu’il y ait de nouvelles alternatives avec Swarm sinon du local avec Docker Desktop et la dernière soluce c’est via la CI qu’on a mis ensemble en faisant du *die and retry*
+
+memes darksouls/elden ring
+
+comprenez ici qu’on va itérer à travers notre CI jusqu’à ce que ça marche
+
+ARGOCD
+
+principes gitops et role de argo là dedans
+
+si vous connaissez airflow, dagster prefect ou luigi pour l’orchestration des pipelines de données, argo est un orchestrateur de composants (image docker ou helm kubernetes) sur kubernetes

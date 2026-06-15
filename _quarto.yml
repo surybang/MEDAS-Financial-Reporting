@@ -1,0 +1,50 @@
+project:
+  type: website
+  output-dir: _site
+
+execute:
+  enabled: false
+
+website:
+  title: "MEDAS Financial Reporting"
+  page-navigation: true
+  reader-mode: true
+  repo-url: https://github.com/surybang/MEDAS-Financial-Reporting
+  navbar:
+    right:
+      - icon: github
+        href: https://github.com/surybang/MEDAS-Financial-Reporting
+        aria-label: GitHub
+  sidebar:
+    style: docked
+    search: true
+    contents:
+      - text: "Accueil"
+        href: index.qmd
+      - section: "Le tutoriel"
+        contents:
+          - pages/01-introduction.qmd
+          - pages/02-situation-de-depart.qmd
+          - pages/03-situation-cible.qmd
+          - pages/04-planification.qmd
+          - pages/05-le-code.qmd
+          - pages/06-tests.qmd
+          - pages/07-integration-continue.qmd
+      - section: "En cours de rédaction"
+        contents:
+          - pages/08-streamlit.qmd
+          - pages/09-docker-argocd.qmd
+
+format:
+  html:
+    code-fold: true
+    theme:
+      light: flatly
+      dark: darkly
+    css: styles.css
+    toc: true
+    toc-depth: 3
+    code-copy: true
+    code-overflow: wrap
+    anchor-sections: true
+    smooth-scroll: true
