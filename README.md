@@ -1,5 +1,9 @@
 # MEDAS Financial Reporting
 
+## Documentation
+
+La documentation du projet est disponible ici : [surybang.github.io/MEDAS-Financial-Reporting](https://surybang.github.io/MEDAS-Financial-Reporting/)
+
 ## Contexte
 
 🖊️ En cours d'écriture
