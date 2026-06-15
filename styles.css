@@ -1,0 +1,27 @@
+/* Accent MEDAS (a ajuster si charte graphique) */
+:root {
+  --medas-accent: #2c7da0;
+}
+
+/* Largeur de lecture confortable pour un article long */
+main {
+  font-size: 1.02rem;
+}
+
+/* Images centrees avec coins arrondis et legere ombre */
+.quarto-figure img,
+p img {
+  border-radius: 6px;
+  max-width: 100%;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12);
+}
+
+/* Liens un peu plus marques */
+a {
+  text-decoration-thickness: 1px;
+}
+
+/* Blocs de code un peu plus aeres */
+div.sourceCode {
+  border-radius: 6px;
+}
