@@ -432,7 +432,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#quest-ce-quun-package" id="toc-quest-ce-quun-package" class="nav-link active" data-scroll-target="#quest-ce-quun-package">Qu’est-ce qu’un package ?</a></li>
   <li><a href="#comment-décider-ce-qui-constitue-un-package" id="toc-comment-décider-ce-qui-constitue-un-package" class="nav-link" data-scroll-target="#comment-décider-ce-qui-constitue-un-package">Comment décider ce qui constitue un package ?</a></li>
-  <li><a href="#le-src-layout-pourquoi-ce-niveau-intermédiaire" id="toc-le-src-layout-pourquoi-ce-niveau-intermédiaire" class="nav-link" data-scroll-target="#le-src-layout-pourquoi-ce-niveau-intermédiaire">Le src layout : pourquoi ce niveau intermédiaire ?</a></li>
   </ul>
 </nav>
     </div>
@@ -477,7 +476,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>Ce qui change ensemble reste ensemble.</strong> Si deux modules sont toujours modifiés en même temps c’est qu’ils appartiennent probablement au même package.</p>
 <p><strong>Ce qui est réutilisable séparément mérite son propre package.</strong> La génération du reporting et l’application <code>Streamlit</code> ont des cycles de vie différents. Nous pourrions très bien remplacer <code>Streamlit</code> par <code>Flask</code>, <code>Reflex</code> ou <code>Django</code> sans toucher au reporting. Nous pourrions même décider que l’interface web sera en JavaScript avec <code>React</code>. Il faut donc les séparer.</p>
 <p><strong>La responsabilité unique.</strong> <code>financial_reporting</code> génère un fichier Excel à partir des données. <code>streamlit_app</code> expose le reporting à un utilisateur. Si vous n’arrivez pas à résumer la responsabilité d’un package en une phrase c’est peut-être parce qu’il en fait trop.</p>
-<p>Avant de regarder la structure ci-dessous faites l’exercice d’imaginer vous-même l’arborescence du projet.</p>
 <div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -488,7 +486,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Créez l’arborescence du projet en respectant les contraintes suivantes :</p>
+<p>Imaginez l’arborescence du projet en respectant les contraintes suivantes :</p>
 <ul>
 <li>Un dossier <code>src/</code> contenant votre package Python</li>
 <li>Deux sous-packages : un pour le reporting et un pour l’interface utilisateur</li>
@@ -507,24 +505,16 @@ Structure du projet
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>├── src/</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>│   └── medas_financial_reporting/  # nom du package Python (underscores, minuscules)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>│       ├── __init__.py</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>│       ├── config.py               # URLs, chemins, indicateurs partagés</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>│       ├── storage.py              # Fonctions pour interagir avec MinIO</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>│       ├── financial_reporting/</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>│       │   ├── __init__.py</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>│       │   ├── main.py             # Orchestration de la génération</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>│       │   ├── data.py             # get_data(), clean_data()</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>│       │   └── reporting.py        # fill_indicators()</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>│       └── streamlit_app/</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>│           ├── __init__.py</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>│           └── app.py              # Interface de consultation</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>├── tests/</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>│   ├── test_data.py</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>│   └── test_reporting.py</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>├── notebooks/</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>│   └── notebook.ipynb</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>├── pyproject.toml</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>├── uv.lock</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>└── README.md</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>│       ├── financial_reporting/</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>│       │   ├── __init__.py</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>│       └── streamlit_app/</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>│           ├── __init__.py</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>├── tests/</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>├── notebooks/</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>│   └── notebook.ipynb</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>├── pyproject.toml</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>├── uv.lock</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>└── README.md</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -539,14 +529,16 @@ Structure du projet
 </div>
 </div>
 </details>
-</section>
-<section id="le-src-layout-pourquoi-ce-niveau-intermédiaire" class="level2">
-<h2 class="anchored" data-anchor-id="le-src-layout-pourquoi-ce-niveau-intermédiaire">Le src layout : pourquoi ce niveau intermédiaire ?</h2>
+<details>
+<summary>
+Le src layout : pourquoi ce niveau intermédiaire ?
+</summary>
 <p>Pourquoi avoir un dossier <code>medas_financial_reporting/</code> à l’intérieur de <code>src/</code> alors qu’on a déjà un dossier racine <code>MEDAS-Financial-Reporting/</code> ?</p>
 <p>La réponse vient de la distinction entre les deux notions évoquées plus tôt.</p>
 <p>Le dossier racine <code>MEDAS-Financial-Reporting/</code> est l’enveloppe du dépôt Git : il contient le <code>pyproject.toml</code>, le <code>README.md</code>, les <code>notebooks/</code> et les <code>tests/</code>. Ce n’est pas du code importable.</p>
 <p>Le dossier <code>src/medas_financial_reporting/</code> est le package importable, celui que Python chargera quand vous écrirez <code>from medas_financial_reporting.financial_reporting.data import get_data</code>.</p>
-<p>La <em>Python Packaging Authority</em> <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> décrit le src layout comme le fait de déplacer le code destiné à être importable dans un sous-dossier typiquement nommé <code>src/</code>, séparé de la racine du projet. Ce séparateur évite un piège classique : sans lui Python trouve votre code directement à la racine et l’importe même s’il n’est pas installé ce qui peut masquer des erreurs de packaging.</p>
+La <em>Python Packaging Authority</em> <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> décrit le <em>src layout</em> comme le fait de déplacer le code destiné à être importable dans un sous-dossier typiquement nommé <code>src/</code>, séparé de la racine du projet. Ce séparateur évite un piège classique : sans lui Python trouve votre code directement à la racine et l’importe même s’il n’est pas installé ce qui peut masquer des erreurs de packaging.
+</details>
 <details>
 <summary>
 Solution automatique avec <code>uv</code> depuis le template

@@ -430,13 +430,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#le-code-le-code-le-code" id="toc-le-code-le-code-le-code" class="nav-link active" data-scroll-target="#le-code-le-code-le-code"><strong>Le code ! Le code ! Le code !</strong></a>
+  <li><a href="#git-branches-workflow" id="toc-git-branches-workflow" class="nav-link active" data-scroll-target="#git-branches-workflow">Git branches workflow</a></li>
+  <li><a href="#création-de-la-structure-du-projet" id="toc-création-de-la-structure-du-projet" class="nav-link" data-scroll-target="#création-de-la-structure-du-projet">Création de la structure du projet</a></li>
+  <li><a href="#paramétrer-le-fichier-pyproject.toml" id="toc-paramétrer-le-fichier-pyproject.toml" class="nav-link" data-scroll-target="#paramétrer-le-fichier-pyproject.toml">Paramétrer le fichier <code>pyproject.toml</code></a></li>
+  <li><a href="#le-code-le-code-le-code" id="toc-le-code-le-code-le-code" class="nav-link" data-scroll-target="#le-code-le-code-le-code">Le code ! Le code ! Le code !</a>
   <ul class="collapse">
-  <li><a href="#config.py" id="toc-config.py" class="nav-link" data-scroll-target="#config.py"><strong>config.py</strong></a></li>
+  <li><a href="#config.py" id="toc-config.py" class="nav-link" data-scroll-target="#config.py">config.py</a></li>
   <li><a href="#storage.py" id="toc-storage.py" class="nav-link" data-scroll-target="#storage.py">storage.py</a></li>
-  <li><a href="#data.py" id="toc-data.py" class="nav-link" data-scroll-target="#data.py"><strong>data.py</strong></a></li>
-  <li><a href="#reporting.py" id="toc-reporting.py" class="nav-link" data-scroll-target="#reporting.py"><strong>reporting.py</strong></a></li>
-  <li><a href="#main.py" id="toc-main.py" class="nav-link" data-scroll-target="#main.py"><strong>main.py</strong></a></li>
+  <li><a href="#data.py" id="toc-data.py" class="nav-link" data-scroll-target="#data.py">data.py</a></li>
+  <li><a href="#reporting.py" id="toc-reporting.py" class="nav-link" data-scroll-target="#reporting.py">reporting.py</a></li>
+  <li><a href="#main.py" id="toc-main.py" class="nav-link" data-scroll-target="#main.py">main.py</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -465,82 +468,194 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>Pour rappel, je vous conseille vivement de repartir du template proposé plus tôt, ainsi votre repo actuel devrait ressembler à ceci :</p>
+<div style="text-align: center;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../images/image-02.png" class="img-fluid figure-img"></p>
-<figcaption>image.png</figcaption>
+<figcaption>Template proposé</figcaption>
 </figure>
+</div>
 </div>
 <p>Dans un premier temps, je dois avouer avoir menti : avant de coder, nous allons configurer notre repo GitHub en protégeant notre branche <code>main</code>.</p>
 <p>Dans les paramètres du repo, dépliez le menu <strong>Rules</strong> et créez une nouvelle règle. Donnez-lui un titre, activez-la et cochez les restrictions suivantes : interdiction de supprimer la branche, obligation de passer par une <strong>Pull Request</strong> avant tout merge, et blocage du force push. C’est une configuration minimale mais elle fera amplement l’affaire.</p>
-<p>Vous vous souvenez de ce qu’on a vu en cours ? Protéger la branche <code>main</code> garantit que personne, y compris vous-même, ne peut y pousser du code directement sans revue. Tout changement devra passer par une branche dédiée et une <strong>Pull Request (PR)</strong>. C’est une pratique standard dans n’importe quelle équipe et c’est aussi ce qui rendra votre chaîne CI/CD cohérente : on ne déclenche pas un pipeline sur du code qui n’a pas été relu.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Documentation GitHub
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Pour aller plus loin sur les rulesets, voici la documentation officielle de GitHub :</p>
+<ul>
+<li><a href="https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets">Présentation des rulesets</a></li>
+<li><a href="https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/creating-rulesets-for-a-repository">Créer un ruleset de branche</a></li>
+<li><a href="https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets">Liste des règles disponibles</a></li>
+</ul>
+</div>
+</div>
+<p>Protéger la branche <code>main</code> garantit que personne, y compris vous-même, ne peut y pousser du code directement sans revue. Tout changement devra passer par une branche dédiée et une <strong>Pull Request (PR)</strong>. C’est une pratique standard dans n’importe quelle équipe et c’est aussi ce qui rendra votre chaîne CI/CD cohérente : on ne déclenche pas un pipeline sur du code qui n’a pas été relu.</p>
+<details>
+<summary>
+Ruleset
+</summary>
+<div style="text-align: center;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../images/image-03.png" class="img-fluid figure-img"></p>
-<figcaption>image.png</figcaption>
+<figcaption>Ruleset GitHub</figcaption>
 </figure>
 </div>
+</div>
+</details>
+<details>
+<summary>
+Branch Target rules
+</summary>
+<div style="text-align: center;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../images/image-04.png" class="img-fluid figure-img"></p>
-<figcaption>image.png</figcaption>
+<figcaption>Branch Rules GitHub</figcaption>
 </figure>
 </div>
-<p>On peut passer sur <code>VS Code</code>. Puisque <code>main</code> est protégée, tout notre travail se fera sur des branches dédiées et sera intégré via des <em>Pull Requests</em>. Nous allons adopter le workflow suivant :</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Git Branches Workflow </span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>main</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>└── development</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    ├── feat-reporting</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    └── feat-streamlit</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Commencez par créer la branche <code>development</code> depuis <code>main</code>. Dans un <code>Terminal</code>, nous allons construire l’arborescence du projet depuis cette branche. Essayez de la reproduire par vous-même pour continuer à manipuler des commandes Linux, sinon les voici :</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> src/<span class="op">&lt;</span>project<span class="op">&gt;</span>/<span class="dt">{financial_reporting</span><span class="op">,</span><span class="dt">streamlit_app}</span> tests notebooks</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> src/<span class="op">&lt;</span>project<span class="op">&gt;</span>/__init__.py</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> src/<span class="op">&lt;</span>project<span class="op">&gt;</span>/config.py</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> src/<span class="op">&lt;</span>project<span class="op">&gt;</span>/financial_reporting/<span class="dt">{__init__.py</span><span class="op">,</span><span class="dt">main.py</span><span class="op">,</span><span class="dt">data.py</span><span class="op">,</span><span class="dt">reporting.py}</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> src/<span class="op">&lt;</span>project<span class="op">&gt;</span>/streamlit_app/<span class="dt">{__init__.py</span><span class="op">,</span><span class="dt">app.py}</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> mv notebook.ipynb notebooks/notebook.ipynb</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Pensez bien sûr à remplacer <code>&lt;project&gt;</code> par le nom de votre projet. Voici ce que ça donne de mon côté :</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../images/image-05.png" class="img-fluid figure-img"></p>
-<figcaption>image.png</figcaption>
-</figure>
 </div>
-<p>Profitez-en également pour modifier le fichier <code>pyproject.toml</code> afin que le nom puisse correspondre au nom de votre projet et ajoutez le build-system comme ci-dessous. Pour rappel, ce fichier centralises toutes les métadonnées de votre projet : son nom, sa version, la version de Python requise et les dépendances.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">project</span><span class="co">]</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>name = <span class="dt">&lt;</span><span class="kw">votre_nom_de_projet_ici</span><span class="dt">&gt;</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>version = "0.1.0"</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>description = "Add your description here"</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>readme = "README.md"</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>requires-python = "&gt;=3.13"</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>dependencies = [</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    "openpyxl==3.1.3",</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    "pandas&gt;=3.0.2",</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    "s3fs&gt;=2026.3.0",</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>]</span>
+</details>
+<section id="git-branches-workflow" class="level2">
+<h2 class="anchored" data-anchor-id="git-branches-workflow">Git branches workflow</h2>
+<p>On peut maintenant retourner sur <code>VS Code</code>. Puisque <code>main</code> est protégée, tout notre travail se fera sur des branches dédiées et sera intégré via des <em>Pull Requests</em>. Nous allons adopter le workflow suivant :</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>main</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>└── development</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    ├── feat-reporting</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    └── feat-streamlit</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>L’idée est la suivante : chaque branche <code>feat-*</code> est mergée dans <code>development</code> via une PR, et c’est <code>development</code> qui est ensuite mergée dans <code>main</code> une fois le travail stabilisé. <code>development</code> joue le rôle de zone d’intégration où l’on rassemble les features avant de les promouvoir en production.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Protéger <code>development</code> aussi
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Protéger <code>main</code> empêche d’y pousser directement, mais rien n’empêche techniquement d’ouvrir une PR depuis une branche <code>feat-*</code> directement vers <code>main</code>. Une règle de protection bloque le push direct, pas le choix de la branche cible d’une PR.</p>
+<p>Appliquer le même ruleset à <code>development</code> garantit qu’aucun code n’entre nulle part sans PR ni revue. En revanche, l’ordre <code>feat-* → development → main</code> reste une <strong>convention d’équipe</strong> : GitHub ne sait pas nativement refuser une PR sous prétexte que sa branche source n’est pas <code>development</code>. Pour le forcer réellement, il faudrait une <code>GitHub Action</code> dédiée qui vérifie la branche source et fait échouer la PR si elle ne provient pas de <code>development</code>.</p>
+</div>
+</div>
+</section>
+<section id="création-de-la-structure-du-projet" class="level2">
+<h2 class="anchored" data-anchor-id="création-de-la-structure-du-projet">Création de la structure du projet</h2>
+<p>Nous allons maintenant matérialiser en ligne de commande l’arborescence que vous avez conçue dans la partie précédente. L’objectif ici n’est plus de réfléchir à la structure mais de continuer à manipuler des commandes Linux pour la créer.</p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>À vous de jouer
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>À partir de la structure définie précédemment, créez l’arborescence en ligne de commande :</p>
+<ul>
+<li>Commencez par créer la branche <code>development</code> depuis <code>main</code></li>
+<li>Créez les dossiers et fichiers vides du package en une fois</li>
+<li>Déplacez le <code>notebook.ipynb</code> existant vers <code>notebooks/</code> avec <code>git mv</code></li>
+</ul>
+<p>Indice : l’expansion d’accolades du shell (<code>{a,b,c}</code>) permet de créer plusieurs fichiers ou dossiers en une seule commande.</p>
+</div>
+</div>
+<details>
+<summary>
+Voir la solution
+</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> switch <span class="at">-c</span> development</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> src/medas_financial_reporting/<span class="dt">{financial_reporting</span><span class="op">,</span><span class="dt">streamlit_app}</span> tests notebooks</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> src/medas_financial_reporting/__init__.py</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> src/medas_financial_reporting/config.py</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> src/medas_financial_reporting/financial_reporting/<span class="dt">{__init__.py</span><span class="op">,</span><span class="dt">main.py</span><span class="op">,</span><span class="dt">data.py</span><span class="op">,</span><span class="dt">reporting.py}</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> src/medas_financial_reporting/streamlit_app/<span class="dt">{__init__.py</span><span class="op">,</span><span class="dt">app.py}</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> mv notebook.ipynb notebooks/notebook.ipynb</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><img src="../images/image-05.png" class="img-fluid"></p>
+</details>
+</section>
+<section id="paramétrer-le-fichier-pyproject.toml" class="level2">
+<h2 class="anchored" data-anchor-id="paramétrer-le-fichier-pyproject.toml">Paramétrer le fichier <code>pyproject.toml</code></h2>
+<p>Profitons également de ce moment pour modifier le fichier <code>pyproject.toml</code> afin que le nom corresponde à celui de votre projet et ajoutez-y le <code>build-system</code>. Pour rappel, ce fichier centralise toutes les métadonnées de votre projet : son nom, sa version, la version de Python requise et les dépendances.</p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>À vous de jouer
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>À partir de la <a href="https://docs.astral.sh/uv/concepts/build-backend/">documentation officielle de <code>uv</code> sur le build backend</a>, configurez votre <code>pyproject.toml</code> :</p>
+<ul>
+<li>Renseignez le <code>name</code>, la <code>version</code> et le <code>requires-python</code> (&gt;= 3.13)</li>
+<li>Déclarez les dépendances (en pinnant les versions !) : <code>openpyxl</code>, <code>pandas</code> et <code>s3fs</code></li>
+<li>Ajoutez la section <code>[build-system]</code> pour utiliser le backend <code>uv_build</code></li>
+</ul>
+</div>
+</div>
+<details>
+<summary>
+Voir la solution
+</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[project]</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="dt">name</span> <span class="op">=</span> <span class="st">"medas-financial-reporting"</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="dt">version</span> <span class="op">=</span> <span class="st">"0.1.0"</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="dt">description</span> <span class="op">=</span> <span class="st">"Add your description here"</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="dt">readme</span> <span class="op">=</span> <span class="st">"README.md"</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="dt">requires-python</span> <span class="op">=</span> <span class="st">"&gt;=3.13"</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="dt">dependencies</span> <span class="op">=</span> <span class="op">[</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"openpyxl==3.1.3"</span><span class="op">,</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"pandas&gt;=3.0.2"</span><span class="op">,</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"s3fs&gt;=2026.3.0"</span><span class="op">,</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="op">]</span></span>
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">build-system</span><span class="co">]</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>requires = <span class="co">[</span><span class="ot">"uv_build&gt;=0.11.8,&lt;0.12"</span><span class="co">]</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>build-backend = "uv_build"</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Le <code>[build-system]</code> indique à <code>uv</code> comment construire et installer votre projet. Depuis ses dernières versions, <code>uv</code> utilise par défaut son propre build backend <code>uv_build</code>, qui s’attend à trouver vos packages dans <code>src/</code>ce qui correspond exactement à notre structure. Sans cette section, <code>uv</code> ne saurait pas installer votre code comme un package et vos imports ne fonctionneraient pas.</p>
-<p>Si vous avez la même structure et que votre fichier <code>pyproject.toml</code> est à jour, vous pouvez commit, push, faire une PR vers <code>main</code> et enfin faites les deux nouvelles branches <em>feature</em> depuis <code>development</code>.</p>
-<section id="le-code-le-code-le-code" class="level2">
-<h2 class="anchored" data-anchor-id="le-code-le-code-le-code"><strong>Le code ! Le code ! Le code !</strong></h2>
-<p>Vérifiez que vous êtes dans votre branche <code>feat-reporting</code> avant toute action, vous pouvez le vérifier avec la commande <code>git status</code>, si vous avez le même affichage que moi dans votre <code>Terminal</code>, on peut commencer.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../images/image-06.png" class="img-fluid figure-img"></p>
-<figcaption>image.png</figcaption>
-</figure>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="kw">[build-system]</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="dt">requires</span> <span class="op">=</span> <span class="op">[</span><span class="st">"uv_build&gt;=0.11.8,&lt;0.12"</span><span class="op">]</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="dt">build-backend</span> <span class="op">=</span> <span class="st">"uv_build"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<p>La section <code>[build-system]</code> indique à <code>uv</code> comment construire et installer votre projet. Depuis ses dernières versions, <code>uv</code> utilise par défaut son propre build backend <code>uv_build</code> qui s’attend à trouver vos packages dans <code>src/</code>. Cela correspond exactement à notre structure. Sans cette section, <code>uv</code> ne saurait pas installer votre code comme un package et vos imports ne fonctionneraient pas.</p>
+<p>Une fois votre structure en place et votre <code>pyproject.toml</code> à jour, vous pouvez commit, push et ouvrir une PR vers <code>main</code>. Créez enfin les deux branches <em>feature</em> <code>feat-reporting</code> et <code>feat-streamlit</code> depuis <code>development</code>.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Documentation <code>uv</code>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>La documentation de <code>uv</code> détaille toute la notion de projet (structure, <code>pyproject.toml</code>, dépendances, environnement) : <a href="https://docs.astral.sh/uv/concepts/projects/" class="uri">https://docs.astral.sh/uv/concepts/projects/</a></p>
+</div>
+</div>
+</section>
+<section id="le-code-le-code-le-code" class="level2">
+<h2 class="anchored" data-anchor-id="le-code-le-code-le-code">Le code ! Le code ! Le code !</h2>
+<p>Vérifiez que vous êtes dans votre branche <code>feat-reporting</code> avant toute action. Un <code>git status</code> vous le confirmera : si vous obtenez le même affichage que moi, on peut commencer.</p>
+<p><img src="../images/image-06.png" class="img-fluid"></p>
+<p>Nous allons construire le sous-package <code>financial_reporting</code> <strong>module par module</strong>, dans l’ordre où les dépendances s’enchaînent : d’abord <code>config.py</code> (la configuration partagée), puis <code>storage.py</code> (les interactions MinIO), <code>data.py</code> (récupération et nettoyage), <code>reporting.py</code> (génération Excel) et enfin <code>main.py</code> (l’orchestration). Chaque module a une responsabilité unique, c’est le fil conducteur de toute cette partie.</p>
 <section id="config.py" class="level3">
-<h3 class="anchored" data-anchor-id="config.py"><strong>config.py</strong></h3>
+<h3 class="anchored" data-anchor-id="config.py">config.py</h3>
 <p>La première étape consiste à remplir <code>config.py</code> à la racine de <code>src/&lt;project&gt;/</code>. Ce module centralise toute la configuration commune aux deux sous-packages : accès MinIO, chemins distants, constantes Excel et indicateurs.</p>
 <p>Quelques contraintes à respecter :</p>
 <ul>
 <li><strong>Pas d’artefacts locaux persistants,</strong> le template et le reporting final vivent sur MinIO, pas dans le repo.</li>
 <li><strong>Un dossier temporaire</strong> <code>tmp/</code> est créé au runtime pour écrire le fichier avant upload, puis ignoré par git.</li>
 </ul>
+<details>
+<summary>
+Afficher le code
+</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Configuration file for the project."""</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
@@ -680,6 +795,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-137"><a href="#cb4-137" aria-hidden="true" tabindex="-1"></a>    },</span>
 <span id="cb4-138"><a href="#cb4-138" aria-hidden="true" tabindex="-1"></a>    strict<span class="op">=</span><span class="va">True</span>,</span>
 <span id="cb4-139"><a href="#cb4-139" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <p>Vous remarquez que <code>config.py</code> a évolué par rapport à la version précédente. Dans le projet initial, ce fichier était minimal : une URL, les indicateurs, quelques chemins locaux. C’était suffisant pour un script autonome.</p>
 <p>Dans notre nouvelle architecture, <code>config.py</code> prend une dimension différente. Il est désormais <strong>partagé entre les deux sous-packages :</strong><code>financial_reporting</code> et <code>streamlit_app</code> ce qui implique qu’il doit centraliser tout ce dont ils ont besoin en commun.</p>
 <p>Quatre choses ont changé :</p>
@@ -687,26 +803,39 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>La connexion MinIO devient explicite.</strong> Les variables d’environnement (AWS) étaient déjà injectées automatiquement par SSPCLOUD dans notre environnement. Ce qui change ici c’est qu’on les lit explicitement dans <code>config.py</code> pour deux raisons : configurer le filesystem <code>s3fs</code> qui en a besoin pour s’authentifier auprès de MinIO et anticiper le déploiement via Docker et ArgoCD où elles devront être montées dans le pod sous forme de secrets.</p>
 <p><strong>On a définit un schéma de données,</strong> on en reparlera dans le module <code>data.py</code> mais retenez qu’on décrit ici le schéma attendu des données brutes. On cherche ici à identifier le Schema Drift, c’est à dire un changement silencieux (ou pas) dans la forme des données : une colonne manquante, une nouvelle valeur, une colonne supplémentaire. C’est important d’y penser parce que les pipelines de données sont partagées au sein de l’entreprise, vous en êtes rarement les seuls producteurs et consommateurs. Il faut donc mettre en place des gardes-fous qui évitent la casse. Dans le cas de notre projet, nous sommes d’accord pour dire que c’est un peu <em>overkill</em> mais c’était une bonne opportunité pour moi de vous en parler afin que vous puissiez en prendre connaissance.</p>
 <p><strong>On a aussi configuré un logger</strong>, pour en savoir plus, ça se passe dans la bulle d’infos juste en dessous.</p>
-<p>INFO</p>
-<p>À la lecture de ce module, quelque chose devrait capter votre attention. C’est quoi ce <strong><code>Loguru</code></strong>?</p>
-<p><strong><code>Loguru</code></strong> est un package qui permet de définir un log de notre application. Le log est une composante de <strong>l’observabilité du code</strong>. Nous pouvons ainsi tracer toutes les étapes de nos scripts dans un format standardisé contrairement à de simples <code>print()</code>.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Pour ajouter la dépendance à votre projet</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> add loguru</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Pour initialiser notre <em>logger</em> avec <code>Loguru</code>, on commence généralement par un <code>logger.remove().</code> En effet, <code>Loguru</code> instancie automatiquement un handler par défaut dès qu’on l’importe. Pour personnaliser notre configuration (format, niveau, destination…), on le supprime avec <code>remove()</code>, puis on en ajoute un nouveau avec <code>logger.add()</code>.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>C’est quoi <code>Loguru</code> ?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>Loguru</code> est un package qui simplifie la gestion des logs d’une application. Le log est une composante de l’<strong>observabilité du code</strong> : il permet de tracer toutes les étapes de nos scripts dans un format standardisé, contrairement à de simples <code>print()</code>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> add loguru</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Pour initialiser le <em>logger</em>, on commence par un <code>logger.remove()</code>. En effet <code>Loguru</code> instancie automatiquement un handler par défaut dès qu’on l’importe. Pour personnaliser notre configuration (format, niveau, destination) on le supprime puis on en ajoute un nouveau avec <code>logger.add()</code>.</p>
 <p>Il existe plusieurs niveaux de logs :</p>
 <ul>
-<li><code>DEBUG</code> pour un débogage détaillé des actions</li>
+<li><code>DEBUG</code> pour un débogage détaillé</li>
 <li><code>INFO</code> pour les informations générales (état normal du programme)</li>
 <li><code>WARNING</code> pour signaler un comportement inattendu</li>
 <li><code>ERROR</code> pour les erreurs qui empêchent certaines actions</li>
 <li><code>CRITICAL</code> pour les erreurs très graves</li>
 </ul>
-<p>On ne <code>print()</code> plus, on logue.</p>
+<p>On ne <code>print()</code> plus, on logue. La documentation complète est disponible <a href="https://loguru.readthedocs.io/">ici</a>.</p>
+</div>
+</div>
 </section>
 <section id="storage.py" class="level3">
 <h3 class="anchored" data-anchor-id="storage.py">storage.py</h3>
 <p>Tout comme <code>config.py</code>, ce module vit à la racine de <code>src/&lt;project&gt;/</code> car il est partagé entre les deux sous-packages. En effet, la génération du reporting interagit avec <code>MinIO</code> tout comme <code>Streamlit</code> en aura aussi besoin pour exposer le fichier final à l’utilisateur.</p>
 <p>Ce module a une responsabilité unique : encapsuler toutes les interactions avec <code>MinIO</code>. On y trouve la création du filesystem S3, l’initialisation de la structure de dossiers, le téléchargement du template, la sauvegarde des données nettoyées et l’upload du reporting final.</p>
+<details>
+<summary>
+Afficher le code
+</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Storage functions for MinIO interactions."""</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> s3fs</span>
@@ -787,11 +916,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-78"><a href="#cb6-78" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
 <span id="cb6-79"><a href="#cb6-79" aria-hidden="true" tabindex="-1"></a>        logger.error(<span class="ss">f"Impossible de sauvegarder les données : </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb6-80"><a href="#cb6-80" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">RuntimeError</span>(<span class="ss">f"Impossible de sauvegarder les données : </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>) <span class="im">from</span> e</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <p>La gestion des erreurs est volontairement simple ici : un <code>try/except</code> avec logging et <code>raise</code> pour interrompre le pipeline proprement. Dans un contexte de production plus exigeant, on irait plus loin : distinguer les erreurs de permissions (credentials expirés), les erreurs réseau (stockage indisponible), les erreurs d’intégrité (fichier corrompu à l’upload). Il n’est d’ailleurs pas rare de définir ses propres exceptions métier pour rendre ces cas explicites. C’est un sujet à part entière que nous n’aborderons pas ici, mais gardez-le en tête.</p>
 </section>
 <section id="data.py" class="level3">
-<h3 class="anchored" data-anchor-id="data.py"><strong>data.py</strong></h3>
+<h3 class="anchored" data-anchor-id="data.py">data.py</h3>
 <p>Ce module a trois responsabilités : récupérer les données brutes, les nettoyer et persister les données transformées sur <code>MinIO</code> dans le dossier <code>processed/</code>.</p>
+<details>
+<summary>
+Afficher le code
+</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Data retrieval, cleaning and validation functions."""</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> s3fs</span>
@@ -850,27 +984,38 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a><span class="co"># if __name__ == "__main__":</span></span>
 <span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a><span class="co">#     df = get_data()</span></span>
 <span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a><span class="co">#     print(df.head())</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <p>Nous avons globalement repris les fonctions du TD (<code>get_data()</code> et <code>clean_data()</code>) mais avec des subtilités supplémentaires. En effet, nous avons ajouté trois composantes : la gestion des erreurs, le logging et la validation du schéma.</p>
 <p>La gestion des erreurs permet d’identifier précisément ce qui a échoué et à quel niveau. Dans <code>get_data</code>, on distingue deux cas : une <code>SchemaError</code> levée par Pandera si les données ne respectent pas le schéma métier et toute autre exception lors de la lecture du fichier. Dans les deux cas on logue au niveau <code>CRITICAL</code> car sans données le pipeline ne peut pas continuer.</p>
 <p>Le logging trace chaque étape : chargement, validation, nettoyage. C’est ce qui vous permettra de diagnostiquer un problème sans avoir à relancer le pipeline en mode debug.</p>
-<p>Vous vous souvenez du schéma défini dans <code>config.py</code> ? C’est ici qu’il entre en jeu. <code>DATA_SCHEMA.validate(df)</code> est appelé immédiatement après la lecture du fichier. Si une colonne manque, si <code>score</code> contient une valeur inattendue ou si <code>type_client</code> sort des valeurs <code>PP</code>/<code>PM</code> connues, un <code>SchemaError</code> est levé avant même que les données n’entrent dans le pipeline. C’est le garde-fou contre le schema drift que nous avions évoqué, c’est un peu notre Gandalf contre le Balrog (sans tomber du pont).</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../images/image-07.png" class="img-fluid figure-img"></p>
-<figcaption>image.png</figcaption>
-</figure>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-<p>N’oubliez pas de vérifier la bonne exécution du code avec la commande <code>uv run src/medas_financial_reporting/data.py</code>. Si vous obtenez le même affichage que moi, c’est que vous êtes sur la bonne voie !</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../images/image-08.png" class="img-fluid figure-img"></p>
-<figcaption>image.png</figcaption>
-</figure>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Le garde-fou contre le schema drift
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>DATA_SCHEMA.validate(df)</code> est appelé immédiatement après la lecture du fichier. Si une colonne manque, si <code>score</code> contient une valeur inattendue ou si <code>type_client</code> sort des valeurs <code>PP</code>/<code>PM</code> connues, un <code>SchemaError</code> est levé <strong>avant même</strong> que les données n’entrent dans le pipeline. C’est notre Gandalf contre le Balrog, version data (sans tomber du pont).</p>
+<div style="text-align: center;">
+<p><img src="../images/image-07.png" class="img-fluid"></p>
+</div>
+</div>
+</div>
+<p>Pour vérifier la bonne exécution, décommentez le bloc <code>if __name__ == "__main__"</code> en bas de <code>data.py</code> puis lancez <code>uv run medas_financial_reporting/financial_reporting/data.py</code>. Si vous obtenez le même affichage que moi, vous êtes sur la bonne voie !</p>
+<div style="text-align: center;">
+<p><img src="../images/image-08.png" class="img-fluid"></p>
 </div>
 </section>
 <section id="reporting.py" class="level3">
-<h3 class="anchored" data-anchor-id="reporting.py"><strong>reporting.py</strong></h3>
+<h3 class="anchored" data-anchor-id="reporting.py">reporting.py</h3>
 <p>Ce module a une responsabilité unique : manipuler le fichier Excel du reporting. Il ne parle pas à <code>MinIO</code>, il n’a pas besoin de savoir d’où viennent les données ni où elles iront. Il reçoit un <code>DataFrame</code> et un template local à partir duquel il génère le reporting.</p>
+<details>
+<summary>
+Afficher le code
+</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Reporting generation functions."""</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
@@ -954,11 +1099,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-81"><a href="#cb8-81" aria-hidden="true" tabindex="-1"></a>    wb.save(output_path)</span>
 <span id="cb8-82"><a href="#cb8-82" aria-hidden="true" tabindex="-1"></a>    wb.close()</span>
 <span id="cb8-83"><a href="#cb8-83" aria-hidden="true" tabindex="-1"></a>    logger.success(<span class="ss">f"Reporting généré : </span><span class="sc">{</span>output_path<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <p>Vous reconnaitrez ici les fonctions du TD, quasiment inchangées, on a juste ajouté quelques logs pour notre application. C’est voulu puisque la logique métier n’a pas bougé, c’est l’architecture autour qui a évolué.</p>
 </section>
 <section id="main.py" class="level3">
-<h3 class="anchored" data-anchor-id="main.py"><strong>main.py</strong></h3>
+<h3 class="anchored" data-anchor-id="main.py">main.py</h3>
 <p>C’est le chef d’orchestre et le point d’entrée pour notre sous-package <em>financial-reporting</em>. Il instancie le filesystem S3, appelle chaque fonction dans le bon ordre et gère les interactions avec notre stockage distant. Là où chaque module fait une chose, <code>main.py</code> assemble le tout.</p>
+<details>
+<summary>
+Afficher le code
+</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Entry point for the financial reporting pipeline."""</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> medas_financial_reporting <span class="im">import</span> (</span>
@@ -1011,6 +1161,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
 <span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a>    main()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <p>Regardez <code>main()</code> : des étapes lisibles comme une recette. Pas de logique métier ici, pas de formules Excel ni de transformations. Chaque ligne dit ce qui se passe, dans quel ordre et avec quoi. C’est vers quoi on devrait tendre quand on veut faire du code simple mais efficace.</p>
 <p>Pour terminer cette partie, assurez-vous d’avoir lancer votre <code>main.py</code> et d’obtenir les mêmes logs que moi, n’oubliez pas de consulter votre <code>MinIO</code> pour voir si le fichier est bien présent ainsi que de le télécharger pour s’assurer des bonnes transformations.</p>
 <div class="quarto-figure quarto-figure-center">
@@ -1019,28 +1170,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <figcaption>image.png</figcaption>
 </figure>
 </div>
-<section id="erreur-possible" class="level4">
-<h4 class="anchored" data-anchor-id="erreur-possible"><strong>Erreur possible :</strong></h4>
-<p>Il est possible que votre pipeline bloque en plein milieu sans message d’erreur clair. Cela arrive généralement quand les credentials <code>MinIO</code> ont expiré. Pour vérifier, comparez les valeurs actuelles dans votre terminal avec celles affichées dans le DataLab sous <strong>Stockage de données &gt; Options</strong> (le bouton en forme d’engrenage).</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../images/image-10.png" class="img-fluid figure-img"></p>
-<figcaption>image.png</figcaption>
-</figure>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-<p>Pour afficher les valeurs actuelles dans votre terminal :</p>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Erreur possible : credentials MinIO expirés
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Il est possible que votre pipeline bloque en plein milieu sans message d’erreur clair. Cela arrive généralement quand les credentials <code>MinIO</code> ont expiré. Pour vérifier, comparez les valeurs de votre terminal avec celles affichées dans le DataLab sous <strong>Stockage de données &gt; Options</strong> (le bouton en forme d’engrenage).</p>
+<p><img src="../images/image-10.png" class="img-fluid"></p>
+<p>Afficher les valeurs actuelles :</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">$AWS_ACCESS_KEY_ID</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">$AWS_SECRET_ACCESS_KEY</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">$AWS_SESSION_TOKEN</span></span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">$AWS_S3_ENDPOINT</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Si elles ne correspondent pas, mettez-les à jour directement dans votre terminal :</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">AWS_ACCESS_KEY_ID</span><span class="op">=&lt;</span>copiez_la_valeur<span class="op">&gt;</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">AWS_SECRET_ACCESS_KEY</span><span class="op">=&lt;</span>copiez_la_valeur<span class="op">&gt;</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">AWS_SESSION_TOKEN</span><span class="op">=&lt;</span>copiez_la_valeur<span class="op">&gt;</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">AWS_S3_ENDPOINT</span><span class="op">=&lt;</span>copiez_la_valeur<span class="op">&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
+<p>Si elles ne correspondent pas, mettez-les à jour :</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">AWS_ACCESS_KEY_ID</span><span class="op">=</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">AWS_SECRET_ACCESS_KEY</span><span class="op">=</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">AWS_SESSION_TOKEN</span><span class="op">=</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">AWS_S3_ENDPOINT</span><span class="op">=</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
 <section id="qol-quelques-améliorations" class="level4">
-<h4 class="anchored" data-anchor-id="qol-quelques-améliorations"><strong>QoL : quelques améliorations</strong></h4>
+<h4 class="anchored" data-anchor-id="qol-quelques-améliorations">QoL : quelques améliorations</h4>
 <p>On peut à mon sens apporter quelques améliorations à notre sous-package.</p>
 <p>D’abord, les imports. Vous avez dû vous en rendre compte, ils sont trop longs et trop verbeux, c’est le prix à payer pour avoir un code modulaire.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> medas_financial_reporting.financial_reporting.data <span class="im">import</span> get_data, clean_data</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1065,8 +1220,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[project.scripts]</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="dt">reporting</span> <span class="op">=</span> <span class="st">"medas_financial_reporting.financial_reporting.main:main"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Puis testez dans votre Terminal avec <code>uv run reporting</code> 😊.</p>
-<p>RAPPEL</p>
-<p>Git time ! Si vous ne l’avez pas fait au fil de l’eau, pensez à bien gérer vos commits et push vers GitHub.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Git time
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Si vous ne l’avez pas fait au fil de l’eau, pensez à bien gérer vos commits et à push vers GitHub avant de continuer.</p>
+</div>
+</div>
 
 
 </section>

@@ -456,11 +456,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Comme nous venons de le voir, le notebook de la situation de départ mélange exploration, transformation et génération du rapport dans un seul fichier. La situation cible découpe le projet en <code>packages Python</code>, chacun avec une responsabilité unique et claire. Un <em>package</em> gère la lecture des données depuis <code>MinIO</code>, un autre la génération du fichier <code>Excel</code> et encore un autre pour l’interface <code>Streamlit</code>. Ce principe s’appelle la <strong>séparation des responsabilités (SRP)</strong> : chaque module fait une chose et une seule. Cela rend le code testable et réutilisable. Nous mettrons en place des tests avec <code>pytest</code> pour nous assurer que chaque <em>package</em> se comporte comme attendu.</p>
 <p><strong>Le rôle de MinIO évolue</strong></p>
 <p>Dans la situation de départ, <code>MinIO</code> hébergeait uniquement la donnée source. Dans la situation cible, il devient le <em>storage</em> central du projet : il contient le fichier de données <code>data.parquet</code>, le template Excel <code>template.xlsx</code> et le rapport généré <code>reporting.xlsx</code>. Tout ce qui entre et tout ce qui sort du pipeline transite par <code>MinIO</code>. C’est votre source de vérité.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../images/image-01.png" class="img-fluid figure-img"></p>
-<figcaption>image.png</figcaption>
-</figure>
+<div style="text-align: center;">
+<p><img src="../images/image-01.png" class="img-fluid"></p>
 </div>
 <p>Avant de passer à l’étape suivante, assurez-vous que ces points sont remplis de votre côté :</p>
 <ul>
