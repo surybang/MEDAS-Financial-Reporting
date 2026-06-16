@@ -30,11 +30,9 @@ Il n'y a pas de règle absolue : c'est une question de cohésion. On regroupe da
 
 **La responsabilité unique.** `financial_reporting` génère un fichier Excel à partir des données. `streamlit_app` expose le reporting à un utilisateur. Si vous n'arrivez pas à résumer la responsabilité d'un package en une phrase c'est peut-être parce qu'il en fait trop.
 
-Avant de regarder la structure ci-dessous faites l'exercice d'imaginer vous-même l'arborescence du projet.
-
 ::: {.callout-caution}
 ## À vous de jouer
-Créez l'arborescence du projet en respectant les contraintes suivantes :
+Imaginez l'arborescence du projet en respectant les contraintes suivantes :
 
 - Un dossier `src/` contenant votre package Python
 - Deux sous-packages : un pour le reporting et un pour l'interface utilisateur
@@ -52,19 +50,11 @@ MEDAS-Financial-Reporting/          # nom du repo GitHub (tirets autorisés)
 ├── src/
 │   └── medas_financial_reporting/  # nom du package Python (underscores, minuscules)
 │       ├── __init__.py
-│       ├── config.py               # URLs, chemins, indicateurs partagés
-│       ├── storage.py              # Fonctions pour interagir avec MinIO
 │       ├── financial_reporting/
 │       │   ├── __init__.py
-│       │   ├── main.py             # Orchestration de la génération
-│       │   ├── data.py             # get_data(), clean_data()
-│       │   └── reporting.py        # fill_indicators()
 │       └── streamlit_app/
 │           ├── __init__.py
-│           └── app.py              # Interface de consultation
 ├── tests/
-│   ├── test_data.py
-│   └── test_reporting.py
 ├── notebooks/
 │   └── notebook.ipynb
 ├── pyproject.toml
@@ -76,10 +66,10 @@ MEDAS-Financial-Reporting/          # nom du repo GitHub (tirets autorisés)
 ## Tirets ou underscores ?
 Le repo GitHub s'appelle `MEDAS-Financial-Reporting` : les tirets sont la convention GitHub. Le package Python s'appelle `medas_financial_reporting` : le tiret est un opérateur de soustraction en Python et ne peut donc pas faire partie d'un identifiant. On utilise des underscores et des minuscules conformément à la PEP8.
 :::
-
 </details>
 
-## Le src layout : pourquoi ce niveau intermédiaire ?
+<details>
+<summary>Le src layout : pourquoi ce niveau intermédiaire ?</summary>
 
 Pourquoi avoir un dossier `medas_financial_reporting/` à l'intérieur de `src/` alors qu'on a déjà un dossier racine `MEDAS-Financial-Reporting/` ?
 
@@ -89,7 +79,8 @@ Le dossier racine `MEDAS-Financial-Reporting/` est l'enveloppe du dépôt Git : 
 
 Le dossier `src/medas_financial_reporting/` est le package importable, celui que Python chargera quand vous écrirez `from medas_financial_reporting.financial_reporting.data import get_data`.
 
-La *Python Packaging Authority* [^pypa] décrit le src layout comme le fait de déplacer le code destiné à être importable dans un sous-dossier typiquement nommé `src/`, séparé de la racine du projet. Ce séparateur évite un piège classique : sans lui Python trouve votre code directement à la racine et l'importe même s'il n'est pas installé ce qui peut masquer des erreurs de packaging.
+La *Python Packaging Authority* [^pypa] décrit le *src layout* comme le fait de déplacer le code destiné à être importable dans un sous-dossier typiquement nommé `src/`, séparé de la racine du projet. Ce séparateur évite un piège classique : sans lui Python trouve votre code directement à la racine et l'importe même s'il n'est pas installé ce qui peut masquer des erreurs de packaging.
+</details>
 
 <details>
 <summary>Solution automatique avec `uv` depuis le template</summary>

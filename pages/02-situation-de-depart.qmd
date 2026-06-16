@@ -4,7 +4,9 @@ title: "Situation de départ"
 
 Faisons le point sur la situation actuelle en nous basant sur le repo [MEDAS-TP-Financial-Reporting](https://github.com/surybang/MEDAS-TP-Financial-Reporting). Vous avez normalement dans un premier temps rempli le notebook pour générer le reporting demandé. La situation ci-dessous devrait vous sembler familière : c'est ce que vous avez fait.
 
+::: {style="text-align: center;"}
 ![](../images/image-00.png)
+:::
 
 Cette situation constitue une première étape et non une fin en soi. Notre *notebook* est certes versionné mais il n'est peut-être pas propre : il est constitué d'étapes potentiellement inutiles à la génération du rapport, tout est *hardcodé* et non modulable. Si on doit le faire évoluer c'est potentiellement compliqué de ne pas tout casser.
 

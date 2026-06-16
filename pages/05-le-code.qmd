@@ -4,48 +4,114 @@ title: "On passe au code ! (enfin)"
 
 Pour rappel, je vous conseille vivement de repartir du template proposé plus tôt, ainsi votre repo actuel devrait ressembler à ceci :
 
-![image.png](../images/image-02.png)
+::: {style="text-align: center;"}
+![Template proposé](../images/image-02.png)
+:::
 
 Dans un premier temps, je dois avouer avoir menti : avant de coder, nous allons configurer notre repo GitHub en protégeant notre branche `main`.
 
 Dans les paramètres du repo, dépliez le menu **Rules** et créez une nouvelle règle. Donnez-lui un titre, activez-la et cochez les restrictions suivantes : interdiction de supprimer la branche, obligation de passer par une **Pull Request** avant tout merge, et blocage du force push. C'est une configuration minimale mais elle fera amplement l'affaire.
 
-Vous vous souvenez de ce qu'on a vu en cours ? Protéger la branche `main` garantit que personne, y compris vous-même, ne peut y pousser du code directement sans revue. Tout changement devra passer par une branche dédiée et une **Pull Request (PR)**. C'est une pratique standard dans n'importe quelle équipe et c'est aussi ce qui rendra votre chaîne CI/CD cohérente : on ne déclenche pas un pipeline sur du code qui n'a pas été relu.
+::: {.callout-tip}
+## Documentation GitHub
+Pour aller plus loin sur les rulesets, voici la documentation officielle de GitHub :
 
-![image.png](../images/image-03.png)
+- [Présentation des rulesets](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets)
+- [Créer un ruleset de branche](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/creating-rulesets-for-a-repository)
+- [Liste des règles disponibles](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets)
+:::
 
-![image.png](../images/image-04.png)
+Protéger la branche `main` garantit que personne, y compris vous-même, ne peut y pousser du code directement sans revue. Tout changement devra passer par une branche dédiée et une **Pull Request (PR)**. C'est une pratique standard dans n'importe quelle équipe et c'est aussi ce qui rendra votre chaîne CI/CD cohérente : on ne déclenche pas un pipeline sur du code qui n'a pas été relu.
 
-On peut passer sur `VS Code`. Puisque `main` est protégée, tout notre travail se fera sur des branches dédiées et sera intégré via des *Pull Requests*. Nous allons adopter le workflow suivant :
+<details>
+<summary>Ruleset</summary>
+
+::: {style="text-align: center;"}
+![Ruleset GitHub](../images/image-03.png)
+:::
+
+</details>
+
+<details>
+<summary>Branch Target rules</summary>
+
+::: {style="text-align: center;"}
+![Branch Rules GitHub](../images/image-04.png)
+:::
+
+</details>
+
+## Git branches workflow
+
+On peut maintenant retourner sur `VS Code`. Puisque `main` est protégée, tout notre travail se fera sur des branches dédiées et sera intégré via des *Pull Requests*. Nous allons adopter le workflow suivant :
 
 ```markdown
-# Git Branches Workflow 
 main
 └── development
     ├── feat-reporting
     └── feat-streamlit
 ```
 
-Commencez par créer la branche `development` depuis `main`. Dans un `Terminal`, nous allons construire l'arborescence du projet depuis cette branche. Essayez de la reproduire par vous-même pour continuer à manipuler des commandes Linux, sinon les voici :
+L'idée est la suivante : chaque branche `feat-*` est mergée dans `development` via une PR, et c'est `development` qui est ensuite mergée dans `main` une fois le travail stabilisé. `development` joue le rôle de zone d'intégration où l'on rassemble les features avant de les promouvoir en production.
 
-```bash
-mkdir -p src/<project>/{financial_reporting,streamlit_app} tests notebooks
-touch src/<project>/__init__.py
-touch src/<project>/config.py
-touch src/<project>/financial_reporting/{__init__.py,main.py,data.py,reporting.py}
-touch src/<project>/streamlit_app/{__init__.py,app.py}
+::: {.callout-note}
+## Protéger `development` aussi
+Protéger `main` empêche d'y pousser directement, mais rien n'empêche techniquement d'ouvrir une PR depuis une branche `feat-*` directement vers `main`. Une règle de protection bloque le push direct, pas le choix de la branche cible d'une PR.
+
+Appliquer le même ruleset à `development` garantit qu'aucun code n'entre nulle part sans PR ni revue. En revanche, l'ordre `feat-* → development → main` reste une **convention d'équipe** : GitHub ne sait pas nativement refuser une PR sous prétexte que sa branche source n'est pas `development`. Pour le forcer réellement, il faudrait une `GitHub Action` dédiée qui vérifie la branche source et fait échouer la PR si elle ne provient pas de `development`.
+:::
+
+## Création de la structure du projet
+
+Nous allons maintenant matérialiser en ligne de commande l'arborescence que vous avez conçue dans la partie précédente. L'objectif ici n'est plus de réfléchir à la structure mais de continuer à manipuler des commandes Linux pour la créer.
+
+::: {.callout-caution}
+## À vous de jouer
+À partir de la structure définie précédemment, créez l'arborescence en ligne de commande :
+
+- Commencez par créer la branche `development` depuis `main`
+- Créez les dossiers et fichiers vides du package en une fois
+- Déplacez le `notebook.ipynb` existant vers `notebooks/` avec `git mv`
+
+Indice : l'expansion d'accolades du shell (`{a,b,c}`) permet de créer plusieurs fichiers ou dossiers en une seule commande.
+:::
+
+<details>
+<summary>Voir la solution</summary>
+
+```{.bash}
+git switch -c development
+mkdir -p src/medas_financial_reporting/{financial_reporting,streamlit_app} tests notebooks
+touch src/medas_financial_reporting/__init__.py
+touch src/medas_financial_reporting/config.py
+touch src/medas_financial_reporting/financial_reporting/{__init__.py,main.py,data.py,reporting.py}
+touch src/medas_financial_reporting/streamlit_app/{__init__.py,app.py}
 git mv notebook.ipynb notebooks/notebook.ipynb
 ```
 
-Pensez bien sûr à remplacer `<project>` par le nom de votre projet. Voici ce que ça donne de mon côté :
+![](../images/image-05.png)
 
-![image.png](../images/image-05.png)
+</details>
 
-Profitez-en également pour modifier le fichier `pyproject.toml` afin que le nom puisse correspondre au nom de votre projet et ajoutez le build-system comme ci-dessous. Pour rappel, ce fichier centralises toutes les métadonnées de votre projet : son nom, sa version, la version de Python requise et les dépendances. 
+## Paramétrer le fichier `pyproject.toml`
 
-```markdown
+Profitons également de ce moment pour modifier le fichier `pyproject.toml` afin que le nom corresponde à celui de votre projet et ajoutez-y le `build-system`. Pour rappel, ce fichier centralise toutes les métadonnées de votre projet : son nom, sa version, la version de Python requise et les dépendances.
+
+::: {.callout-caution}
+## À vous de jouer
+À partir de la [documentation officielle de `uv` sur le build backend](https://docs.astral.sh/uv/concepts/build-backend/), configurez votre `pyproject.toml` :
+
+- Renseignez le `name`, la `version` et le `requires-python` (>= 3.13)
+- Déclarez les dépendances (en pinnant les versions !) : `openpyxl`, `pandas` et `s3fs`
+- Ajoutez la section `[build-system]` pour utiliser le backend `uv_build`
+:::
+
+<details>
+<summary>Voir la solution</summary>
+
+```{.toml}
 [project]
-name = <votre_nom_de_projet_ici>
+name = "medas-financial-reporting"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -61,17 +127,26 @@ requires = ["uv_build>=0.11.8,<0.12"]
 build-backend = "uv_build"
 ```
 
-Le `[build-system]` indique à `uv` comment construire et installer votre projet. Depuis ses dernières versions, `uv` utilise par défaut son propre build backend `uv_build`, qui s'attend à trouver vos packages dans `src/`ce qui correspond exactement à notre structure. Sans cette section, `uv` ne saurait pas installer votre code comme un package et vos imports ne fonctionneraient pas.
+</details>
 
-Si vous avez la même structure et que votre fichier `pyproject.toml` est à jour, vous pouvez commit, push, faire une PR vers `main`  et enfin faites les deux nouvelles branches *feature* depuis `development`.
+La section `[build-system]` indique à `uv` comment construire et installer votre projet. Depuis ses dernières versions, `uv` utilise par défaut son propre build backend `uv_build` qui s'attend à trouver vos packages dans `src/`. Cela correspond exactement à notre structure. Sans cette section, `uv` ne saurait pas installer votre code comme un package et vos imports ne fonctionneraient pas.
 
-## **Le code ! Le code ! Le code !**
+Une fois votre structure en place et votre `pyproject.toml` à jour, vous pouvez commit, push et ouvrir une PR vers `main`. Créez enfin les deux branches *feature* `feat-reporting` et `feat-streamlit` depuis `development`.
 
-Vérifiez que vous êtes dans votre branche `feat-reporting` avant toute action, vous pouvez le vérifier avec la commande `git status`, si vous avez le même affichage que moi dans votre `Terminal`, on peut commencer.
+::: {.callout-tip}
+## Documentation `uv`
+La documentation de `uv` détaille toute la notion de projet (structure, `pyproject.toml`, dépendances, environnement) : <https://docs.astral.sh/uv/concepts/projects/>
+:::
 
-![image.png](../images/image-06.png)
+## Le code ! Le code ! Le code !
 
-### **config.py**
+Vérifiez que vous êtes dans votre branche `feat-reporting` avant toute action. Un `git status` vous le confirmera : si vous obtenez le même affichage que moi, on peut commencer.
+
+![](../images/image-06.png)
+
+Nous allons construire le sous-package `financial_reporting` **module par module**, dans l'ordre où les dépendances s'enchaînent : d'abord `config.py` (la configuration partagée), puis `storage.py` (les interactions MinIO), `data.py` (récupération et nettoyage), `reporting.py` (génération Excel) et enfin `main.py` (l'orchestration). Chaque module a une responsabilité unique, c'est le fil conducteur de toute cette partie.
+
+### config.py
 
 La première étape consiste à remplir `config.py` à la racine de `src/<project>/`. Ce module centralise toute la configuration commune aux deux sous-packages : accès MinIO, chemins distants, constantes Excel et indicateurs.
 
@@ -80,6 +155,8 @@ Quelques contraintes à respecter :
 - **Pas d'artefacts locaux persistants,** le template et le reporting final vivent sur MinIO, pas dans le repo.
 - **Un dossier temporaire** `tmp/` est créé au runtime pour écrire le fichier avant upload, puis ignoré par git.
 
+<details>
+<summary>Afficher le code</summary>
 ```python
 """Configuration file for the project."""
 
@@ -222,6 +299,7 @@ DATA_SCHEMA = DataFrameSchema(
 )
 
 ```
+</details>
 
 Vous remarquez que `config.py` a évolué par rapport à la version précédente. Dans le projet initial, ce fichier était minimal : une URL, les indicateurs, quelques chemins locaux. C'était suffisant pour un script autonome.
 
@@ -237,34 +315,35 @@ Quatre choses ont changé :
 
 **On a aussi configuré un logger**, pour en savoir plus, ça se passe dans la bulle d’infos juste en dessous.
 
-INFO
+::: {.callout-tip}
+## C'est quoi `Loguru` ?
+`Loguru` est un package qui simplifie la gestion des logs d'une application. Le log est une composante de l'**observabilité du code** : il permet de tracer toutes les étapes de nos scripts dans un format standardisé, contrairement à de simples `print()`.
 
-À la lecture de ce module, quelque chose devrait capter votre attention. C’est quoi ce **`Loguru`**? 
-
-**`Loguru`** est un package qui permet de définir un log de notre application. Le log est une composante de **l'observabilité du code**. Nous pouvons ainsi tracer toutes les étapes de nos scripts dans un format standardisé contrairement à de simples `print()`.
-
-```bash
-# Pour ajouter la dépendance à votre projet
+```{.bash}
 uv add loguru
 ```
 
-Pour initialiser notre *logger* avec `Loguru`, on commence généralement par un `logger.remove().` En effet, `Loguru` instancie automatiquement un handler par défaut dès qu'on l'importe. Pour personnaliser notre configuration (format, niveau, destination…), on le supprime avec `remove()`, puis on en ajoute un nouveau avec `logger.add()`.
+Pour initialiser le *logger*, on commence par un `logger.remove()`. En effet `Loguru` instancie automatiquement un handler par défaut dès qu'on l'importe. Pour personnaliser notre configuration (format, niveau, destination) on le supprime puis on en ajoute un nouveau avec `logger.add()`.
 
 Il existe plusieurs niveaux de logs :
 
-- `DEBUG` pour un débogage détaillé des actions
+- `DEBUG` pour un débogage détaillé
 - `INFO` pour les informations générales (état normal du programme)
 - `WARNING` pour signaler un comportement inattendu
 - `ERROR` pour les erreurs qui empêchent certaines actions
 - `CRITICAL` pour les erreurs très graves
 
-On ne `print()` plus, on logue.
+On ne `print()` plus, on logue. La documentation complète est disponible [ici](https://loguru.readthedocs.io/).
+:::
 
 ### storage.py
 
 Tout comme `config.py`, ce module vit à la racine de `src/<project>/` car il est partagé entre les deux sous-packages. En effet, la génération du reporting interagit avec `MinIO` tout comme `Streamlit` en aura aussi besoin pour exposer le fichier final à l'utilisateur.
 
 Ce module a une responsabilité unique : encapsuler toutes les interactions avec `MinIO`. On y trouve la création du filesystem S3, l'initialisation de la structure de dossiers, le téléchargement du template, la sauvegarde des données nettoyées et l'upload du reporting final.
+
+<details>
+<summary>Afficher le code</summary>
 
 ```python
 """Storage functions for MinIO interactions."""
@@ -349,13 +428,16 @@ def save_processed_data(fs: s3fs.S3FileSystem, df: pd.DataFrame, bucket: str) ->
         raise RuntimeError(f"Impossible de sauvegarder les données : {e}") from e
 
 ```
+</details>
 
 La gestion des erreurs est volontairement simple ici : un `try/except` avec logging et `raise` pour interrompre le pipeline proprement. Dans un contexte de production plus exigeant, on irait plus loin : distinguer les erreurs de permissions (credentials expirés), les erreurs réseau (stockage indisponible), les erreurs d'intégrité (fichier corrompu à l'upload). Il n'est d'ailleurs pas rare de définir ses propres exceptions métier pour rendre ces cas explicites. C'est un sujet à part entière que nous n'aborderons pas ici, mais gardez-le en tête.
 
-### **data.py**
+### data.py
 
 Ce module a trois responsabilités : récupérer les données brutes, les nettoyer et persister les données transformées sur `MinIO` dans le dossier `processed/`.
 
+<details>
+<summary>Afficher le code</summary>
 ```python
 """Data retrieval, cleaning and validation functions."""
 
@@ -417,6 +499,7 @@ def clean_data(df: pd.DataFrame) -> pd.DataFrame:
 #     print(df.head())
 
 ```
+</details>
 
 Nous avons globalement repris les fonctions du TD (`get_data()` et `clean_data()`) mais avec des subtilités supplémentaires. En effet, nous avons ajouté trois composantes : la gestion des erreurs, le logging et la validation du schéma.
 
@@ -424,18 +507,28 @@ La gestion des erreurs permet d'identifier précisément ce qui a échoué et à
 
 Le logging trace chaque étape : chargement, validation, nettoyage. C'est ce qui vous permettra de diagnostiquer un problème sans avoir à relancer le pipeline en mode debug.
 
-Vous vous souvenez du schéma défini dans `config.py` ? C'est ici qu'il entre en jeu. `DATA_SCHEMA.validate(df)` est appelé immédiatement après la lecture du fichier. Si une colonne manque, si `score` contient une valeur inattendue ou si `type_client` sort des valeurs `PP`/`PM` connues, un `SchemaError` est levé avant même que les données n'entrent dans le pipeline. C'est le garde-fou contre le schema drift que nous avions évoqué, c’est un peu notre Gandalf contre le Balrog (sans tomber du pont).
+::: {.callout-warning}
+## Le garde-fou contre le schema drift
+`DATA_SCHEMA.validate(df)` est appelé immédiatement après la lecture du fichier. Si une colonne manque, si `score` contient une valeur inattendue ou si `type_client` sort des valeurs `PP`/`PM` connues, un `SchemaError` est levé **avant même** que les données n'entrent dans le pipeline. C'est notre Gandalf contre le Balrog, version data (sans tomber du pont).
 
-![image.png](../images/image-07.png)
+::: {style="text-align: center;"}
+![](../images/image-07.png)
+:::
 
-N’oubliez pas de vérifier la bonne exécution du code avec la commande `uv run src/medas_financial_reporting/data.py`. Si vous obtenez le même affichage que moi, c'est que vous êtes sur la bonne voie !
+:::
 
-![image.png](../images/image-08.png)
+Pour vérifier la bonne exécution, décommentez le bloc `if __name__ == "__main__"` en bas de `data.py` puis lancez `uv run medas_financial_reporting/financial_reporting/data.py`. Si vous obtenez le même affichage que moi, vous êtes sur la bonne voie !
 
-### **reporting.py**
+::: {style="text-align: center;"}
+![](../images/image-08.png)
+:::
+
+### reporting.py
 
 Ce module a une responsabilité unique : manipuler le fichier Excel du reporting. Il ne parle pas à `MinIO`, il n’a pas besoin de savoir d’où viennent les données ni où elles iront. Il reçoit un `DataFrame` et un template local à partir duquel il génère le reporting.
 
+<details>
+<summary>Afficher le code</summary>
 ```python
 """Reporting generation functions."""
 
@@ -522,12 +615,16 @@ def fill_indicators(
     logger.success(f"Reporting généré : {output_path}")
 
 ```
+</details>
 
 Vous reconnaitrez ici les fonctions du TD, quasiment inchangées, on a juste ajouté quelques logs pour notre application. C'est voulu puisque la logique métier n'a pas bougé, c'est l'architecture autour qui a évolué.
 
-### **main.py**
+### main.py
 
 C'est le chef d'orchestre et le point d’entrée pour notre sous-package *financial-reporting*. Il instancie le filesystem S3, appelle chaque fonction dans le bon ordre et gère les interactions avec notre stockage distant. Là où chaque module fait une chose, `main.py` assemble le tout.
+
+<details>
+<summary>Afficher le code</summary>
 
 ```python
 """Entry point for the financial reporting pipeline."""
@@ -584,6 +681,7 @@ if __name__ == "__main__":
     main()
 
 ```
+</details>
 
 Regardez `main()` : des étapes lisibles comme une recette. Pas de logique métier ici, pas de formules Excel ni de transformations. Chaque ligne dit ce qui se passe, dans quel ordre et avec quoi. C’est vers quoi on devrait tendre quand on veut faire du code simple mais efficace.
 
@@ -591,31 +689,32 @@ Pour terminer cette partie, assurez-vous d’avoir lancer votre `main.py` et d�
 
 ![image.png](../images/image-09.png)
 
-#### **Erreur possible :**
+::: {.callout-caution}
+## Erreur possible : credentials MinIO expirés
+Il est possible que votre pipeline bloque en plein milieu sans message d'erreur clair. Cela arrive généralement quand les credentials `MinIO` ont expiré. Pour vérifier, comparez les valeurs de votre terminal avec celles affichées dans le DataLab sous **Stockage de données > Options** (le bouton en forme d'engrenage).
 
-Il est possible que votre pipeline bloque en plein milieu sans message d'erreur clair. Cela arrive généralement quand les credentials `MinIO` ont expiré. Pour vérifier, comparez les valeurs actuelles dans votre terminal avec celles affichées dans le DataLab sous **Stockage de données > Options** (le bouton en forme d'engrenage).
+![](../images/image-10.png)
 
-![image.png](../images/image-10.png)
+Afficher les valeurs actuelles :
 
-Pour afficher les valeurs actuelles dans votre terminal :
-
-```bash
+```{.bash}
 echo $AWS_ACCESS_KEY_ID
 echo $AWS_SECRET_ACCESS_KEY
 echo $AWS_SESSION_TOKEN
 echo $AWS_S3_ENDPOINT
 ```
 
-Si elles ne correspondent pas, mettez-les à jour directement dans votre terminal :
+Si elles ne correspondent pas, mettez-les à jour :
 
-```bash
-export AWS_ACCESS_KEY_ID=<copiez_la_valeur>
-export AWS_SECRET_ACCESS_KEY=<copiez_la_valeur>
-export AWS_SESSION_TOKEN=<copiez_la_valeur>
-export AWS_S3_ENDPOINT=<copiez_la_valeur>
+```{.bash}
+export AWS_ACCESS_KEY_ID=
+export AWS_SECRET_ACCESS_KEY=
+export AWS_SESSION_TOKEN=
+export AWS_S3_ENDPOINT=
 ```
+:::
 
-#### **QoL : quelques améliorations**
+#### QoL : quelques améliorations
 
 On peut à mon sens apporter quelques améliorations à notre sous-package.
 
@@ -661,6 +760,7 @@ reporting = "medas_financial_reporting.financial_reporting.main:main"
 
 Puis testez dans votre Terminal avec `uv run reporting` 😊.
 
-RAPPEL
-
-Git time ! Si vous ne l’avez pas fait au fil de l’eau, pensez à bien gérer vos commits et push vers GitHub.
+::: {.callout-note}
+## Git time
+Si vous ne l'avez pas fait au fil de l'eau, pensez à bien gérer vos commits et à push vers GitHub avant de continuer.
+:::
