@@ -455,14 +455,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>Pourquoi des packages ?</strong></p>
 <p>Comme nous venons de le voir, le notebook de la situation de départ mélange exploration, transformation et génération du rapport dans un seul fichier. La situation cible découpe le projet en <code>packages Python</code>, chacun avec une responsabilité unique et claire. Un <em>package</em> gère la lecture des données depuis <code>MinIO</code>, un autre la génération du fichier <code>Excel</code> et encore un autre pour l’interface <code>Streamlit</code>. Ce principe s’appelle la <strong>séparation des responsabilités (SRP)</strong> : chaque module fait une chose et une seule. Cela rend le code testable et réutilisable. Nous mettrons en place des tests avec <code>pytest</code> pour nous assurer que chaque <em>package</em> se comporte comme attendu.</p>
 <p><strong>Le rôle de MinIO évolue</strong></p>
-<p>Dans la situation de départ, <code>MinIO</code> hébergeait uniquement la donnée source. Dans la situation cible, il devient le <em>storage</em> central du projet : il contient le fichier de données <code>data.parquet</code>, le template Excel <code>template.xlsx</code> et le rapport généré <code>reporting.xlsx</code>. Tout ce qui entre et tout ce qui sort du pipeline transite par <code>MinIO</code>. C’est votre source de vérité.</p>
+<p>Dans la situation de départ, <code>MinIO</code> hébergeait uniquement la donnée source. Dans la situation cible, il devient le <em>storage</em> central du projet : il contient le fichier de données <code>data.parquet</code>, le template <code>Excel</code> <code>template.xlsx</code> et le rapport généré <code>reporting.xlsx</code>. Tout ce qui entre et tout ce qui sort du pipeline transite par <code>MinIO</code>. C’est votre source de vérité.</p>
 <div style="text-align: center;">
 <p><img src="../images/image-01.png" class="img-fluid"></p>
 </div>
 <p>Avant de passer à l’étape suivante, assurez-vous que ces points sont remplis de votre côté :</p>
 <ul>
-<li>Vous avez récupéré les données et vous les avez stockées sur votre espace MinIO</li>
-<li>Vous avez un nouveau repo sur GitHub pour suivre le projet en même temps
+<li>Vous avez récupéré les données et vous les avez stockées sur votre espace <code>MinIO</code></li>
+<li>Vous avez un nouveau repo sur <code>GitHub</code> pour suivre le projet en même temps
 <ul>
 <li>Je vous conseille de réutiliser ce <a href="https://github.com/surybang/MEDAS-TP-Financial-Reporting">template</a>.</li>
 </ul></li>
@@ -485,7 +485,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Pourquoi ne pas stocker les données dans VS Code ?
+<span class="screen-reader-only">Note</span>Pourquoi ne pas stocker les données dans <code>VS Code</code> ?
 </div>
 </div>
 <div class="callout-body-container callout-body">

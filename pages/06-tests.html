@@ -112,6 +112,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 <style>html{ scroll-behavior: smooth; }</style>
+<script src="../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 
 
 <link rel="stylesheet" href="../styles.css">
@@ -430,11 +433,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#les-tests-unitaires" id="toc-les-tests-unitaires" class="nav-link active" data-scroll-target="#les-tests-unitaires">Les tests unitaires</a>
+  <li><a href="#le-cycle-de-test" id="toc-le-cycle-de-test" class="nav-link active" data-scroll-target="#le-cycle-de-test">Le cycle de test</a></li>
+  <li><a href="#structurer-le-dossier-de-tests" id="toc-structurer-le-dossier-de-tests" class="nav-link" data-scroll-target="#structurer-le-dossier-de-tests">Structurer le dossier de tests</a></li>
+  <li><a href="#les-tests-unitaires" id="toc-les-tests-unitaires" class="nav-link" data-scroll-target="#les-tests-unitaires">Les tests unitaires</a>
   <ul class="collapse">
   <li><a href="#test_data.py" id="toc-test_data.py" class="nav-link" data-scroll-target="#test_data.py">test_data.py</a></li>
   <li><a href="#test_reporting.py" id="toc-test_reporting.py" class="nav-link" data-scroll-target="#test_reporting.py">test_reporting.py</a></li>
   </ul></li>
+  <li><a href="#la-couverture-de-tests" id="toc-la-couverture-de-tests" class="nav-link" data-scroll-target="#la-couverture-de-tests">La couverture de tests</a></li>
   <li><a href="#les-tests-dintégration" id="toc-les-tests-dintégration" class="nav-link" data-scroll-target="#les-tests-dintégration">Les tests d’intégration</a></li>
   </ul>
 </nav>
@@ -463,294 +469,474 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>Bien que je vous encourage à douter de tout dans la vie, si cet adage vous est familier, j’espère qu’il ne guide pas votre façon d’écrire du code.</p>
-<p>Les tests font en effet partie intégrante du développement logiciel. Ils permettent de confirmer un comportement attendu, prévenir les régressions, documenter implicitement les règles métier et d’avoir confiance dans votre code.</p>
+<p>Les tests font partie intégrante du développement logiciel. Ils permettent de confirmer un comportement attendu, de prévenir les régressions, de documenter implicitement les règles métier et d’avoir confiance dans votre code.</p>
 <blockquote class="blockquote">
-<p>Avec autant d’avantages, il serait dommage de <strong><em>douter</em></strong> de leur utilité ******n’est ce pas ? 🥁</p>
+<p>Avec autant d’avantages, il serait dommage de <em>douter</em> de leur utilité n’est-ce pas ? 🥁</p>
 </blockquote>
-<p>Il en existe plusieurs types, trop pour les lister, nous nous intéresserons particulièrement aux <strong>tests unitaires</strong> et aux <strong>tests d’intégration</strong>. Nous les aborderons ici comme une étape à part entière, même si en pratique vous devriez tester votre code au fil de son développement.</p>
-<p>Nous utiliserons <code>pytest</code>, la librairie de référence pour structurer tout ça.</p>
-<p>Pour commencer je vous invite à vous rendre dans votre Terminal pour structurer votre dossier de tests. On part sur une approche plutôt classique ou 1 module de code à tester = 1 module de test.</p>
+<p>Il en existe plusieurs types, trop pour les lister ici. Nous nous intéresserons particulièrement aux <strong>tests unitaires</strong> et aux <strong>tests d’intégration</strong>. Nous les aborderons comme une étape à part entière, même si en pratique vous devriez tester votre code au fil de son développement.</p>
+<section id="le-cycle-de-test" class="level2">
+<h2 class="anchored" data-anchor-id="le-cycle-de-test">Le cycle de test</h2>
+<p>Dans une approche classique, on écrit d’abord le code puis les tests qui le valident. Tant qu’un test échoue, on corrige, et une fois au vert on commit. La <code>CI</code> rejoue alors ces mêmes tests à chaque push pour garantir que rien ne casse dans le temps.</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div id="fig-cycle-test" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-cycle-test-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<pre class="mermaid mermaid-js" data-label="fig-cycle-test">flowchart LR
+    A[Écrire le code] --&gt; B[Écrire les tests]
+    B --&gt; C{Les tests passent ?}
+    C --&gt;|Non| D[Corriger]
+    D --&gt; C
+    C --&gt;|Oui| E[Commit / Push]
+    E --&gt; F[La CI relance les tests]
+</pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cycle-test-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Le cycle de test classique : coder, tester, corriger, intégrer.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Et si on inversait l’ordre ? Le TDD
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Le <strong>Test Driven Development</strong> (développement piloté par les tests) renverse la logique : on écrit le test <strong>avant</strong> le code. Le cycle tient en trois temps, souvent résumé par <em>red, green, refactor</em> :</p>
+<ol type="1">
+<li><strong>Red</strong> : on écrit un test pour une fonctionnalité qui n’existe pas encore. Il échoue, c’est normal.</li>
+<li><strong>Green</strong> : on écrit le minimum de code pour faire passer le test.</li>
+<li><strong>Refactor</strong> : on améliore le code en gardant le test au vert.</li>
+</ol>
+<p>L’intérêt est qu’on ne code que ce qui est nécessaire pour répondre à un besoin exprimé sous forme de test, ce qui force à clarifier le comportement attendu avant l’implémentation. Nous ne ferons pas de TDD strict dans ce projet, mais c’est une méthode qui vaut le détour et que vous croiserez peut-être un jour (Si vous en parlez à la machine à café avec vos devs vous passerez soit pour quelqu’un de détestable soit pour un homme de culture).</p>
+</div>
+</div>
+</section>
+<section id="structurer-le-dossier-de-tests" class="level2">
+<h2 class="anchored" data-anchor-id="structurer-le-dossier-de-tests">Structurer le dossier de tests</h2>
+<p>Nous utiliserons <a href="https://docs.pytest.org/"><code>pytest</code></a>, la librairie de référence de l’écosystème Python. Rendez-vous dans votre <code>Terminal</code> pour structurer le dossier de tests. On part sur une approche classique : un module de code testé correspond à un module de test.</p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>À vous de jouer
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Structurez votre dossier de tests en ligne de commande en respectant l’approche un module de code = un module de test :</p>
+<ul>
+<li>Créez le dossier <code>tests/</code> à la racine du projet</li>
+<li>Ajoutez-y un <code>__init__.py</code> pour en faire un package</li>
+<li>Créez un module de test par module à tester : <code>test_data.py</code> et <code>test_reporting.py</code></li>
+</ul>
+</div>
+</div>
+<details>
+<summary>
+Solution
+</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> tests</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> tests/__init__.py</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> tests/test_data.py </span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> tests/test_reporting.py</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Ajoutez ensuite les dépendances nécessaires à votre projet.</p>
+</details>
+<p>Ajoutez ensuite les dépendances nécessaires à votre projet. <code>pytest</code> est le framework de test et <code>pytest-cov</code> son extension dédiée à la mesure de couverture, dont nous nous servirons un peu plus loin.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> add <span class="at">--dev</span> pytest pytest-cov</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Pour lancer les tests, voici la commande à retenir :</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> pytest . <span class="co"># Vous pouvez aussi mettre le chemin d'un module pour lancer les tests sur ce celui ci uniquement</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>INFO</p>
-<p>Pourquoi <code>--dev</code> ? Ces dépendances ne sont utiles qu’en phase de développement. Une fois votre projet livré en production, <code>pytest</code> et <code>pytest-cov</code> ne servent à rien. En les excluant, on allège le projet et on évite ainsi d’embarquer du <em>tooling</em> inutile dans notre image Docker.</p>
+<p>Pour lancer la suite de tests, la commande à retenir est :</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run pytest .</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Par défaut <code>pytest</code> découvre automatiquement tous les fichiers commençant par <code>test_</code> et exécute les fonctions qu’ils contiennent. Vous pouvez aussi cibler un seul module en lui passant son chemin, pratique quand vous travaillez sur une fonction précise et ne voulez pas relancer toute la suite :</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run pytest tests/test_data.py</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Pourquoi <code>--dev</code> ?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Ces dépendances ne sont utiles qu’en phase de développement. Une fois le projet livré en production, <code>pytest</code> et <code>pytest-cov</code> ne servent plus à rien : on ne lance pas de tests dans un conteneur de prod.</p>
+<p>En les déclarant comme dépendances de développement, elles sont installées sur votre machine et dans la CI, mais peuvent être exclues de l’image finale. On allège ainsi le projet et on évite d’embarquer du <em>tooling</em> inutile dans notre image Docker.</p>
+</div>
+</div>
+</section>
 <section id="les-tests-unitaires" class="level2">
 <h2 class="anchored" data-anchor-id="les-tests-unitaires">Les tests unitaires</h2>
-<p>Les tests unitaires sont les tests les plus granulaires qui existent : ils testent une seule unité de code de manière isolée, typiquement une fonction ou une méthode. L’idée est simple, pour un <em>input</em> donné, on vérifie que <em>l’output</em> correspond exactement à ce qu’on attend, sans dépendance externe (base de données, API, fichier).</p>
+<p>Les tests unitaires sont les plus granulaires qui existent : ils testent une seule unité de code de manière isolée, typiquement une fonction ou une méthode. L’idée est simple : pour un <em>input</em> donné, on vérifie que l’<em>output</em> correspond exactement à ce qu’on attend, sans aucune dépendance externe (base de données, API, fichier).</p>
 <p>C’est la base de toute stratégie de test : rapides à exécuter, faciles à localiser quand ils échouent et ils forcent à écrire des fonctions qui font une seule chose. Si un test unitaire est difficile à écrire, c’est souvent le signe que la fonction testée est trop complexe.</p>
 <section id="test_data.py" class="level3">
 <h3 class="anchored" data-anchor-id="test_data.py">test_data.py</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Tests for data.py"""</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytest</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> medas_financial_reporting.financial_reporting.data <span class="im">import</span> clean_data</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.fixture</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> raw_df():</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""DataFrame minimal simulant les données brutes."""</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.DataFrame({</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>        <span class="st">"type_client"</span>:  [<span class="st">"PP"</span>, <span class="st">"PM"</span>, <span class="st">"PP"</span>],</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>        <span class="st">"score"</span>:        [<span class="st">"V"</span>,  <span class="va">None</span>,  <span class="st">"R"</span>],</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>        <span class="st">"score_prev"</span>:   [<span class="va">None</span>, <span class="st">"O"</span>,   <span class="va">None</span>],</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>        <span class="st">"id_agent"</span>:     [<span class="st">"AUTO"</span>, <span class="st">"AGT001"</span>, <span class="st">"AUTO"</span>],</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>        <span class="st">"drc_complet"</span>:  [<span class="va">True</span>, <span class="va">False</span>, <span class="va">True</span>],</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    })</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_clean_data_fills_score(raw_df):</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Les NaN de score sont remplacés par S."""</span></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> clean_data(raw_df)</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> result[<span class="st">"score"</span>].iloc[<span class="dv">1</span>] <span class="op">==</span> <span class="st">"S"</span></span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_clean_data_fills_score_prev(raw_df):</span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Les NaN de score_prev sont remplacés par N."""</span></span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> clean_data(raw_df)</span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> result[<span class="st">"score_prev"</span>].iloc[<span class="dv">0</span>] <span class="op">==</span> <span class="st">"N"</span></span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> result[<span class="st">"score_prev"</span>].iloc[<span class="dv">2</span>] <span class="op">==</span> <span class="st">"N"</span></span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_clean_data_id_agent(raw_df):</span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Les agents non AUTO sont remplacés par MANUEL."""</span></span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> clean_data(raw_df)</span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> result[<span class="st">"id_agent"</span>].iloc[<span class="dv">0</span>] <span class="op">==</span> <span class="st">"AUTO"</span></span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> result[<span class="st">"id_agent"</span>].iloc[<span class="dv">1</span>] <span class="op">==</span> <span class="st">"MANUEL"</span></span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_clean_data_no_nulls(raw_df):</span>
-<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Après nettoyage, score et score_prev ne contiennent plus de NaN."""</span></span>
-<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> clean_data(raw_df)</span>
-<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> result[<span class="st">"score"</span>].isna().<span class="bu">sum</span>() <span class="op">==</span> <span class="dv">0</span></span>
-<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> result[<span class="st">"score_prev"</span>].isna().<span class="bu">sum</span>() <span class="op">==</span> <span class="dv">0</span></span>
-<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_clean_data_preserves_rows(raw_df):</span>
-<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""clean_data ne supprime pas de lignes."""</span></span>
-<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> clean_data(raw_df)</span>
-<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="bu">len</span>(result) <span class="op">==</span> <span class="bu">len</span>(raw_df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Quelques explications sur le code ci-dessus.</p>
-<p>D’abord, qu’est-ce qu’une <strong>fixture</strong> <code>pytest</code> ? C’est un mécanisme qui permet de déclarer un objet réutilisable dans tous nos tests. Dans notre cas, <code>raw_df</code> crée un DataFrame minimal qui simule les données brutes. Pourquoi ne pas utiliser les vraies données me diriez-vous? Deux raisons : elles sont trop volumineuses pour des tests unitaires (on verra plus en détails dans la partie CI) et surtout elles introduiraient une dépendance externe or nous voulons ici tester la logique de transformation, pas la lecture d’un fichier distant ou local.</p>
-<p>Pour la façon d’écrire les tests, on s’impose une règle simple : un test par comportement attendu. On prévoit également les cas un peu limites comme la suppression involontaire de lignes. Chaque test vérifie une seule chose et son nom dit exactement ce qu’il vérifie ainsi lorsqu’un test échoue, vous savez immédiatement quoi chercher.</p>
-<p>Vous vous demandez peut-être pourquoi <code>get_data</code> n’est pas testée ici. La réponse est simple : elle fait un appel réseau vers <code>MinIO</code>, ce qui en fait un test d’intégration et non un test unitaire. Rappelez vous toujours qu’un test unitaire ne dépend de rien d’externe.</p>
-</section>
-<section id="test_reporting.py" class="level3">
-<h3 class="anchored" data-anchor-id="test_reporting.py">test_reporting.py</h3>
-<p>Pour tester nos fonctions <code>fill_indicators</code> et <code>write_data_to_excel</code>, on a besoin d’un fichier Excel, là encore on ne va pas utiliser un fichier classique mais plutôt une fixture.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Tests for reporting.py"""</span></span>
+<p>Avant d’écrire nos tests, un mot sur les <strong>fixtures</strong>. Une fixture <code>pytest</code> est un objet réutilisable, préparé une fois et injecté dans les tests qui en ont besoin. Ici on s’en sert pour créer un petit DataFrame qui simule les données brutes, plutôt que de le recréer dans chaque test.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Tests for data.py"""</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytest</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> openpyxl <span class="im">import</span> Workbook, load_workbook</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> medas_financial_reporting.financial_reporting.reporting <span class="im">import</span> (</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    fill_indicators,</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    write_data_to_excel,</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.fixture</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> minimal_workbook(tmp_path):</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Workbook minimal avec les feuilles DATA et Indicateurs."""</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    path <span class="op">=</span> tmp_path <span class="op">/</span> <span class="st">"test_reporting.xlsx"</span></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    wb <span class="op">=</span> Workbook()</span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    wb.active.title <span class="op">=</span> <span class="st">"DATA"</span></span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    wb.create_sheet(<span class="st">"Indicateurs"</span>)</span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    wb.save(path)</span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    wb.close()</span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> path</span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.fixture</span></span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sample_df():</span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""DataFrame minimal simulant les données nettoyées."""</span></span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.DataFrame({</span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>        <span class="st">"type_client"</span>: [<span class="st">"PP"</span>, <span class="st">"PM"</span>],</span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>        <span class="st">"score"</span>:       [<span class="st">"V"</span>,  <span class="st">"S"</span>],</span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>        <span class="st">"score_prev"</span>:  [<span class="st">"N"</span>,  <span class="st">"O"</span>],</span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>        <span class="st">"id_agent"</span>:    [<span class="st">"AUTO"</span>, <span class="st">"MANUEL"</span>],</span>
-<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>        <span class="st">"drc_complet"</span>: [<span class="va">True</span>, <span class="va">False</span>],</span>
-<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>    })</span>
-<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> TestFillIndicators:</span>
-<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> test_countif_formula(<span class="va">self</span>, minimal_workbook):</span>
-<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>        fill_indicators(input_path<span class="op">=</span>minimal_workbook, output_path<span class="op">=</span>minimal_workbook)</span>
-<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>        wb <span class="op">=</span> load_workbook(minimal_workbook, data_only<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>        ws <span class="op">=</span> wb[<span class="st">"Indicateurs"</span>]</span>
-<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>        <span class="cf">assert</span> ws[<span class="st">"E8"</span>].value <span class="op">==</span> <span class="st">'=COUNTIF(DATA!B:B, "PP")'</span></span>
-<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>        wb.close()</span>
-<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> test_sum_formula(<span class="va">self</span>, minimal_workbook):</span>
-<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Vérifie que la formule SUM est correctement générée."""</span></span>
-<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>        fill_indicators(input_path<span class="op">=</span>minimal_workbook, output_path<span class="op">=</span>minimal_workbook)</span>
-<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>        wb <span class="op">=</span> load_workbook(minimal_workbook, data_only<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>        ws <span class="op">=</span> wb[<span class="st">"Indicateurs"</span>]</span>
-<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a>        <span class="cf">assert</span> ws[<span class="st">"E10"</span>].value <span class="op">==</span> <span class="st">"=SUM(E8:E9)"</span></span>
-<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>        wb.close()</span>
-<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> test_countifs_formula(<span class="va">self</span>, minimal_workbook):</span>
-<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Vérifie que la formule COUNTIFS est correctement générée."""</span></span>
-<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a>        fill_indicators(input_path<span class="op">=</span>minimal_workbook, output_path<span class="op">=</span>minimal_workbook)</span>
-<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a>        wb <span class="op">=</span> load_workbook(minimal_workbook, data_only<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a>        ws <span class="op">=</span> wb[<span class="st">"Indicateurs"</span>]</span>
-<span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a>        <span class="cf">assert</span> ws[<span class="st">"E14"</span>].value <span class="op">==</span> <span class="st">'=COUNTIFS(DATA!B:B, "PP", DATA!D:D, "V")'</span></span>
-<span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a>        wb.close()</span>
-<span id="cb5-58"><a href="#cb5-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-59"><a href="#cb5-59" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> test_unknown_formula_raises(<span class="va">self</span>, minimal_workbook):</span>
-<span id="cb5-60"><a href="#cb5-60" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Une formule inconnue dans INDICATORS lève une ValueError."""</span></span>
-<span id="cb5-61"><a href="#cb5-61" aria-hidden="true" tabindex="-1"></a>        <span class="im">from</span> medas_financial_reporting <span class="im">import</span> config</span>
-<span id="cb5-62"><a href="#cb5-62" aria-hidden="true" tabindex="-1"></a>        original <span class="op">=</span> config.INDICATORS.copy()</span>
-<span id="cb5-63"><a href="#cb5-63" aria-hidden="true" tabindex="-1"></a>        config.INDICATORS.append({<span class="st">"row"</span>: <span class="dv">99</span>, <span class="st">"formule"</span>: <span class="st">"UNKNOWN"</span>, <span class="st">"args"</span>: []})</span>
-<span id="cb5-64"><a href="#cb5-64" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> pytest.raises(<span class="pp">ValueError</span>, match<span class="op">=</span><span class="st">"Formule inconnue"</span>):</span>
-<span id="cb5-65"><a href="#cb5-65" aria-hidden="true" tabindex="-1"></a>            fill_indicators(input_path<span class="op">=</span>minimal_workbook, output_path<span class="op">=</span>minimal_workbook)</span>
-<span id="cb5-66"><a href="#cb5-66" aria-hidden="true" tabindex="-1"></a>        config.INDICATORS <span class="op">=</span> original</span>
-<span id="cb5-67"><a href="#cb5-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-68"><a href="#cb5-68" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> TestWriteDataToExcel:</span>
-<span id="cb5-69"><a href="#cb5-69" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-70"><a href="#cb5-70" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> test_data_inserted(<span class="va">self</span>, minimal_workbook, sample_df):</span>
-<span id="cb5-71"><a href="#cb5-71" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Vérifie que les données sont bien insérées dans la feuille DATA."""</span></span>
-<span id="cb5-72"><a href="#cb5-72" aria-hidden="true" tabindex="-1"></a>        <span class="im">from</span> medas_financial_reporting.config <span class="im">import</span> LOCAL_TEMPLATE, LOCAL_TMP_DIR</span>
-<span id="cb5-73"><a href="#cb5-73" aria-hidden="true" tabindex="-1"></a>        <span class="im">import</span> shutil</span>
-<span id="cb5-74"><a href="#cb5-74" aria-hidden="true" tabindex="-1"></a>        LOCAL_TMP_DIR.mkdir(exist_ok<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb5-75"><a href="#cb5-75" aria-hidden="true" tabindex="-1"></a>        shutil.copy(minimal_workbook, LOCAL_TEMPLATE)</span>
-<span id="cb5-76"><a href="#cb5-76" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-77"><a href="#cb5-77" aria-hidden="true" tabindex="-1"></a>        write_data_to_excel(sample_df)</span>
-<span id="cb5-78"><a href="#cb5-78" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-79"><a href="#cb5-79" aria-hidden="true" tabindex="-1"></a>        wb <span class="op">=</span> load_workbook(LOCAL_TEMPLATE, data_only<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb5-80"><a href="#cb5-80" aria-hidden="true" tabindex="-1"></a>        ws <span class="op">=</span> wb[<span class="st">"DATA"</span>]</span>
-<span id="cb5-81"><a href="#cb5-81" aria-hidden="true" tabindex="-1"></a>        <span class="cf">assert</span> ws.cell(row<span class="op">=</span><span class="dv">1</span>, column<span class="op">=</span><span class="dv">1</span>).value <span class="op">==</span> <span class="st">"type_client"</span></span>
-<span id="cb5-82"><a href="#cb5-82" aria-hidden="true" tabindex="-1"></a>        <span class="cf">assert</span> ws.cell(row<span class="op">=</span><span class="dv">2</span>, column<span class="op">=</span><span class="dv">1</span>).value <span class="op">==</span> <span class="st">"PP"</span></span>
-<span id="cb5-83"><a href="#cb5-83" aria-hidden="true" tabindex="-1"></a>        wb.close()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Petit twist par rapport au module de test précédent, on utilise ici des classes pour regrouper les tests par fonction. C’est une convention à appliquer en utilisant <code>pytest.</code> La logique veut donc que la classe <code>TestFillIndicators</code> regroupe tous les tests de <code>fill_indicators</code> et <code>TestWriteDataToExcel</code> ceux de <code>write_to_excel</code>. Ce n’est bien sûr pas obligatoire mais fortement conseillé pour faciliter la lecture et vérifier que vous n’avez rien oublié.</p>
-<p>En parlant de rien oublier, ça serait pas mal s’il existait un petit outil nous permettant d’afficher la couverture de nos tests non ? Par exemple on aimerait savoir qu’on a couvert 50, 70 ou 100% de nos fonctionnalités dans un module ? Bonne nouvelle : ça existe. La dépendance que je vous ai fait ajouté avant : <code>pytest-cov</code> comme son nom l’indique permet de générer un rapport de couverture de tests. Pour l’exécuter vous pouvez utiliser la commande suivante : <code>uv run pytest --cov==src/medas_financial_reporting.</code></p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../images/image-11.png" class="img-fluid figure-img"></p>
-<figcaption>image.png</figcaption>
-</figure>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> medas_financial_reporting.financial_reporting.data <span class="im">import</span> clean_data</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.fixture</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> raw_df():</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""DataFrame minimal simulant les données brutes."""</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.DataFrame({</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>        <span class="st">"type_client"</span>:  [<span class="st">"PP"</span>, <span class="st">"PM"</span>, <span class="st">"PP"</span>],</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>        <span class="st">"score"</span>:        [<span class="st">"V"</span>,  <span class="va">None</span>,  <span class="st">"R"</span>],</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>        <span class="st">"score_prev"</span>:   [<span class="va">None</span>, <span class="st">"O"</span>,   <span class="va">None</span>],</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>        <span class="st">"id_agent"</span>:     [<span class="st">"AUTO"</span>, <span class="st">"AGT001"</span>, <span class="st">"AUTO"</span>],</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>        <span class="st">"drc_complet"</span>:  [<span class="va">True</span>, <span class="va">False</span>, <span class="va">True</span>],</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    })</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Pour rappel, <code>clean_data</code> remplace les <code>score</code> manquants par <code>S</code>, les <code>score_prev</code> manquants par <code>N</code>, et tout <code>id_agent</code> différent de <code>AUTO</code> par <code>MANUEL</code>.</p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
-<p>Quelques critiques sur le rapport généré.</p>
-<p>Le rapport généré par <code>pytest-cov</code> permet d’avoir une vue d’ensemble sur la couverture de vos tests. Comme nous venons de l’évoquer, il permet de visualiser rapidement si on est passé à côté de quelque chose.</p>
-<p>Cette métrique n’est pas à optimiser. Je sais qu’il peut être tentant de vouloir avoir 100% partout, mais cela ne traduit en rien la qualité ni la fiabilité de vos tests. Sachez donc que si un jour quelqu’un vous dit “<em>C’est quoi ce code sans 100% de coverage ? Je ne veux pas de ça chez moi</em>”, ce discours est nul et non avenu.</p>
-<p>Bien sûr il ne faut pas tomber dans l’extrême opposé avec un coverage très faible en vous disant “<em>pas de soucis ça marche sur mon ordi <sup></sup></em>”.</p>
-<p>Le coverage est un indicateur, pas un objectif. Si le projet évolue plus vite que les tests et que le coverage chute, c’est peut-être le signe qu’il faut revoir vos méthodes de développement. Il arrive qu’on laisse les tests de côté au profit d’un “<em>dev rapide d’une feature</em>” pour faire plaisir au métier et respecter les délais de livraison. Le coverage sera là pour vous rappeler à l’ordre.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../images/image-12.png" class="img-fluid figure-img"></p>
-<figcaption>image.png</figcaption>
-</figure>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>À vous de jouer
 </div>
-<p>Pour en revenir à notre rapport de coverage, il est vrai que voir <code>main.py</code> à 0% peut sembler gênant. Mais si on repense à notre architecture, c’est totalement normal. <code>main.py</code> est un module d’orchestration, il appelle des fonctions qui sont elles-mêmes déjà testées. On ne va pas les retester une deuxième fois, ni vérifier qu’on les a bien appelées dans le bon ordre.</p>
-<p>La solution est simple : on l’exclut du rapport.</p>
-<p>Dans <code>pyproject.toml</code> :</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[tool.coverage.run]</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="dt">omit</span> <span class="op">=</span> <span class="op">[</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"src/medas_financial_reporting/financial_reporting/main.py"</span><span class="op">,</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"src/storage.py"</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="op">]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Notez bien cependant que vous signez ici un contrat avec votre vous du futur. En excluant <code>main.py</code> du coverage, vous vous engagez à ne jamais y mettre de logique critique qui mériterait d’être testée. <code>main.py</code> doit rester un module d’orchestration pure, rien de plus. Le jour où vous sentez l’envie d’y glisser un traitement (même un tout petit), c’est le signe qu’il faut créer une nouvelle fonction dans le bon module.</p>
+</div>
+<div class="callout-body-container callout-body">
+<p>En partant de la fixture <code>raw_df</code>, écrivez un test par comportement attendu. Chaque test prend <code>raw_df</code> en argument, appelle <code>clean_data</code> et vérifie le résultat avec un <code>assert</code>. Couvrez les cas suivants :</p>
+<ul>
+<li>les <code>score</code> manquants sont bien remplacés par <code>S</code></li>
+<li>les <code>score_prev</code> manquants sont bien remplacés par <code>N</code></li>
+<li>un <code>id_agent</code> valant <code>AUTO</code> reste <code>AUTO</code>, tout autre devient <code>MANUEL</code></li>
+<li>après nettoyage, <code>score</code> et <code>score_prev</code> ne contiennent plus aucun <code>NaN</code></li>
+<li><code>clean_data</code> ne supprime aucune ligne</li>
+</ul>
+<p>Règle d’or : un test vérifie un seul comportement et son nom doit dire exactement ce qu’il vérifie.</p>
+</div>
+</div>
+<details>
+<summary>
+Solution
+</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_clean_data_fills_score(raw_df):</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Les NaN de score sont remplacés par S."""</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> clean_data(raw_df)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> result[<span class="st">"score"</span>].iloc[<span class="dv">1</span>] <span class="op">==</span> <span class="st">"S"</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_clean_data_fills_score_prev(raw_df):</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Les NaN de score_prev sont remplacés par N."""</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> clean_data(raw_df)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> result[<span class="st">"score_prev"</span>].iloc[<span class="dv">0</span>] <span class="op">==</span> <span class="st">"N"</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> result[<span class="st">"score_prev"</span>].iloc[<span class="dv">2</span>] <span class="op">==</span> <span class="st">"N"</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_clean_data_id_agent(raw_df):</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Les agents non AUTO sont remplacés par MANUEL."""</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> clean_data(raw_df)</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> result[<span class="st">"id_agent"</span>].iloc[<span class="dv">0</span>] <span class="op">==</span> <span class="st">"AUTO"</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> result[<span class="st">"id_agent"</span>].iloc[<span class="dv">1</span>] <span class="op">==</span> <span class="st">"MANUEL"</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_clean_data_no_nulls(raw_df):</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Après nettoyage, score et score_prev ne contiennent plus de NaN."""</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> clean_data(raw_df)</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> result[<span class="st">"score"</span>].isna().<span class="bu">sum</span>() <span class="op">==</span> <span class="dv">0</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> result[<span class="st">"score_prev"</span>].isna().<span class="bu">sum</span>() <span class="op">==</span> <span class="dv">0</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_clean_data_preserves_rows(raw_df):</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""clean_data ne supprime pas de lignes."""</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> clean_data(raw_df)</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="bu">len</span>(result) <span class="op">==</span> <span class="bu">len</span>(raw_df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<p>Quelques explications maintenant que vous avez essayé.</p>
+<p>Pourquoi ne pas utiliser les vraies données dans la fixture ? Pour deux raisons. Elles sont trop volumineuses pour des tests unitaires censés être instantanés et surtout parcequ’elles introduiraient une dépendance externe. Or on veut ici tester la logique de nos transformations, pas la lecture d’un fichier distant ou local. Un <code>DataFrame</code> écrit à la main suffit et reste totalement sous contrôle.</p>
+<p>Sur la façon d’écrire les tests, on s’impose une règle simple : un test par comportement attendu. On prévoit aussi les cas limites, comme la suppression involontaire de lignes. Chaque test vérifie une seule chose et son nom dit exactement ce qu’il vérifie. Ainsi lorsqu’un test échoue, vous savez immédiatement quoi chercher sans avoir à lire son contenu.</p>
+<p>Vous vous demandez peut-être pourquoi <code>get_data</code> n’est pas testée ici. La réponse découle directement de ce qu’on vient de dire : elle fait un appel réseau vers <code>MinIO</code>, ce qui en fait un <strong>test d’intégration</strong> et non un test unitaire. Retenez bien qu’un test unitaire ne dépend de rien d’externe, on la testera donc dans la section suivante.</p>
 </section>
-</section>
-<section id="les-tests-dintégration" class="level2">
-<h2 class="anchored" data-anchor-id="les-tests-dintégration">Les tests d’intégration</h2>
-<p>Comme vous l’auriez normalement compris, là où les tests unitaires ne dépendent de rien d’externe, les tests d’intégration vérifient que notre code s’intègre bien avec des éléments extérieurs. <code>get_data()</code> en est le parfait exemple : elle effectue un appel réseau vers MinIO. On ne teste pas ici la logique de récupération des données mais le fait que nos composants arrivent bien à communiquer. Faites un nouveau fichier <code>tests/test_integration.py</code> :</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Tests d'intégration"""</span></span>
+<section id="test_reporting.py" class="level3">
+<h3 class="anchored" data-anchor-id="test_reporting.py">test_reporting.py</h3>
+<p>Pour tester <code>fill_indicators</code> et <code>write_data_to_excel</code>, on a besoin d’un fichier Excel. Là encore on ne va pas utiliser un vrai fichier du projet mais des fixtures : un workbook minimal créé à la volée et un petit DataFrame simulant des données nettoyées.</p>
+<p>Cette fois je vous laisse écrire les fixtures vous-mêmes, vous avez vu le principe juste avant.</p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>À vous de jouer
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Dans <code>tests/test_reporting.py</code>, écrivez deux fixtures :</p>
+<ul>
+<li><code>minimal_workbook</code> : crée un fichier <code>.xlsx</code> temporaire contenant deux feuilles, <code>DATA</code> et <code>Indicateurs</code>, et renvoie son chemin. Utilisez la fixture intégrée <code>tmp_path</code> de <code>pytest</code> pour écrire dans un dossier temporaire, et <code>openpyxl</code> pour construire le workbook.</li>
+<li><code>sample_df</code> : renvoie un petit DataFrame avec les colonnes <code>type_client</code>, <code>score</code>, <code>score_prev</code>, <code>id_agent</code> et <code>drc_complet</code>.</li>
+</ul>
+<p>Indice : <code>tmp_path</code> est une fixture fournie par <code>pytest</code>, vous n’avez qu’à la déclarer en argument pour obtenir un dossier temporaire propre à chaque test.</p>
+</div>
+</div>
+<details>
+<summary>
+Solution
+</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Tests for reporting.py"""</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytest</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> medas_financial_reporting.financial_reporting.data <span class="im">import</span> get_data</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.mark.integration</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_get_data_returns_dataframe():</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Vérifie que get_data retourne bien un DataFrame non vide."""</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> get_data()</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="bu">isinstance</span>(df, pd.DataFrame)</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="bu">len</span>(df) <span class="op">&gt;</span> <span class="dv">0</span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.mark.integration</span></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_get_data_expected_columns():</span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Vérifie que les colonnes attendues sont présentes."""</span></span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> get_data()</span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    expected <span class="op">=</span> {<span class="st">"type_client"</span>, <span class="st">"score"</span>, <span class="st">"score_prev"</span>, <span class="st">"id_agent"</span>, <span class="st">"drc_complet"</span>}</span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> expected.issubset(<span class="bu">set</span>(df.columns))</span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.mark.integration</span></span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_get_data_schema_valid():</span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Vérifie que les valeurs respectent le domaine métier attendu."""</span></span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> get_data()</span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> df[<span class="st">"type_client"</span>].isin([<span class="st">"PP"</span>, <span class="st">"PM"</span>]).<span class="bu">all</span>()</span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> df[<span class="st">"drc_complet"</span>].dtype <span class="op">==</span> <span class="bu">bool</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Quelques précisions sur le décorateur utilisé. <code>@pytest.mark.integration</code> indique à <code>pytest</code> que ces tests doivent être lancés séparément de nos tests unitaires. De la même façon, ajoutez <code>@pytest.mark.unit</code> devant chacun de vos tests unitaires pour garder un comportement symétrique.</p>
-<p>Modifiez ensuite votre <code>pyproject.toml</code> :</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[tool.pytest.ini_options]</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="dt">markers</span> <span class="op">=</span> <span class="op">[</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"unit: tests unitaires"</span><span class="op">,</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"integration: tests intégration"</span><span class="op">,</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="op">]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Vos commandes pour lancer les tests deviennent :</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Tests unitaires uniquement</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run pytest <span class="at">-m</span> unit</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Tests d'intégration uniquement</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run pytest <span class="at">-m</span> integration</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Tous les tests</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run pytest</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>TODO :</p>
-<p>INFO POUR ALLEZ + LOIN</p>
-<p>Les tests E2E (end to end)</p>
-<p>Explications</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Tests End-to-End."""</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytest</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> openpyxl <span class="im">import</span> load_workbook</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> medas_financial_reporting.config <span class="im">import</span> LOCAL_OUTPUT, S3_BUCKET, S3_OUTPUT_KEY</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> medas_financial_reporting.financial_reporting.main <span class="im">import</span> main</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> medas_financial_reporting.storage <span class="im">import</span> get_fs</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.fixture</span>(scope<span class="op">=</span><span class="st">"session"</span>, autouse<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> run_pipeline():</span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Lance le pipeline une seule fois pour tous les tests E2E."""</span></span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    main()</span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.mark.e2e</span></span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_reporting_local_exists():</span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Vérifie que le reporting a bien été généré localement."""</span></span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> LOCAL_OUTPUT.exists()</span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.mark.e2e</span></span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_reporting_uploaded_to_minio():</span>
-<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Vérifie que le reporting est bien présent sur MinIO."""</span></span>
-<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>    fs <span class="op">=</span> get_fs()</span>
-<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> fs.exists(<span class="ss">f"</span><span class="sc">{</span>S3_BUCKET<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>S3_OUTPUT_KEY<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.mark.e2e</span></span>
-<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_reporting_contains_expected_sheets():</span>
-<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Vérifie que le reporting contient les feuilles attendues."""</span></span>
-<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>    wb <span class="op">=</span> load_workbook(LOCAL_OUTPUT)</span>
-<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="st">"DATA"</span> <span class="kw">in</span> wb.sheetnames</span>
-<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="st">"Indicateurs"</span> <span class="kw">in</span> wb.sheetnames</span>
-<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>    wb.close()</span>
-<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.mark.e2e</span></span>
-<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_indicators_are_filled():</span>
-<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Vérifie que les indicateurs ne sont pas vides."""</span></span>
-<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>    wb <span class="op">=</span> load_workbook(LOCAL_OUTPUT)</span>
-<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>    ws <span class="op">=</span> wb[<span class="st">"Indicateurs"</span>]</span>
-<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> ws[<span class="st">"E8"</span>].value <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span></span>
-<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> ws[<span class="st">"E10"</span>].value <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span></span>
-<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a>    wb.close()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>update du pyproject.toml</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[tool.pytest.ini_options]</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="dt">markers</span> <span class="op">=</span> <span class="op">[</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"unit: tests unitaires"</span><span class="op">,</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"integration: tests intégration"</span><span class="op">,</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"e2e: tests end-to-end"</span><span class="op">,</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="op">]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>RAPPEL GIT TIME pushez commité etc</p>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> openpyxl <span class="im">import</span> Workbook, load_workbook</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> medas_financial_reporting.financial_reporting.reporting <span class="im">import</span> (</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    fill_indicators,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    write_data_to_excel,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.fixture</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> minimal_workbook(tmp_path):</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Workbook minimal avec les feuilles DATA et Indicateurs."""</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    path <span class="op">=</span> tmp_path <span class="op">/</span> <span class="st">"test_reporting.xlsx"</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    wb <span class="op">=</span> Workbook()</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    wb.active.title <span class="op">=</span> <span class="st">"DATA"</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    wb.create_sheet(<span class="st">"Indicateurs"</span>)</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    wb.save(path)</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    wb.close()</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> path</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.fixture</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sample_df():</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""DataFrame minimal simulant les données nettoyées."""</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.DataFrame({</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>        <span class="st">"type_client"</span>: [<span class="st">"PP"</span>, <span class="st">"PM"</span>],</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>        <span class="st">"score"</span>:       [<span class="st">"V"</span>,  <span class="st">"S"</span>],</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>        <span class="st">"score_prev"</span>:  [<span class="st">"N"</span>,  <span class="st">"O"</span>],</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>        <span class="st">"id_agent"</span>:    [<span class="st">"AUTO"</span>, <span class="st">"MANUEL"</span>],</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>        <span class="st">"drc_complet"</span>: [<span class="va">True</span>, <span class="va">False</span>],</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>    })</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<p>Une fois les fixtures en place, on peut écrire les tests. Voici ceux des deux fonctions :</p>
+<details>
+<summary>
+Voir le code
+</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> TestFillIndicators:</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> test_countif_formula(<span class="va">self</span>, minimal_workbook):</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>        fill_indicators(input_path<span class="op">=</span>minimal_workbook, output_path<span class="op">=</span>minimal_workbook)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>        wb <span class="op">=</span> load_workbook(minimal_workbook, data_only<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>        ws <span class="op">=</span> wb[<span class="st">"Indicateurs"</span>]</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">assert</span> ws[<span class="st">"E8"</span>].value <span class="op">==</span> <span class="st">'=COUNTIF(DATA!B:B, "PP")'</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>        wb.close()</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> test_sum_formula(<span class="va">self</span>, minimal_workbook):</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Vérifie que la formule SUM est correctement générée."""</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>        fill_indicators(input_path<span class="op">=</span>minimal_workbook, output_path<span class="op">=</span>minimal_workbook)</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>        wb <span class="op">=</span> load_workbook(minimal_workbook, data_only<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>        ws <span class="op">=</span> wb[<span class="st">"Indicateurs"</span>]</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">assert</span> ws[<span class="st">"E10"</span>].value <span class="op">==</span> <span class="st">"=SUM(E8:E9)"</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>        wb.close()</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> test_countifs_formula(<span class="va">self</span>, minimal_workbook):</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Vérifie que la formule COUNTIFS est correctement générée."""</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>        fill_indicators(input_path<span class="op">=</span>minimal_workbook, output_path<span class="op">=</span>minimal_workbook)</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>        wb <span class="op">=</span> load_workbook(minimal_workbook, data_only<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>        ws <span class="op">=</span> wb[<span class="st">"Indicateurs"</span>]</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">assert</span> ws[<span class="st">"E14"</span>].value <span class="op">==</span> <span class="st">'=COUNTIFS(DATA!B:B, "PP", DATA!D:D, "V")'</span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>        wb.close()</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> test_unknown_formula_raises(<span class="va">self</span>, minimal_workbook):</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Une formule inconnue dans INDICATORS lève une ValueError."""</span></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>        <span class="im">from</span> medas_financial_reporting <span class="im">import</span> config</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>        original <span class="op">=</span> config.INDICATORS.copy()</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>        config.INDICATORS.append({<span class="st">"row"</span>: <span class="dv">99</span>, <span class="st">"formule"</span>: <span class="st">"UNKNOWN"</span>, <span class="st">"args"</span>: []})</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> pytest.raises(<span class="pp">ValueError</span>, match<span class="op">=</span><span class="st">"Formule inconnue"</span>):</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>            fill_indicators(input_path<span class="op">=</span>minimal_workbook, output_path<span class="op">=</span>minimal_workbook)</span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>        config.INDICATORS <span class="op">=</span> original</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> TestWriteDataToExcel:</span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> test_data_inserted(<span class="va">self</span>, minimal_workbook, sample_df):</span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Vérifie que les données sont bien insérées dans la feuille DATA."""</span></span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>        <span class="im">import</span> shutil</span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>        <span class="im">from</span> medas_financial_reporting.config <span class="im">import</span> LOCAL_TEMPLATE, LOCAL_TMP_DIR</span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>        LOCAL_TMP_DIR.mkdir(exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>        shutil.copy(minimal_workbook, LOCAL_TEMPLATE)</span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>        write_data_to_excel(sample_df)</span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>        wb <span class="op">=</span> load_workbook(LOCAL_TEMPLATE, data_only<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>        ws <span class="op">=</span> wb[<span class="st">"DATA"</span>]</span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>        <span class="cf">assert</span> ws.cell(row<span class="op">=</span><span class="dv">1</span>, column<span class="op">=</span><span class="dv">1</span>).value <span class="op">==</span> <span class="st">"type_client"</span></span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a>        <span class="cf">assert</span> ws.cell(row<span class="op">=</span><span class="dv">2</span>, column<span class="op">=</span><span class="dv">1</span>).value <span class="op">==</span> <span class="st">"PP"</span></span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>        wb.close()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<p>Le twist par rapport au module précédent : on regroupe ici les tests dans des <strong>classes</strong>. La classe <code>TestFillIndicators</code> rassemble tous les tests de <code>fill_indicators</code>, et <code>TestWriteDataToExcel</code> ceux de <code>write_data_to_excel</code>. Ce n’est pas obligatoire mais c’est une convention <code>pytest</code> pratique : elle facilite la lecture et permet de vérifier d’un coup d’œil qu’aucun comportement n’a été oublié pour une fonction donnée.</p>
+</section>
+</section>
+<section id="la-couverture-de-tests" class="level2">
+<h2 class="anchored" data-anchor-id="la-couverture-de-tests">La couverture de tests</h2>
+<p>En parlant de ne rien oublier, ce serait pratique d’avoir un outil qui affiche la part de notre code réellement couverte par les tests. Bonne nouvelle, c’est exactement le rôle de <code>pytest-cov</code>, la dépendance ajoutée plus tôt. Pour générer le rapport :</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run pytest <span class="at">--cov</span><span class="op">=</span>src/medas_financial_reporting</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div style="text-align: center;">
+<p><img src="../images/image-11.png" class="img-fluid"></p>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>La couverture est un indicateur, pas un objectif
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Il peut être tentant de viser 100% partout, mais ce chiffre ne traduit en rien la qualité ni la fiabilité de vos tests. Si un jour quelqu’un vous lance <em>“c’est quoi ce code sans 100% de coverage ?”</em> : restez calme, prenez une grande inspiration et essayez de lui expliquer que ce qu’il demande n’a pas de sens. (avec tout le respect bien sûr)</p>
+<p>Toutefois, l’inverse est tout aussi vrai : un coverage très faible avec un <em>“pas de souci, ça marche sur mon ordi <sup></sup>”</em> n’est pas plus sérieux. Le bon réflexe est de voir la couverture comme un signal. Si le projet évolue plus vite que les tests et que le coverage chute, c’est souvent le signe qu’il faut revoir vos méthodes de développement.</p>
+</div>
+</div>
+<p>Pour en revenir à notre rapport, voir <code>main.py</code> à 0% peut sembler gênant. Mais si on repense à notre architecture, c’est normal : <code>main.py</code> est un module d’orchestration. Il ne fait qu’appeler des fonctions déjà testées individuellement. On ne va ni les retester, ni vérifier qu’on les a appelées dans le bon ordre.</p>
+<p>La solution est simple : on l’exclut du rapport. Dans <code>pyproject.toml</code> :</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[tool.coverage.run]</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="dt">omit</span> <span class="op">=</span> <span class="op">[</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"src/medas_financial_reporting/financial_reporting/main.py"</span><span class="op">,</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"src/medas_financial_reporting/storage.py"</span><span class="op">,</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="op">]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Un contrat avec votre vous du futur
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>En excluant <code>main.py</code> du coverage, vous vous engagez à ne jamais y mettre de logique critique qui mériterait d’être testée. <code>main.py</code> doit rester un module d’orchestration pur. Le jour où vous ressentez l’envie d’y glisser un traitement, même minime, c’est le signe qu’il faut plutôt créer une fonction dans le module approprié.</p>
+</div>
+</div>
+</section>
+<section id="les-tests-dintégration" class="level2">
+<h2 class="anchored" data-anchor-id="les-tests-dintégration">Les tests d’intégration</h2>
+<p>Là où les tests unitaires ne dépendent de rien d’externe, les tests d’intégration vérifient que notre code communique bien avec des éléments extérieurs. <code>get_data()</code> en est le parfait exemple : elle effectue un appel réseau vers <code>MinIO</code>. On ne teste plus ici la logique de transformation mais le fait que nos composants arrivent à dialoguer avec le stockage distant.</p>
+<p>Créez un nouveau fichier <code>tests/test_integration.py</code> :</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Tests d'intégration"""</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytest</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> medas_financial_reporting.financial_reporting.data <span class="im">import</span> get_data</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.mark.integration</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_get_data_returns_dataframe():</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Vérifie que get_data retourne bien un DataFrame non vide."""</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> get_data()</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="bu">isinstance</span>(df, pd.DataFrame)</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="bu">len</span>(df) <span class="op">&gt;</span> <span class="dv">0</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.mark.integration</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_get_data_expected_columns():</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Vérifie que les colonnes attendues sont présentes."""</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> get_data()</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>    expected <span class="op">=</span> {<span class="st">"type_client"</span>, <span class="st">"score"</span>, <span class="st">"score_prev"</span>, <span class="st">"id_agent"</span>, <span class="st">"drc_complet"</span>}</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> expected.issubset(<span class="bu">set</span>(df.columns))</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.mark.integration</span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_get_data_schema_valid():</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Vérifie que les valeurs respectent le domaine métier attendu."""</span></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> get_data()</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> df[<span class="st">"type_client"</span>].isin([<span class="st">"PP"</span>, <span class="st">"PM"</span>]).<span class="bu">all</span>()</span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> df[<span class="st">"drc_complet"</span>].dtype <span class="op">==</span> <span class="bu">bool</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Un mot sur le décorateur <code>@pytest.mark.integration</code>. Il sert à <strong>marquer</strong> ces tests pour pouvoir les lancer séparément des tests unitaires. C’est important car les tests d’intégration sont plus lents et nécessitent un accès réseau : on ne veut pas forcément les jouer à chaque fois. Pour garder un comportement symétrique, ajoutez <code>@pytest.mark.unit</code> devant chacun de vos tests unitaires.</p>
+<p>Déclarez ensuite ces marqueurs dans <code>pyproject.toml</code>, sinon <code>pytest</code> émettra un avertissement pour marqueur inconnu :</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[tool.pytest.ini_options]</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="dt">markers</span> <span class="op">=</span> <span class="op">[</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"unit: tests unitaires"</span><span class="op">,</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"integration: tests d'intégration"</span><span class="op">,</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="op">]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Vos commandes deviennent alors :</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Tests unitaires uniquement</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run pytest <span class="at">-m</span> unit</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Tests d'intégration uniquement</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run pytest <span class="at">-m</span> integration</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Tous les tests</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run pytest</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Pour aller plus loin : les tests end-to-end (E2E)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Les tests E2E (<em>end-to-end</em>) vont encore plus loin que les tests d’intégration : ils valident la chaîne complète, du déclenchement du pipeline jusqu’au résultat final. Là où un test d’intégration vérifie qu’un composant communique avec un autre, un test E2E lance tout <code>main()</code> et contrôle que le reporting est bien généré localement, uploadé sur <code>MinIO</code> et correctement rempli.</p>
+<p>On utilise ici une fixture de portée <em>session</em> avec <code>autouse=True</code> pour ne lancer le pipeline qu’une seule fois, puis chaque test inspecte le résultat.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Tests End-to-End."""</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytest</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> openpyxl <span class="im">import</span> load_workbook</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> medas_financial_reporting.config <span class="im">import</span> LOCAL_OUTPUT, S3_BUCKET, S3_OUTPUT_KEY</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> medas_financial_reporting.financial_reporting.main <span class="im">import</span> main</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> medas_financial_reporting.storage <span class="im">import</span> get_fs</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.fixture</span>(scope<span class="op">=</span><span class="st">"session"</span>, autouse<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> run_pipeline():</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Lance le pipeline une seule fois pour tous les tests E2E."""</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    main()</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.mark.e2e</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_reporting_local_exists():</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Vérifie que le reporting a bien été généré localement."""</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> LOCAL_OUTPUT.exists()</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.mark.e2e</span></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_reporting_uploaded_to_minio():</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Vérifie que le reporting est bien présent sur MinIO."""</span></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>    fs <span class="op">=</span> get_fs()</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> fs.exists(<span class="ss">f"</span><span class="sc">{</span>S3_BUCKET<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>S3_OUTPUT_KEY<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.mark.e2e</span></span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_reporting_contains_expected_sheets():</span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Vérifie que le reporting contient les feuilles attendues."""</span></span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>    wb <span class="op">=</span> load_workbook(LOCAL_OUTPUT)</span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="st">"DATA"</span> <span class="kw">in</span> wb.sheetnames</span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="st">"Indicateurs"</span> <span class="kw">in</span> wb.sheetnames</span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a>    wb.close()</span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a><span class="at">@pytest.mark.e2e</span></span>
+<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_indicators_are_filled():</span>
+<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Vérifie que les indicateurs ne sont pas vides."""</span></span>
+<span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a>    wb <span class="op">=</span> load_workbook(LOCAL_OUTPUT)</span>
+<span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a>    ws <span class="op">=</span> wb[<span class="st">"Indicateurs"</span>]</span>
+<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> ws[<span class="st">"E8"</span>].value <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span></span>
+<span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> ws[<span class="st">"E10"</span>].value <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span></span>
+<span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a>    wb.close()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Sans oublier d’ajouter le marqueur <code>e2e</code> dans <code>pyproject.toml</code> :</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[tool.pytest.ini_options]</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="dt">markers</span> <span class="op">=</span> <span class="op">[</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"unit: tests unitaires"</span><span class="op">,</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"integration: tests d'intégration"</span><span class="op">,</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"e2e: tests end-to-end"</span><span class="op">,</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="op">]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Git time
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Pensez à commit et push votre travail avant de passer à la suite.</p>
+</div>
+</div>
 
 
 </section>

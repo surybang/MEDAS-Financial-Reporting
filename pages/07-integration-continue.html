@@ -459,28 +459,60 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>Parmi les avantages des tests que nous avons évoqués, il y avait la prévention des régressions. Mais si vous avez bien suivi, vous vous demandez peut-être comment des tests lancés manuellement peuvent prévenir quoi que ce soit. Après tout, rien ne vous empêche de ne pas les lancer du tout.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../images/image-13.png" class="img-fluid figure-img"></p>
-<figcaption>image.png</figcaption>
-</figure>
+<p>Parmi les avantages des tests, nous avons cité la prévention des régressions. Mais si vous avez bien suivi, vous vous demandez peut-être comment des tests lancés manuellement peuvent prévenir quoi que ce soit. Après tout, rien ne vous empêche de ne pas les lancer du tout.</p>
+<div style="text-align: center;">
+<p><img src="../images/image-13.png" class="img-fluid"></p>
 </div>
-<p>C’est là qu’intervient l’<strong>intégration continue</strong>. L’idée est la suivante : automatiser un ensemble de vérifications et d’actions à chaque fois que du code est poussé sur GitHub. Dans notre cas on va commencer par automatiser trois choses : le formatage du code, le lint et les tests unitaires. Mais la CI peut aller bien plus loin et c’est bien ce dont j’ai l’intention de vous montrer plus tard, entre autre : construire et publier une image Docker, déclencher un déploiement automatique via ArgoCD. C’est un outil central dans n’importe quelle équipe data ou software moderne. Plus personne ne peut merger du code cassé, mal formaté ou qui ne respecte pas les règles du projet sans que la CI ne le détecte.</p>
-<p>Je n’ai pas la prétention de tout vous expliquer sur ce sujet qui est vaste. Ce que je veux vous montrer ici, c’est comment mettre en place une CI simple et efficace qui nous aidera dans notre développement data. Pour aller plus loin, je vous redirige vers le blog de Stéphane Robert qui en parle bien mieux que moi :</p>
+<p>C’est là qu’intervient l’<strong>intégration continue</strong>. L’idée : automatiser un ensemble de vérifications à chaque fois que du code est poussé sur <code>GitHub</code>. Nous allons commencer par en automatiser trois : le formatage du code, le lint et les tests unitaires. Mais la <code>CI</code> peut aller bien plus loin, comme nous le verrons plus tard : construire et publier une image <code>Docker</code>, ou déclencher un déploiement automatique via <code>ArgoCD</code>. C’est un outil central dans n’importe quelle équipe data ou software moderne : plus personne ne peut merger du code cassé, mal formaté ou ne respectant pas les règles du projet sans que la <code>CI</code> ne le détecte.</p>
+<p>Je n’ai pas la prétention de tout couvrir sur ce sujet vaste. L’objectif est de mettre en place une <code>CI</code> simple et efficace pour notre développement data.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Pour aller plus loin
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Le blog de Stéphane Robert traite ces sujets en profondeur :</p>
 <ul>
 <li><a href="https://blog.stephane-robert.info/docs/pipeline-cicd/github/workflows/">GitHub Actions</a></li>
 <li><a href="https://blog.stephane-robert.info/docs/developper/autres-langages/yaml/">YAML</a></li>
 </ul>
-<p>Puisque nous utilisons GitHub, nous allons utiliser <strong>GitHub Actions</strong>. Le principe est le suivant : on crée un dossier <code>.github/workflows/</code> à la racine du projet dans lequel on place des fichiers YAML qui décrivent les actions à exécuter. YAML signifie <em>Yet Another Markup Language</em> c’est un format de configuration que vous retrouverez partout dans l’écosystème DevOps.</p>
+</div>
+</div>
+<p>Puisque nous utilisons <code>GitHub</code>, nous allons nous appuyer sur <strong>GitHub Actions</strong>. Le principe : on crée un dossier <code>.github/workflows/</code> à la racine du projet, dans lequel on place des fichiers YAML décrivant les actions à exécuter. YAML (<em>Yet Another Markup Language</em>) est un format de configuration que vous retrouverez partout dans l’écosystème DevOps.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> .github/workflows</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> .github/workflows/ci.yaml</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <section id="ruff" class="level2">
 <h2 class="anchored" data-anchor-id="ruff">ruff</h2>
-<p>Avant de passer à l’écriture de la CI, je vous invite à rajouter <code>ruff</code> en dépendance de développement dans votre projet :</p>
+<p>Avant d’écrire la <code>CI</code>, ajoutez <code>ruff</code> comme dépendance de développement :</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> add <span class="at">--dev</span> ruff</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Puis à le configurer dans votre <code>pyproject.toml</code> :</p>
-<p>TODO : consignes pour créer</p>
+<p><code>ruff</code> est un linter et formateur Python écrit en <code>Rust</code>, extrêmement rapide, qui remplace à lui seul plusieurs outils historiques comme <code>flake8</code>, <code>isort</code> ou <code>black</code>. Nous en avons parlé en cours : c’est un bon exemple de la “rustisation” de l’outillage <code>Python</code>.</p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>À vous de jouer
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>À partir de la <a href="https://docs.astral.sh/ruff/configuration/">documentation de configuration de <code>ruff</code></a>, ajoutez la configuration suivante à votre <code>pyproject.toml</code> :</p>
+<ul>
+<li>une longueur de ligne maximale de 88 caractères</li>
+<li>une version cible Python 3.13</li>
+<li>l’exclusion du dossier <code>notebooks/</code></li>
+<li>l’activation des règles <code>E</code>, <code>F</code> et <code>I</code></li>
+</ul>
+</div>
+</div>
+<details>
+<summary>
+Solution
+</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[tool.ruff]</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="dt">line-length</span> <span class="op">=</span> <span class="dv">88</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="dt">target-version</span> <span class="op">=</span> <span class="st">"py313"</span></span>
@@ -488,14 +520,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="kw">[tool.ruff.lint]</span></span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="dt">select</span> <span class="op">=</span> <span class="op">[</span><span class="st">"E"</span><span class="op">,</span> <span class="st">"F"</span><span class="op">,</span> <span class="st">"I"</span><span class="op">]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Quelques mots sur cette configuration. <code>line-length = 88</code> est la longueur de ligne maximale, c’est la valeur par défaut de <code>black</code> et elle est devenue une convention dans l’écosystème Python. <code>target-version = "py313"</code> indique à <code>ruff</code> la version de Python cible pour adapter ses règles. On exclut au passage les notebooks du linting via <code>exclude = ["notebooks/"]</code>, un notebook est par nature un espace d’exploration, il serait contre-productif d’y appliquer les mêmes règles qu’en production. Enfin <code>select</code> définit les catégories de règles à appliquer : <code>E</code> pour les erreurs de style PEP8, <code>F</code> pour les erreurs logiques détectées par <code>pyflakes</code> (variables non utilisées, imports manquants…) et <code>I</code> pour le tri automatique des imports.</p>
-<p>INFO</p>
-<p>description de ruff + rappel qu’on en a parlé en cours</p>
+</details>
+<p>Quelques mots sur cette configuration. <code>line-length = 88</code> est la longueur de ligne maximale, valeur par défaut de <code>black</code> devenue une convention dans l’écosystème Python. <code>target-version = "py313"</code> indique à <code>ruff</code> la version cible pour adapter ses règles. On exclut les notebooks du linting via <code>exclude = ["notebooks/"]</code> : un notebook est par nature un espace d’exploration, il serait contre-productif d’y appliquer les règles de production. Enfin <code>select</code> définit les catégories de règles appliquées : <code>E</code> pour les erreurs de style PEP8, <code>F</code> pour les erreurs logiques détectées par <code>pyflakes</code> (variables non utilisées, imports manquants) et <code>I</code> pour le tri automatique des imports.</p>
 </section>
 <section id="ci.yaml" class="level2">
 <h2 class="anchored" data-anchor-id="ci.yaml">ci.yaml</h2>
-<p>TODO: rajouter commande création fichier ci.yaml + consignes sur la partie + lien vers une doc officielle</p>
-<p>Notre CI va effectuer trois vérifications à chaque push sur une branche : le formatage du code, le lint avec <code>ruff</code> et les tests unitaires avec <code>pytest</code>. Vous remarquerez que les tests d’intégration sont exclus puisqu’ils nécessitent une connexion réseau et des credentials MinIO qu’on ne va pas exposer dans la CI pour des raisons de sécurité évidentes.</p>
+<p>Notre CI effectuera trois vérifications à chaque push : le formatage du code, le lint avec <code>ruff</code> et les tests unitaires avec <code>pytest</code>. Vous remarquerez que les tests d’intégration sont exclus : ils nécessitent une connexion réseau et des credentials <code>MinIO</code> qu’on ne veut pas exposer dans la <code>CI</code> pour des raisons de sécurité évidentes.</p>
+<details>
+<summary>
+Voir le code
+</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> CI</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">on</span><span class="kw">:</span></span>
@@ -534,27 +568,53 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> 🧪 Lancer les tests unitaires</span></span>
 <span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">run</span><span class="kw">:</span><span class="at"> uv run pytest -m unit</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Concernant la structure du fichier, retenez que la partie supérieure (<code>on</code>) permet de spécifier le <strong>quand</strong> et le <strong>où</strong> : sur quel événement et sur quelles branches la CI se déclenche. La partie <code>jobs</code> spécifie le <strong>quoi</strong> : les étapes à exécuter dans l’ordre.</p>
-<p>Vous noterez qu’on indique à GitHub d’utiliser <code>ubuntu-latest</code>. De cette manière, on permet à GitHub d’instancier ce qu’on appelle un <strong>runner,</strong> une petite machine virtuelle éphémère qui exécute les étapes de votre CI. Vous n’avez rien à gérer, GitHub s’en occupe. (Merci GitHub)</p>
-<p>Commitez et pushez votre code, puis rendez-vous dans l’onglet <strong>Actions</strong> de votre repo sur GitHub. Vous devriez voir votre première CI se lancer. D’abord félicitations parce que vous venez peut-être de lancer votre toute première CI par contre c’est pas de chance, elle ne fonctionne pas.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../images/image-14.png" class="img-fluid figure-img"></p>
-<figcaption>image.png</figcaption>
-</figure>
+</details>
+<p>Concernant la structure du fichier : la partie supérieure <code>on</code> spécifie le <strong>quand</strong> et le <strong>où</strong>, c’est-à-dire sur quel événement et sur quelles branches la <code>CI</code> se déclenche. La partie <code>jobs</code> spécifie le <strong>quoi</strong>, les étapes à exécuter dans l’ordre.</p>
+<p>On indique à <code>GitHub</code> d’utiliser <code>ubuntu-latest</code> : on lui demande ainsi d’instancier un <strong>runner</strong>, une petite machine virtuelle éphémère qui exécute les étapes de la <code>CI</code>. Vous n’avez rien à gérer, <code>GitHub</code> s’en occupe.</p>
+<p>Commitez, pushez, puis rendez-vous dans l’onglet <strong>Actions</strong> de votre repo. Félicitations, vous venez peut-être de lancer votre toute première <code>CI</code>. Par contre, pas de chance : elle échoue.</p>
+<div style="text-align: center;">
+<p><img src="../images/image-14.png" class="img-fluid"></p>
 </div>
-<p>Pas d’inquiétude, c’est une bonne nouvelle : la CI a détecté que le code n’était pas formaté comme il le devrait. Vous vous dites alors peut-être : “<em>mais on connaît la commande pour reformater le code proprement, pourquoi on ne l’utilise pas directement dans la CI ?</em>” Je vous répondrai qu’hérétiques que vous êtes, la CI n’a pas pour vocation de modifier votre code et ne devrait jamais le faire. Je vous laisse imaginer toutes les complications que ça pourrait engendrer : des modifications automatiques sur des branches, des commits générés par la CI, des conflits en cascade. Pour y remédier, on utilise un autre outil : <code>prek</code> (spoiler).</p>
+<p>Pas d’inquiétude, c’est même une bonne nouvelle : la <code>CI</code> a détecté que le code n’était pas formaté correctement, on peut donc dire qu’elle a fait son job. Vous vous dites peut-être : <em>“on connaît la commande pour reformater le code, pourquoi ne pas l’utiliser directement dans la CI ?”</em></p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>La CI ne modifie jamais votre code
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>La <code>CI</code> a pour rôle de <strong>vérifier</strong>, jamais de <strong>modifier</strong> votre code. Imaginez les complications : des modifications automatiques sur vos branches, des commits générés par la <code>CI</code>, des conflits en cascade. Une <code>CI</code> doit constater un problème et échouer, à vous de corriger. Pour formater automatiquement au bon moment (avant le commit), on utilise un autre outil : <code>prek</code>.</p>
+</div>
+</div>
 </section>
 <section id="prek" class="level2">
 <h2 class="anchored" data-anchor-id="prek">prek</h2>
-<p>On va utiliser <strong>prek</strong>, un gestionnaire de hooks Git. Mais c’est quoi un hook ? C’est simplement une action qui se déclenche automatiquement à un moment précis de votre workflow Git. Dans notre cas, on veut qu’avant chaque <code>git commit</code>, le code soit automatiquement vérifié et formaté. Si quelque chose ne va pas, le commit est bloqué. Vous corrigez, vous recommittez. Plus personne ne pousse du code mal formaté sans s’en rendre compte.</p>
-<p>Info</p>
-<p>Pourquoi <code>prek</code> plutôt que <code>pre-commit</code>, l’outil historique ? Parce qu’il est écrit en Rust, donc beaucoup plus rapide (on a déjà parlé de la “<em>Rustisation</em>” de Python en cours 👀) et qu’il utilise <code>uv</code> pour gérer ses dépendances, ce qui tombe bien puisque c’est déjà notre outil de référence.</p>
+<p><code>prek</code> est un gestionnaire de <code>hooks</code> <code>Git</code>. Un <code>hook</code> est une action déclenchée automatiquement à un moment précis de votre workflow <code>Git</code>. Ici, on veut qu’avant chaque <code>git commit</code> le code soit automatiquement vérifié et formaté. Si quelque chose ne va pas, le commit est bloqué : vous corrigez, vous recommittez. Plus personne ne pousse du code mal formaté sans s’en rendre compte.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Pourquoi <code>prek</code> plutôt que <code>pre-commit</code> ?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>pre-commit</code> est l’outil historique. <code>prek</code> fait la même chose mais il est écrit en <code>Rust</code> (donc beaucoup plus rapide) et utilise <code>uv</code> pour gérer ses dépendances, ce qui tombe bien puisque c’est déjà notre outil de référence.</p>
+</div>
+</div>
 <p>Installez <code>prek</code> via <code>uv</code> :</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> tool install prek</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">PATH</span><span class="op">=</span><span class="st">"/home/onyxia/.local/bin:</span><span class="va">$PATH</span><span class="st">"</span> <span class="co"># si vous n'êtes pas sur Onyxia, bon courage</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">PATH</span><span class="op">=</span><span class="st">"/home/onyxia/.local/bin:</span><span class="va">$PATH</span><span class="st">"</span>  <span class="co"># si vous n'êtes pas sur Onyxia, adaptez le chemin</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ex">prek</span> install</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Créez ensuite un fichier <code>.pre-commit-config.yaml</code> à la racine du projet :</p>
+Créez ensuite un fichier <code>.pre-commit-config.yaml</code> à la racine du projet :
+<details>
+<summary>
+Voir le code
+</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">repos</span><span class="kw">:</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">repo</span><span class="kw">:</span><span class="at"> https://github.com/astral-sh/ruff-pre-commit</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">rev</span><span class="kw">:</span><span class="at"> v0.11.0</span></span>
@@ -562,25 +622,51 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> ruff</span></span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">args</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">--fix</span><span class="kw">]</span></span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">id</span><span class="kw">:</span><span class="at"> ruff-format</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Testez en lançant manuellement les hooks sur tout le projet :</p>
+</details>
+<p>Testez en lançant manuellement les <code>hooks</code> sur tout le projet :</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">prek</span> run <span class="at">--all-files</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><code>prek</code> a lancé les commandes ruff pour vous, par contre plusieurs lignes ne peuvent pas être résolues automatiquement, c’est notamment le cas des erreurs E501, lorsqu’une ligne est “trop longue”.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../images/image-15.png" class="img-fluid figure-img"></p>
-<figcaption>image.png</figcaption>
-</figure>
+<p><code>prek</code> a lancé les commandes <code>ruff</code> pour vous. En revanche, plusieurs lignes ne peuvent pas être résolues automatiquement, notamment les erreurs <code>E501</code> qui signalent une ligne trop longue.</p>
+<div style="text-align: center;">
+<p><img src="../images/image-15.png" class="img-fluid"></p>
 </div>
-<p>C’est parfois acceptable d’avoir une ligne longue, notamment pour une docstring sur une seule ligne. L’astuce à utiliser avec parcimonie est de rajouter le commentaire <code># noqa: E501</code> à la fin de la ligne concernée pour dire à <code>ruff</code> de l’ignorer : (notez bien qu’il faut deux espaces entre le dernier caractère et votre commentaire)</p>
+<p>Une ligne longue est parfois acceptable, par exemple pour une docstring sur une seule ligne. L’astuce, à utiliser avec parcimonie, consiste à ajouter le commentaire <code># noqa: E501</code> en fin de ligne pour dire à <code>ruff</code> de l’ignorer. Notez qu’il faut <strong>deux espaces</strong> entre le dernier caractère et le commentaire :</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Génère la structure attendue pour le projet dans le stockage distant si elle n'existe pas."""</span>  <span class="co"># noqa: E501</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Une fois que tout est corrigé, je vous invite à refaire vos commits et à push votre code pour vérifier que la CI accepte les changements.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../images/image-16.png" class="img-fluid figure-img"></p>
-<figcaption>image.png</figcaption>
-</figure>
+<p>Une fois tout corrigé, refaites vos commits et pushez pour vérifier que la <code>CI</code> accepte les changements.</p>
+<div style="text-align: center;">
+<p><img src="../images/image-16.png" class="img-fluid"></p>
 </div>
-<p>Si tout est ok, vous pouvez également lancer une PR pour merger votre avancement sur la branche development et pushez également sur main.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Documentation des outils
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><a href="https://docs.github.com/en/actions">GitHub Actions</a></li>
+<li><a href="https://docs.astral.sh/ruff/configuration/">ruff configuration</a> et <a href="https://docs.astral.sh/ruff/rules/">liste des règles</a></li>
+<li><a href="https://docs.astral.sh/uv/">uv</a></li>
+<li><a href="https://github.com/j178/prek">prek</a></li>
+<li><a href="https://pre-commit.com/">pre-commit</a></li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Git time
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Si tout est au vert, ouvrez une PR pour merger votre avancement sur <code>development</code> puis sur <code>main</code>.</p>
+</div>
+</div>
 
 
 </section>
@@ -1001,7 +1087,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../pages/06-tests.html" class="pagination-link" aria-label="Tester, c’est douter">
+      <a href="../pages/06-tests.html" class="pagination-link" aria-label="Tester, c'est douter">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Tester, c’est douter</span>
       </a>          
   </div>
