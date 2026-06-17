@@ -438,6 +438,7 @@ Ce module a trois responsabilités : récupérer les données brutes, les nettoy
 
 <details>
 <summary>Afficher le code</summary>
+
 ```python
 """Data retrieval, cleaning and validation functions."""
 
@@ -529,6 +530,7 @@ Ce module a une responsabilité unique : manipuler le fichier Excel du reporting
 
 <details>
 <summary>Afficher le code</summary>
+
 ```python
 """Reporting generation functions."""
 
@@ -621,7 +623,7 @@ Vous reconnaitrez ici les fonctions du TD, quasiment inchangées, on a juste ajo
 
 ### main.py
 
-C'est le chef d'orchestre et le point d’entrée pour notre sous-package *financial-reporting*. Il instancie le filesystem S3, appelle chaque fonction dans le bon ordre et gère les interactions avec notre stockage distant. Là où chaque module fait une chose, `main.py` assemble le tout.
+C'est le chef d'orchestre et le point d’entrée pour notre sous-package *financial-reporting*. Il instancie le *filesystem S3*, appelle chaque fonction dans le bon ordre et gère les interactions avec notre stockage distant. Là où chaque module fait une chose, `main.py` assemble le tout.
 
 <details>
 <summary>Afficher le code</summary>

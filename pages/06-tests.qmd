@@ -1,19 +1,57 @@
 ---
-title: "Tester, c’est douter"
+title: "Tester, c'est douter"
 ---
 
 Bien que je vous encourage à douter de tout dans la vie, si cet adage vous est familier, j'espère qu'il ne guide pas votre façon d'écrire du code.
 
-Les tests font en effet partie intégrante du développement logiciel. Ils permettent de confirmer un comportement attendu, prévenir les régressions, documenter implicitement les règles métier et d’avoir confiance dans votre code. 
+Les tests font partie intégrante du développement logiciel. Ils permettent de confirmer un comportement attendu, de prévenir les régressions, de documenter implicitement les règles métier et d'avoir confiance dans votre code.
 
-> Avec autant d'avantages, il serait dommage de ***douter*** de leur utilité ******n’est ce pas ? 🥁
-> 
+> Avec autant d'avantages, il serait dommage de *douter* de leur utilité n'est-ce pas ? 🥁
 
-Il en existe plusieurs types, trop pour les lister, nous nous intéresserons particulièrement aux **tests unitaires** et aux **tests d’intégration**. Nous les aborderons ici comme une étape à part entière, même si en pratique vous devriez tester votre code au fil de son développement.
+Il en existe plusieurs types, trop pour les lister ici. Nous nous intéresserons particulièrement aux **tests unitaires** et aux **tests d'intégration**. Nous les aborderons comme une étape à part entière, même si en pratique vous devriez tester votre code au fil de son développement.
 
-Nous utiliserons `pytest`, la librairie de référence pour structurer tout ça.
+## Le cycle de test
 
-Pour commencer je vous invite à vous rendre dans votre Terminal pour structurer votre dossier de tests. On part sur une approche plutôt classique ou 1 module de code à tester = 1 module de test.
+Dans une approche classique, on écrit d'abord le code puis les tests qui le valident. Tant qu'un test échoue, on corrige, et une fois au vert on commit. La `CI` rejoue alors ces mêmes tests à chaque push pour garantir que rien ne casse dans le temps.
+
+```{mermaid}
+%%| label: fig-cycle-test
+%%| fig-cap: "Le cycle de test classique : coder, tester, corriger, intégrer."
+flowchart LR
+    A[Écrire le code] --> B[Écrire les tests]
+    B --> C{Les tests passent ?}
+    C -->|Non| D[Corriger]
+    D --> C
+    C -->|Oui| E[Commit / Push]
+    E --> F[La CI relance les tests]
+```
+
+::: {.callout-tip}
+## Et si on inversait l'ordre ? Le TDD
+Le **Test Driven Development** (développement piloté par les tests) renverse la logique : on écrit le test **avant** le code. Le cycle tient en trois temps, souvent résumé par *red, green, refactor* :
+
+1. **Red** : on écrit un test pour une fonctionnalité qui n'existe pas encore. Il échoue, c'est normal.
+2. **Green** : on écrit le minimum de code pour faire passer le test.
+3. **Refactor** : on améliore le code en gardant le test au vert.
+
+L'intérêt est qu'on ne code que ce qui est nécessaire pour répondre à un besoin exprimé sous forme de test, ce qui force à clarifier le comportement attendu avant l'implémentation. Nous ne ferons pas de TDD strict dans ce projet, mais c'est une méthode qui vaut le détour et que vous croiserez peut-être un jour (Si vous en parlez à la machine à café avec vos devs vous passerez soit pour quelqu'un de détestable soit pour un homme de culture).
+:::
+
+## Structurer le dossier de tests
+
+Nous utiliserons [`pytest`](https://docs.pytest.org/), la librairie de référence de l'écosystème Python. Rendez-vous dans votre `Terminal` pour structurer le dossier de tests. On part sur une approche classique : un module de code testé correspond à un module de test.
+
+::: {.callout-caution}
+## À vous de jouer
+Structurez votre dossier de tests en ligne de commande en respectant l'approche un module de code = un module de test :
+
+- Créez le dossier `tests/` à la racine du projet
+- Ajoutez-y un `__init__.py` pour en faire un package
+- Créez un module de test par module à tester : `test_data.py` et `test_reporting.py`
+:::
+
+<details>
+<summary>Solution</summary>
 
 ```bash
 mkdir tests
@@ -21,30 +59,41 @@ touch tests/__init__.py
 touch tests/test_data.py 
 touch tests/test_reporting.py
 ```
+</details>
 
-Ajoutez ensuite les dépendances nécessaires à votre projet.
+Ajoutez ensuite les dépendances nécessaires à votre projet. `pytest` est le framework de test et `pytest-cov` son extension dédiée à la mesure de couverture, dont nous nous servirons un peu plus loin.
 
 ```bash
 uv add --dev pytest pytest-cov
 ```
 
-Pour lancer les tests, voici la commande à retenir :
+Pour lancer la suite de tests, la commande à retenir est :
 
 ```bash
-uv pytest . # Vous pouvez aussi mettre le chemin d'un module pour lancer les tests sur ce celui ci uniquement
+uv run pytest .
 ```
 
-INFO
+Par défaut `pytest` découvre automatiquement tous les fichiers commençant par `test_` et exécute les fonctions qu'ils contiennent. Vous pouvez aussi cibler un seul module en lui passant son chemin, pratique quand vous travaillez sur une fonction précise et ne voulez pas relancer toute la suite :
 
-Pourquoi `--dev` ? Ces dépendances ne sont utiles qu'en phase de développement. Une fois votre projet livré en production, `pytest` et `pytest-cov` ne servent à rien. En les excluant, on allège le projet et on évite ainsi d'embarquer du *tooling* inutile dans notre image Docker.
+```bash
+uv run pytest tests/test_data.py
+```
 
+::: {.callout-note}
+## Pourquoi `--dev` ?
+Ces dépendances ne sont utiles qu'en phase de développement. Une fois le projet livré en production, `pytest` et `pytest-cov` ne servent plus à rien : on ne lance pas de tests dans un conteneur de prod.
+
+En les déclarant comme dépendances de développement, elles sont installées sur votre machine et dans la CI, mais peuvent être exclues de l'image finale. On allège ainsi le projet et on évite d'embarquer du *tooling* inutile dans notre image Docker.
+:::
 ## Les tests unitaires
 
-Les tests unitaires sont les tests les plus granulaires qui existent : ils testent une seule unité de code de manière isolée, typiquement une fonction ou une méthode. L'idée est simple, pour un *input* donné, on vérifie que *l'output* correspond exactement à ce qu'on attend, sans dépendance externe (base de données, API, fichier).
+Les tests unitaires sont les plus granulaires qui existent : ils testent une seule unité de code de manière isolée, typiquement une fonction ou une méthode. L'idée est simple : pour un *input* donné, on vérifie que l'*output* correspond exactement à ce qu'on attend, sans aucune dépendance externe (base de données, API, fichier).
 
 C'est la base de toute stratégie de test : rapides à exécuter, faciles à localiser quand ils échouent et ils forcent à écrire des fonctions qui font une seule chose. Si un test unitaire est difficile à écrire, c'est souvent le signe que la fonction testée est trop complexe.
 
 ### test_data.py
+
+Avant d'écrire nos tests, un mot sur les **fixtures**. Une fixture `pytest` est un objet réutilisable, préparé une fois et injecté dans les tests qui en ont besoin. Ici on s'en sert pour créer un petit DataFrame qui simule les données brutes, plutôt que de le recréer dans chaque test.
 
 ```python
 """Tests for data.py"""
@@ -64,7 +113,27 @@ def raw_df():
         "id_agent":     ["AUTO", "AGT001", "AUTO"],
         "drc_complet":  [True, False, True],
     })
+```
 
+Pour rappel, `clean_data` remplace les `score` manquants par `S`, les `score_prev` manquants par `N`, et tout `id_agent` différent de `AUTO` par `MANUEL`.
+
+::: {.callout-caution}
+## À vous de jouer
+En partant de la fixture `raw_df`, écrivez un test par comportement attendu. Chaque test prend `raw_df` en argument, appelle `clean_data` et vérifie le résultat avec un `assert`. Couvrez les cas suivants :
+
+- les `score` manquants sont bien remplacés par `S`
+- les `score_prev` manquants sont bien remplacés par `N`
+- un `id_agent` valant `AUTO` reste `AUTO`, tout autre devient `MANUEL`
+- après nettoyage, `score` et `score_prev` ne contiennent plus aucun `NaN`
+- `clean_data` ne supprime aucune ligne
+
+Règle d'or : un test vérifie un seul comportement et son nom doit dire exactement ce qu'il vérifie.
+:::
+
+<details>
+<summary>Solution</summary>
+
+```python
 def test_clean_data_fills_score(raw_df):
     """Les NaN de score sont remplacés par S."""
     result = clean_data(raw_df)
@@ -92,20 +161,36 @@ def test_clean_data_preserves_rows(raw_df):
     """clean_data ne supprime pas de lignes."""
     result = clean_data(raw_df)
     assert len(result) == len(raw_df)
-
 ```
 
-Quelques explications sur le code ci-dessus.
+</details>
 
-D'abord, qu'est-ce qu'une **fixture** `pytest` ? C'est un mécanisme qui permet de déclarer un objet réutilisable dans tous nos tests. Dans notre cas, `raw_df` crée un DataFrame minimal qui simule les données brutes. Pourquoi ne pas utiliser les vraies données me diriez-vous? Deux raisons : elles sont trop volumineuses pour des tests unitaires (on verra plus en détails dans la partie CI) et surtout elles introduiraient une dépendance externe or nous voulons ici tester la logique de transformation, pas la lecture d'un fichier distant ou local.
+Quelques explications maintenant que vous avez essayé.
 
-Pour la façon d'écrire les tests, on s'impose une règle simple : un test par comportement attendu. On prévoit également les cas un peu limites comme la suppression involontaire de lignes. Chaque test vérifie une seule chose et son nom dit exactement ce qu'il vérifie ainsi lorsqu’un test échoue, vous savez immédiatement quoi chercher.
+Pourquoi ne pas utiliser les vraies données dans la fixture ? Pour deux raisons. Elles sont trop volumineuses pour des tests unitaires censés être instantanés et surtout parcequ'elles introduiraient une dépendance externe. Or on veut ici tester la logique de nos transformations, pas la lecture d'un fichier distant ou local. Un `DataFrame` écrit à la main suffit et reste totalement sous contrôle.
 
-Vous vous demandez peut-être pourquoi `get_data` n'est pas testée ici. La réponse est simple : elle fait un appel réseau vers `MinIO`, ce qui en fait un test d'intégration et non un test unitaire. Rappelez vous toujours qu’un test unitaire ne dépend de rien d'externe.
+Sur la façon d'écrire les tests, on s'impose une règle simple : un test par comportement attendu. On prévoit aussi les cas limites, comme la suppression involontaire de lignes. Chaque test vérifie une seule chose et son nom dit exactement ce qu'il vérifie. Ainsi lorsqu'un test échoue, vous savez immédiatement quoi chercher sans avoir à lire son contenu.
+
+Vous vous demandez peut-être pourquoi `get_data` n'est pas testée ici. La réponse découle directement de ce qu'on vient de dire : elle fait un appel réseau vers `MinIO`, ce qui en fait un **test d'intégration** et non un test unitaire. Retenez bien qu'un test unitaire ne dépend de rien d'externe, on la testera donc dans la section suivante.
 
 ### test_reporting.py
 
-Pour tester nos fonctions  `fill_indicators` et `write_data_to_excel`, on a besoin d’un fichier Excel, là encore on ne va pas utiliser un fichier classique mais plutôt une fixture. 
+Pour tester `fill_indicators` et `write_data_to_excel`, on a besoin d'un fichier Excel. Là encore on ne va pas utiliser un vrai fichier du projet mais des fixtures : un workbook minimal créé à la volée et un petit DataFrame simulant des données nettoyées.
+
+Cette fois je vous laisse écrire les fixtures vous-mêmes, vous avez vu le principe juste avant.
+
+::: {.callout-caution}
+## À vous de jouer
+Dans `tests/test_reporting.py`, écrivez deux fixtures :
+
+- `minimal_workbook` : crée un fichier `.xlsx` temporaire contenant deux feuilles, `DATA` et `Indicateurs`, et renvoie son chemin. Utilisez la fixture intégrée `tmp_path` de `pytest` pour écrire dans un dossier temporaire, et `openpyxl` pour construire le workbook.
+- `sample_df` : renvoie un petit DataFrame avec les colonnes `type_client`, `score`, `score_prev`, `id_agent` et `drc_complet`.
+
+Indice : `tmp_path` est une fixture fournie par `pytest`, vous n'avez qu'à la déclarer en argument pour obtenir un dossier temporaire propre à chaque test.
+:::
+
+<details>
+<summary>Solution</summary>
 
 ```python
 """Tests for reporting.py"""
@@ -140,7 +225,16 @@ def sample_df():
         "id_agent":    ["AUTO", "MANUEL"],
         "drc_complet": [True, False],
     })
+```
 
+</details>
+
+Une fois les fixtures en place, on peut écrire les tests. Voici ceux des deux fonctions :
+
+<details>
+<summary>Voir le code</summary>
+
+```python
 class TestFillIndicators:
 
     def test_countif_formula(self, minimal_workbook):
@@ -179,8 +273,9 @@ class TestWriteDataToExcel:
 
     def test_data_inserted(self, minimal_workbook, sample_df):
         """Vérifie que les données sont bien insérées dans la feuille DATA."""
-        from medas_financial_reporting.config import LOCAL_TEMPLATE, LOCAL_TMP_DIR
         import shutil
+
+        from medas_financial_reporting.config import LOCAL_TEMPLATE, LOCAL_TMP_DIR
         LOCAL_TMP_DIR.mkdir(exist_ok=True)
         shutil.copy(minimal_workbook, LOCAL_TEMPLATE)
 
@@ -192,45 +287,51 @@ class TestWriteDataToExcel:
         assert ws.cell(row=2, column=1).value == "PP"
         wb.close()
 ```
+</details>
 
-Petit twist par rapport au module de test précédent, on utilise ici des classes pour regrouper les tests par fonction. C’est une convention à appliquer en utilisant `pytest.` La logique veut donc que la classe `TestFillIndicators` regroupe tous les tests de `fill_indicators` et `TestWriteDataToExcel` ceux de `write_to_excel`. Ce n’est bien sûr pas obligatoire mais fortement conseillé pour faciliter la lecture et vérifier que vous n’avez rien oublié.
+Le twist par rapport au module précédent : on regroupe ici les tests dans des **classes**. La classe `TestFillIndicators` rassemble tous les tests de `fill_indicators`, et `TestWriteDataToExcel` ceux de `write_data_to_excel`. Ce n'est pas obligatoire mais c'est une convention `pytest` pratique : elle facilite la lecture et permet de vérifier d'un coup d'œil qu'aucun comportement n'a été oublié pour une fonction donnée.
 
-En parlant de rien oublier, ça serait pas mal s’il existait un petit outil nous permettant d’afficher la couverture de nos tests non ? Par exemple on aimerait savoir qu’on a couvert 50, 70 ou 100% de nos fonctionnalités dans un module ? Bonne nouvelle : ça existe. La dépendance que je vous ai fait ajouté avant : `pytest-cov` comme son nom l’indique permet de générer un rapport de couverture de tests. Pour l’exécuter vous pouvez utiliser la commande suivante : `uv run pytest --cov==src/medas_financial_reporting.` 
+## La couverture de tests
 
-![image.png](../images/image-11.png)
+En parlant de ne rien oublier, ce serait pratique d'avoir un outil qui affiche la part de notre code réellement couverte par les tests. Bonne nouvelle, c'est exactement le rôle de `pytest-cov`, la dépendance ajoutée plus tôt. Pour générer le rapport :
 
-Quelques critiques sur le rapport généré.
+```bash
+uv run pytest --cov=src/medas_financial_reporting
+```
 
-Le rapport généré par `pytest-cov` permet d'avoir une vue d'ensemble sur la couverture de vos tests. Comme nous venons de l'évoquer, il permet de visualiser rapidement si on est passé à côté de quelque chose.
+::: {style="text-align: center;"}
+![](../images/image-11.png)
+:::
 
-Cette métrique n'est pas à optimiser. Je sais qu'il peut être tentant de vouloir avoir 100% partout, mais cela ne traduit en rien la qualité ni la fiabilité de vos tests. Sachez donc que si un jour quelqu'un vous dit "*C'est quoi ce code sans 100% de coverage ? Je ne veux pas de ça chez moi*", ce discours est nul et non avenu.
+::: {.callout-warning}
+## La couverture est un indicateur, pas un objectif
+Il peut être tentant de viser 100% partout, mais ce chiffre ne traduit en rien la qualité ni la fiabilité de vos tests. Si un jour quelqu'un vous lance *"c'est quoi ce code sans 100% de coverage ?"* : restez calme, prenez une grande inspiration et essayez de lui expliquer que ce qu'il demande n'a pas de sens. (avec tout le respect bien sûr)
 
- Bien sûr il ne faut pas tomber dans l’extrême opposé avec un coverage très faible en vous disant “*pas de soucis ça marche sur mon ordi ^^*”. 
+Toutefois, l'inverse est tout aussi vrai : un coverage très faible avec un *"pas de souci, ça marche sur mon ordi ^^"* n'est pas plus sérieux. Le bon réflexe est de voir la couverture comme un signal. Si le projet évolue plus vite que les tests et que le coverage chute, c'est souvent le signe qu'il faut revoir vos méthodes de développement.
+:::
 
-Le coverage est un indicateur, pas un objectif. Si le projet évolue plus vite que les tests et que le coverage chute, c'est peut-être le signe qu'il faut revoir vos méthodes de développement. Il arrive qu'on laisse les tests de côté au profit d'un "*dev rapide d'une feature*" pour faire plaisir au métier et respecter les délais de livraison. Le coverage sera là pour vous rappeler à l'ordre.
+Pour en revenir à notre rapport, voir `main.py` à 0% peut sembler gênant. Mais si on repense à notre architecture, c'est normal : `main.py` est un module d'orchestration. Il ne fait qu'appeler des fonctions déjà testées individuellement. On ne va ni les retester, ni vérifier qu'on les a appelées dans le bon ordre.
 
-![image.png](../images/image-12.png)
-
-Pour en revenir à notre rapport de coverage, il est vrai que voir `main.py` à 0% peut sembler gênant. Mais si on repense à notre architecture, c'est totalement normal. `main.py` est un module d'orchestration, il appelle des fonctions qui sont elles-mêmes déjà testées. On ne va pas les retester une deuxième fois, ni vérifier qu'on les a bien appelées dans le bon ordre.
-
-La solution est simple : on l'exclut du rapport. 
-
-Dans `pyproject.toml` :
+La solution est simple : on l'exclut du rapport. Dans `pyproject.toml` :
 
 ```toml
 [tool.coverage.run]
 omit = [
     "src/medas_financial_reporting/financial_reporting/main.py",
-    "src/storage.py"
+    "src/medas_financial_reporting/storage.py",
 ]
 ```
 
-Notez bien cependant que vous signez ici un contrat avec votre vous du futur. En excluant `main.py` du coverage, vous vous engagez à ne jamais y mettre de logique critique qui mériterait d'être testée. `main.py` doit rester un module d'orchestration pure, rien de plus. Le jour où vous sentez l'envie d'y glisser un traitement (même un tout petit), c'est le signe qu'il faut créer une nouvelle fonction dans le bon module.
+::: {.callout-note}
+## Un contrat avec votre vous du futur
+En excluant `main.py` du coverage, vous vous engagez à ne jamais y mettre de logique critique qui mériterait d'être testée. `main.py` doit rester un module d'orchestration pur. Le jour où vous ressentez l'envie d'y glisser un traitement, même minime, c'est le signe qu'il faut plutôt créer une fonction dans le module approprié.
+:::
 
-## Les tests d’intégration
+## Les tests d'intégration
 
-Comme vous l'auriez normalement compris, là où les tests unitaires ne dépendent de rien d'externe, les tests d'intégration vérifient que notre code s'intègre bien avec des éléments extérieurs. `get_data()` en est le parfait exemple : elle effectue un appel réseau vers MinIO. On ne teste pas ici la logique de récupération des données mais le fait que nos composants arrivent bien à communiquer.
-Faites un nouveau fichier `tests/test_integration.py` :
+Là où les tests unitaires ne dépendent de rien d'externe, les tests d'intégration vérifient que notre code communique bien avec des éléments extérieurs. `get_data()` en est le parfait exemple : elle effectue un appel réseau vers `MinIO`. On ne teste plus ici la logique de transformation mais le fait que nos composants arrivent à dialoguer avec le stockage distant.
+
+Créez un nouveau fichier `tests/test_integration.py` :
 
 ```python
 """Tests d'intégration"""
@@ -262,19 +363,19 @@ def test_get_data_schema_valid():
     assert df["drc_complet"].dtype == bool
 ```
 
-Quelques précisions sur le décorateur utilisé. `@pytest.mark.integration` indique à `pytest` que ces tests doivent être lancés séparément de nos tests unitaires. De la même façon, ajoutez `@pytest.mark.unit` devant chacun de vos tests unitaires pour garder un comportement symétrique.
+Un mot sur le décorateur `@pytest.mark.integration`. Il sert à **marquer** ces tests pour pouvoir les lancer séparément des tests unitaires. C'est important car les tests d'intégration sont plus lents et nécessitent un accès réseau : on ne veut pas forcément les jouer à chaque fois. Pour garder un comportement symétrique, ajoutez `@pytest.mark.unit` devant chacun de vos tests unitaires.
 
-Modifiez ensuite votre `pyproject.toml` :
+Déclarez ensuite ces marqueurs dans `pyproject.toml`, sinon `pytest` émettra un avertissement pour marqueur inconnu :
 
 ```toml
 [tool.pytest.ini_options]
 markers = [
     "unit: tests unitaires",
-    "integration: tests intégration",
+    "integration: tests d'intégration",
 ]
 ```
 
-Vos commandes pour lancer les tests deviennent :
+Vos commandes deviennent alors :
 
 ```bash
 # Tests unitaires uniquement
@@ -287,13 +388,11 @@ uv run pytest -m integration
 uv run pytest
 ```
 
-TODO :
+::: {.callout-note}
+## Pour aller plus loin : les tests end-to-end (E2E)
+Les tests E2E (*end-to-end*) vont encore plus loin que les tests d'intégration : ils valident la chaîne complète, du déclenchement du pipeline jusqu'au résultat final. Là où un test d'intégration vérifie qu'un composant communique avec un autre, un test E2E lance tout `main()` et contrôle que le reporting est bien généré localement, uploadé sur `MinIO` et correctement rempli.
 
-INFO POUR ALLEZ + LOIN
-
-Les tests E2E (end to end)
-
-Explications 
+On utilise ici une fixture de portée *session* avec `autouse=True` pour ne lancer le pipeline qu'une seule fois, puis chaque test inspecte le résultat.
 
 ```python
 """Tests End-to-End."""
@@ -337,18 +436,21 @@ def test_indicators_are_filled():
     assert ws["E8"].value is not None
     assert ws["E10"].value is not None
     wb.close()
-
 ```
 
-update du pyproject.toml
+Sans oublier d'ajouter le marqueur `e2e` dans `pyproject.toml` :
 
 ```toml
 [tool.pytest.ini_options]
 markers = [
     "unit: tests unitaires",
-    "integration: tests intégration",
+    "integration: tests d'intégration",
     "e2e: tests end-to-end",
 ]
 ```
+:::
 
-RAPPEL GIT TIME pushez commité etc
+::: {.callout-note}
+## Git time
+Pensez à commit et push votre travail avant de passer à la suite.
+:::

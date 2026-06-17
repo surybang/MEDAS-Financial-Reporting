@@ -17,13 +17,13 @@ Mais ils ont des limites structurelles dans un contexte réglementaire :
 sécurisé n'est pas leur cas d'usage premier.
 
 - **Format de sortie contraint.** Ces outils sont conçus pour l'agrégation et la 
-visualisation. Dès que le rapport attend des cellules précises, des formules Excel 
+visualisation. Dès que le rapport attend des cellules précises, des formules `Excel` 
 natives ou des onglets structurés selon un format imposé par le régulateur, ils 
-montrent leurs limites. On ne *génère* pas un fichier `.xlsx` avec Power BI : 
+montrent leurs limites. On ne *génère* pas un fichier `.xlsx` avec `Power BI` : 
 on produit un dashboard. Ce n'est pas la même chose.
 
 - **Auditabilité limitée.** Un outil de BI repose souvent sur des manipulations 
-manuelles ou semi-manuelles en amont (le code DAX jamais audité). Avec Python, toute la chaîne de la donnée 
+manuelles ou semi-manuelles en amont (le code DAX jamais audité). Avec `Python`, toute la chaîne de la donnée 
 brute jusqu'au fichier final est du **code versionnable, auditable et rejouable**. 
 Dans un contexte réglementaire, c'est un argument fort : vous pouvez démontrer 
 exactement comment le chiffre en cellule `B12` a été produit, à quelle date 
