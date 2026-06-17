@@ -2,18 +2,25 @@
 title: "Intégration Continue (CI)"
 ---
 
-Parmi les avantages des tests que nous avons évoqués, il y avait la prévention des régressions. Mais si vous avez bien suivi, vous vous demandez peut-être comment des tests lancés manuellement peuvent prévenir quoi que ce soit. Après tout, rien ne vous empêche de ne pas les lancer du tout.
+Parmi les avantages des tests, nous avons cité la prévention des régressions. Mais si vous avez bien suivi, vous vous demandez peut-être comment des tests lancés manuellement peuvent prévenir quoi que ce soit. Après tout, rien ne vous empêche de ne pas les lancer du tout.
 
-![image.png](../images/image-13.png)
+::: {style="text-align: center;"}
+![](../images/image-13.png)
+:::
 
-C'est là qu'intervient l'**intégration continue**. L'idée est la suivante : automatiser un ensemble de vérifications et d'actions à chaque fois que du code est poussé sur GitHub. Dans notre cas on va commencer par automatiser trois choses : le formatage du code, le lint et les tests unitaires. Mais la CI peut aller bien plus loin et c'est bien ce dont j’ai l’intention de vous montrer plus tard, entre autre : construire et publier une image Docker, déclencher un déploiement automatique via ArgoCD. C'est un outil central dans n'importe quelle équipe data ou software moderne. Plus personne ne peut merger du code cassé, mal formaté ou qui ne respecte pas les règles du projet sans que la CI ne le détecte.
+C'est là qu'intervient l'**intégration continue**. L'idée : automatiser un ensemble de vérifications à chaque fois que du code est poussé sur GitHub. Nous allons commencer par en automatiser trois : le formatage du code, le lint et les tests unitaires. Mais la CI peut aller bien plus loin, comme nous le verrons plus tard : construire et publier une image Docker, ou déclencher un déploiement automatique via ArgoCD. C'est un outil central dans n'importe quelle équipe data ou software moderne : plus personne ne peut merger du code cassé, mal formaté ou ne respectant pas les règles du projet sans que la CI ne le détecte.
 
-Je n'ai pas la prétention de tout vous expliquer sur ce sujet qui est vaste. Ce que je veux vous montrer ici, c'est comment mettre en place une CI simple et efficace qui nous aidera dans notre développement data. Pour aller plus loin, je vous redirige vers le blog de Stéphane Robert qui en parle bien mieux que moi :
+Je n'ai pas la prétention de tout couvrir sur ce sujet vaste. L'objectif est de mettre en place une CI simple et efficace pour notre développement data.
+
+::: {.callout-tip}
+## Pour aller plus loin
+Le blog de Stéphane Robert traite ces sujets en profondeur :
 
 - [GitHub Actions](https://blog.stephane-robert.info/docs/pipeline-cicd/github/workflows/)
 - [YAML](https://blog.stephane-robert.info/docs/developper/autres-langages/yaml/)
+:::
 
-Puisque nous utilisons GitHub, nous allons utiliser **GitHub Actions**. Le principe est le suivant : on crée un dossier `.github/workflows/` à la racine du projet dans lequel on place des fichiers YAML qui décrivent les actions à exécuter. YAML signifie *Yet Another Markup Language* c'est un format de configuration que vous retrouverez partout dans l'écosystème DevOps.
+Puisque nous utilisons GitHub, nous allons nous appuyer sur **GitHub Actions**. Le principe : on crée un dossier `.github/workflows/` à la racine du projet, dans lequel on place des fichiers YAML décrivant les actions à exécuter. YAML (*Yet Another Markup Language*) est un format de configuration que vous retrouverez partout dans l'écosystème DevOps.
 
 ```bash
 mkdir -p .github/workflows
@@ -22,15 +29,26 @@ touch .github/workflows/ci.yaml
 
 ## ruff
 
-Avant de passer à l'écriture de la CI, je vous invite à rajouter `ruff` en dépendance de développement dans votre projet :
+Avant d'écrire la CI, ajoutez `ruff` comme dépendance de développement :
 
 ```bash
 uv add --dev ruff
 ```
 
-Puis à le configurer dans votre `pyproject.toml` :
+`ruff` est un linter et formateur Python écrit en Rust, extrêmement rapide, qui remplace à lui seul plusieurs outils historiques comme `flake8`, `isort` ou `black`. Nous en avons parlé en cours : c'est un bon exemple de la "rustisation" de l'outillage Python.
 
-TODO : consignes pour créer 
+::: {.callout-caution}
+## À vous de jouer
+À partir de la [documentation de configuration de `ruff`](https://docs.astral.sh/ruff/configuration/), ajoutez la configuration suivante à votre `pyproject.toml` :
+
+- une longueur de ligne maximale de 88 caractères
+- une version cible Python 3.13
+- l'exclusion du dossier `notebooks/`
+- l'activation des règles `E`, `F` et `I`
+:::
+
+<details>
+<summary>Solution</summary>
 
 ```toml
 [tool.ruff]
@@ -42,18 +60,13 @@ exclude = ["notebooks/"]
 select = ["E", "F", "I"]
 ```
 
-Quelques mots sur cette configuration. `line-length = 88` est la longueur de ligne maximale, c'est la valeur par défaut de `black` et elle est devenue une convention dans l'écosystème Python. `target-version = "py313"` indique à `ruff` la version de Python cible pour adapter ses règles. 
-On exclut au passage les notebooks du linting via `exclude = ["notebooks/"]`, un notebook est par nature un espace d'exploration, il serait contre-productif d'y appliquer les mêmes règles qu'en production. Enfin `select` définit les catégories de règles à appliquer : `E` pour les erreurs de style PEP8, `F` pour les erreurs logiques détectées par `pyflakes` (variables non utilisées, imports manquants...) et `I` pour le tri automatique des imports.
+</details>
 
-INFO
-
-description de ruff + rappel qu’on en a parlé en cours 
+Quelques mots sur cette configuration. `line-length = 88` est la longueur de ligne maximale, valeur par défaut de `black` devenue une convention dans l'écosystème Python. `target-version = "py313"` indique à `ruff` la version cible pour adapter ses règles. On exclut les notebooks du linting via `exclude = ["notebooks/"]` : un notebook est par nature un espace d'exploration, il serait contre-productif d'y appliquer les règles de production. Enfin `select` définit les catégories de règles appliquées : `E` pour les erreurs de style PEP8, `F` pour les erreurs logiques détectées par `pyflakes` (variables non utilisées, imports manquants) et `I` pour le tri automatique des imports.
 
 ## ci.yaml
 
-TODO: rajouter commande création fichier ci.yaml + consignes sur la partie + lien vers une doc officielle
-
-Notre CI va effectuer trois vérifications à chaque push sur une branche : le formatage du code, le lint avec `ruff` et les tests unitaires avec `pytest`. Vous remarquerez que les tests d'intégration sont exclus puisqu’ils nécessitent une connexion réseau et des credentials MinIO qu'on ne va pas exposer dans la CI pour des raisons de sécurité évidentes. 
+Notre CI effectuera trois vérifications à chaque push : le formatage du code, le lint avec `ruff` et les tests unitaires avec `pytest`. Vous remarquerez que les tests d'intégration sont exclus : ils nécessitent une connexion réseau et des credentials MinIO qu'on ne veut pas exposer dans la CI pour des raisons de sécurité évidentes.
 
 ```yaml
 name: CI
@@ -96,29 +109,37 @@ jobs:
         run: uv run pytest -m unit
 ```
 
-Concernant la structure du fichier, retenez que la partie supérieure (`on`) permet de spécifier le **quand** et le **où** : sur quel événement et sur quelles branches la CI se déclenche. La partie `jobs` spécifie le **quoi** : les étapes à exécuter dans l'ordre.
+Concernant la structure du fichier : la partie supérieure `on` spécifie le **quand** et le **où**, c'est-à-dire sur quel événement et sur quelles branches la CI se déclenche. La partie `jobs` spécifie le **quoi**, les étapes à exécuter dans l'ordre.
 
-Vous noterez qu'on indique à GitHub d'utiliser `ubuntu-latest`. De cette manière, on permet à GitHub d’instancier ce qu'on appelle un **runner,**  une petite machine virtuelle éphémère qui exécute les étapes de votre CI. Vous n'avez rien à gérer, GitHub s'en occupe. (Merci GitHub)
+On indique à `GitHub` d'utiliser `ubuntu-latest` : on lui demande ainsi d'instancier un **runner**, une petite machine virtuelle éphémère qui exécute les étapes de la CI. Vous n'avez rien à gérer, GitHub s'en occupe.
 
-Commitez et pushez votre code, puis rendez-vous dans l'onglet **Actions** de votre repo sur GitHub. Vous devriez voir votre première CI se lancer. D’abord félicitations parce que vous venez peut-être de lancer votre toute première CI par contre c’est pas de chance, elle ne fonctionne pas. 
+Commitez, pushez, puis rendez-vous dans l'onglet **Actions** de votre repo. Vous devriez voir votre première `CI` se lancer. Félicitations, vous venez peut-être de lancer votre toute première CI. Par contre, pas de chance : elle échoue.
 
-![image.png](../images/image-14.png)
+::: {style="text-align: center;"}
+![](../images/image-14.png)
+:::
 
-Pas d’inquiétude, c'est une bonne nouvelle : la CI a détecté que le code n'était pas formaté comme il le devrait. Vous vous dites alors peut-être : "*mais on connaît la commande pour reformater le code proprement, pourquoi on ne l'utilise pas directement dans la CI ?*" Je vous répondrai qu'hérétiques que vous êtes, la CI n'a pas pour vocation de modifier votre code et ne devrait jamais le faire. Je vous laisse imaginer toutes les complications que ça pourrait engendrer : des modifications automatiques sur des branches, des commits générés par la CI, des conflits en cascade. Pour y remédier, on utilise un autre outil : `prek`  (spoiler).
+Pas d'inquiétude, c'est même une bonne nouvelle : la `CI` a détecté que le code n'était pas formaté correctement, on peut donc dire qu'elle a fait son job. Vous vous dites peut-être : *"on connaît la commande pour reformater le code, pourquoi ne pas l'utiliser directement dans la CI ?"*
+
+::: {.callout-important}
+## La CI ne modifie jamais votre code
+La `CI` a pour rôle de **vérifier**, jamais de **modifier** votre code. Imaginez les complications : des modifications automatiques sur vos branches, des commits générés par la `CI`, des conflits en cascade. Une `CI` doit constater un problème et échouer, à vous de corriger. Pour formater automatiquement au bon moment (avant le commit), on utilise un autre outil : `prek`.
+:::
 
 ## prek
 
-On va utiliser **prek**, un gestionnaire de hooks Git. Mais c'est quoi un hook ? C'est simplement une action qui se déclenche automatiquement à un moment précis de votre workflow Git. Dans notre cas, on veut qu'avant chaque `git commit`, le code soit automatiquement vérifié et formaté. Si quelque chose ne va pas, le commit est bloqué. Vous corrigez, vous recommittez. Plus personne ne pousse du code mal formaté sans s'en rendre compte.
+`prek` est un gestionnaire de `hooks` `Git`. Un `hook` est une action déclenchée automatiquement à un moment précis de votre workflow `Git`. Ici, on veut qu'avant chaque `git commit` le code soit automatiquement vérifié et formaté. Si quelque chose ne va pas, le commit est bloqué : vous corrigez, vous recommittez. Plus personne ne pousse du code mal formaté sans s'en rendre compte.
 
-Info
-
-Pourquoi `prek` plutôt que `pre-commit`, l'outil historique ? Parce qu'il est écrit en Rust, donc beaucoup plus rapide (on a déjà parlé de la “*Rustisation*” de Python en cours 👀) et qu'il utilise `uv` pour gérer ses dépendances, ce qui tombe bien puisque c'est déjà notre outil de référence.
+::: {.callout-note}
+## Pourquoi `prek` plutôt que `pre-commit` ?
+`pre-commit` est l'outil historique. `prek` fait la même chose mais il est écrit en `Rust` (donc beaucoup plus rapide) et utilise `uv` pour gérer ses dépendances, ce qui tombe bien puisque c'est déjà notre outil de référence.
+:::
 
 Installez `prek` via `uv` :
 
 ```bash
 uv tool install prek
-export PATH="/home/onyxia/.local/bin:$PATH" # si vous n'êtes pas sur Onyxia, bon courage
+export PATH="/home/onyxia/.local/bin:$PATH"  # si vous n'êtes pas sur Onyxia, adaptez le chemin
 prek install
 ```
 
@@ -134,24 +155,40 @@ repos:
       - id: ruff-format
 ```
 
-Testez en lançant manuellement les hooks sur tout le projet :
+Testez en lançant manuellement les `hooks` sur tout le projet :
 
 ```bash
 prek run --all-files
 ```
 
-`prek` a lancé les commandes ruff pour vous, par contre plusieurs lignes ne peuvent pas être résolues automatiquement, c’est notamment le cas des erreurs E501, lorsqu’une ligne est “trop longue”. 
+`prek` a lancé les commandes `ruff` pour vous. En revanche, plusieurs lignes ne peuvent pas être résolues automatiquement, notamment les erreurs `E501` qui signalent une ligne trop longue.
 
-![image.png](../images/image-15.png)
+::: {style="text-align: center;"}
+![](../images/image-15.png)
+:::
 
-C'est parfois acceptable d'avoir une ligne longue, notamment pour une docstring sur une seule ligne. L'astuce à utiliser avec parcimonie est de rajouter le commentaire `# noqa: E501` à la fin de la ligne concernée pour dire à `ruff` de l'ignorer : (notez bien qu’il faut deux espaces entre le dernier caractère et votre commentaire)
+Une ligne longue est parfois acceptable, par exemple pour une docstring sur une seule ligne. L'astuce, à utiliser avec parcimonie, consiste à ajouter le commentaire `# noqa: E501` en fin de ligne pour dire à `ruff` de l'ignorer. Notez qu'il faut **deux espaces** entre le dernier caractère et le commentaire :
 
 ```python
 """Génère la structure attendue pour le projet dans le stockage distant si elle n'existe pas."""  # noqa: E501
 ```
 
-Une fois que tout est corrigé, je vous invite à refaire vos commits et à push votre code pour vérifier que la CI accepte les changements.
+Une fois tout corrigé, refaites vos commits et pushez pour vérifier que la `CI` accepte les changements.
 
-![image.png](../images/image-16.png)
+::: {style="text-align: center;"}
+![](../images/image-16.png)
+:::
 
-Si tout est ok, vous pouvez également lancer une PR pour merger votre avancement sur la branche development et pushez également sur main.
+::: {.callout-tip}
+## Documentation des outils
+- [GitHub Actions](https://docs.github.com/en/actions)
+- [ruff configuration](https://docs.astral.sh/ruff/configuration/) et [liste des règles](https://docs.astral.sh/ruff/rules/)
+- [uv](https://docs.astral.sh/uv/)
+- [prek](https://github.com/j178/prek)
+- [pre-commit](https://pre-commit.com/)
+:::
+
+::: {.callout-tip}
+## Git time
+Si tout est au vert, ouvrez une PR pour merger votre avancement sur `development` puis sur `main`.
+:::
