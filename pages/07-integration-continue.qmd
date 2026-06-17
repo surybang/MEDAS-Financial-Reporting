@@ -8,9 +8,9 @@ Parmi les avantages des tests, nous avons cité la prévention des régressions.
 ![](../images/image-13.png)
 :::
 
-C'est là qu'intervient l'**intégration continue**. L'idée : automatiser un ensemble de vérifications à chaque fois que du code est poussé sur GitHub. Nous allons commencer par en automatiser trois : le formatage du code, le lint et les tests unitaires. Mais la CI peut aller bien plus loin, comme nous le verrons plus tard : construire et publier une image Docker, ou déclencher un déploiement automatique via ArgoCD. C'est un outil central dans n'importe quelle équipe data ou software moderne : plus personne ne peut merger du code cassé, mal formaté ou ne respectant pas les règles du projet sans que la CI ne le détecte.
+C'est là qu'intervient l'**intégration continue**. L'idée : automatiser un ensemble de vérifications à chaque fois que du code est poussé sur `GitHub`. Nous allons commencer par en automatiser trois : le formatage du code, le lint et les tests unitaires. Mais la `CI` peut aller bien plus loin, comme nous le verrons plus tard : construire et publier une image `Docker`, ou déclencher un déploiement automatique via `ArgoCD`. C'est un outil central dans n'importe quelle équipe data ou software moderne : plus personne ne peut merger du code cassé, mal formaté ou ne respectant pas les règles du projet sans que la `CI` ne le détecte.
 
-Je n'ai pas la prétention de tout couvrir sur ce sujet vaste. L'objectif est de mettre en place une CI simple et efficace pour notre développement data.
+Je n'ai pas la prétention de tout couvrir sur ce sujet vaste. L'objectif est de mettre en place une `CI` simple et efficace pour notre développement data.
 
 ::: {.callout-tip}
 ## Pour aller plus loin
@@ -20,7 +20,7 @@ Le blog de Stéphane Robert traite ces sujets en profondeur :
 - [YAML](https://blog.stephane-robert.info/docs/developper/autres-langages/yaml/)
 :::
 
-Puisque nous utilisons GitHub, nous allons nous appuyer sur **GitHub Actions**. Le principe : on crée un dossier `.github/workflows/` à la racine du projet, dans lequel on place des fichiers YAML décrivant les actions à exécuter. YAML (*Yet Another Markup Language*) est un format de configuration que vous retrouverez partout dans l'écosystème DevOps.
+Puisque nous utilisons `GitHub`, nous allons nous appuyer sur **GitHub Actions**. Le principe : on crée un dossier `.github/workflows/` à la racine du projet, dans lequel on place des fichiers YAML décrivant les actions à exécuter. YAML (*Yet Another Markup Language*) est un format de configuration que vous retrouverez partout dans l'écosystème DevOps.
 
 ```bash
 mkdir -p .github/workflows
@@ -29,13 +29,13 @@ touch .github/workflows/ci.yaml
 
 ## ruff
 
-Avant d'écrire la CI, ajoutez `ruff` comme dépendance de développement :
+Avant d'écrire la `CI`, ajoutez `ruff` comme dépendance de développement :
 
 ```bash
 uv add --dev ruff
 ```
 
-`ruff` est un linter et formateur Python écrit en Rust, extrêmement rapide, qui remplace à lui seul plusieurs outils historiques comme `flake8`, `isort` ou `black`. Nous en avons parlé en cours : c'est un bon exemple de la "rustisation" de l'outillage Python.
+`ruff` est un linter et formateur Python écrit en `Rust`, extrêmement rapide, qui remplace à lui seul plusieurs outils historiques comme `flake8`, `isort` ou `black`. Nous en avons parlé en cours : c'est un bon exemple de la "rustisation" de l'outillage `Python`.
 
 ::: {.callout-caution}
 ## À vous de jouer
@@ -66,7 +66,10 @@ Quelques mots sur cette configuration. `line-length = 88` est la longueur de lig
 
 ## ci.yaml
 
-Notre CI effectuera trois vérifications à chaque push : le formatage du code, le lint avec `ruff` et les tests unitaires avec `pytest`. Vous remarquerez que les tests d'intégration sont exclus : ils nécessitent une connexion réseau et des credentials MinIO qu'on ne veut pas exposer dans la CI pour des raisons de sécurité évidentes.
+Notre CI effectuera trois vérifications à chaque push : le formatage du code, le lint avec `ruff` et les tests unitaires avec `pytest`. Vous remarquerez que les tests d'intégration sont exclus : ils nécessitent une connexion réseau et des credentials `MinIO` qu'on ne veut pas exposer dans la `CI` pour des raisons de sécurité évidentes.
+
+<details>
+<summary>Voir le code</summary>
 
 ```yaml
 name: CI
@@ -108,12 +111,13 @@ jobs:
       - name: 🧪 Lancer les tests unitaires
         run: uv run pytest -m unit
 ```
+</details>
 
-Concernant la structure du fichier : la partie supérieure `on` spécifie le **quand** et le **où**, c'est-à-dire sur quel événement et sur quelles branches la CI se déclenche. La partie `jobs` spécifie le **quoi**, les étapes à exécuter dans l'ordre.
+Concernant la structure du fichier : la partie supérieure `on` spécifie le **quand** et le **où**, c'est-à-dire sur quel événement et sur quelles branches la `CI` se déclenche. La partie `jobs` spécifie le **quoi**, les étapes à exécuter dans l'ordre.
 
-On indique à `GitHub` d'utiliser `ubuntu-latest` : on lui demande ainsi d'instancier un **runner**, une petite machine virtuelle éphémère qui exécute les étapes de la CI. Vous n'avez rien à gérer, GitHub s'en occupe.
+On indique à `GitHub` d'utiliser `ubuntu-latest` : on lui demande ainsi d'instancier un **runner**, une petite machine virtuelle éphémère qui exécute les étapes de la `CI`. Vous n'avez rien à gérer, `GitHub` s'en occupe.
 
-Commitez, pushez, puis rendez-vous dans l'onglet **Actions** de votre repo. Vous devriez voir votre première `CI` se lancer. Félicitations, vous venez peut-être de lancer votre toute première CI. Par contre, pas de chance : elle échoue.
+Commitez, pushez, puis rendez-vous dans l'onglet **Actions** de votre repo. Félicitations, vous venez peut-être de lancer votre toute première `CI`. Par contre, pas de chance : elle échoue.
 
 ::: {style="text-align: center;"}
 ![](../images/image-14.png)
@@ -144,6 +148,8 @@ prek install
 ```
 
 Créez ensuite un fichier `.pre-commit-config.yaml` à la racine du projet :
+<details>
+<summary>Voir le code</summary>
 
 ```yaml
 repos:
@@ -154,6 +160,7 @@ repos:
         args: [--fix]
       - id: ruff-format
 ```
+</details>
 
 Testez en lançant manuellement les `hooks` sur tout le projet :
 

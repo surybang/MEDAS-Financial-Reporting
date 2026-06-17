@@ -12,7 +12,7 @@ Il en existe plusieurs types, trop pour les lister ici. Nous nous intéresserons
 
 ## Le cycle de test
 
-Dans une approche classique, on écrit d'abord le code puis les tests qui le valident. Tant qu'un test échoue, on corrige, et une fois au vert on commit. La CI rejoue alors ces mêmes tests à chaque push pour garantir que rien ne casse dans le temps.
+Dans une approche classique, on écrit d'abord le code puis les tests qui le valident. Tant qu'un test échoue, on corrige, et une fois au vert on commit. La `CI` rejoue alors ces mêmes tests à chaque push pour garantir que rien ne casse dans le temps.
 
 ```{mermaid}
 %%| label: fig-cycle-test
