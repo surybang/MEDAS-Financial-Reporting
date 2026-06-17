@@ -6,7 +6,7 @@ Avant de commencer à coder il faut savoir quoi coder. Nous avons déjà établi
 
 ## Qu'est-ce qu'un package ?
 
-Qu'est-ce qui définit concrètement un package en Python ? Est-ce qu'il suffit de créer un dossier et d'y mettre des fichiers `.py` ?
+Qu'est-ce qui définit concrètement un package en `Python` ? Est-ce qu'il suffit de créer un dossier et d'y mettre des fichiers `.py` ?
 
 Pas tout à fait. Un dossier seul ne suffit pas : il faut également un fichier `__init__.py` à l'intérieur. Mais ce n'est pas tout car en Python le mot *package* recouvre en réalité deux notions qui se chevauchent et qu'il est important de distinguer.
 
