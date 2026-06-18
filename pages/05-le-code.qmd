@@ -762,7 +762,7 @@ reporting = "medas_financial_reporting.financial_reporting.main:main"
 
 Puis testez dans votre Terminal avec `uv run reporting` 😊.
 
-::: {.callout-note}
+::: {.callout-tip}
 ## Git time
 Si vous ne l'avez pas fait au fil de l'eau, pensez à bien gérer vos commits et à push vers GitHub avant de continuer.
 :::
