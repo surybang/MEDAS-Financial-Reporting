@@ -2,24 +2,255 @@
 title: "Streamlit"
 ---
 
-::: {.callout-warning}
-## En cours de rédaction
-Cette section est encore à l'état de brouillon, son contenu va évoluer.
+Jusqu'ici nous avons construit un package qui génère un reporting, mais ce package reste pilotable uniquement en ligne de commande. Pour le faire tourner il faut un terminal, un environnement Python configuré et savoir quelle commande lancer. Autrement dit, notre code n'est utilisable que par des personnes techniques, nous-mêmes essentiellement.
+
+Or l'objectif d'un reporting est qu'il soit consulté par d'autres : le métier, la direction, des partenaires. C'est précisément le rôle de `Streamlit` : apporter une **interface utilisateur** par-dessus notre package. Le moteur de génération ne change pas, on vient simplement l'habiller d'une couche accessible depuis un navigateur, pour que n'importe qui puisse déclencher, consulter et explorer le reporting sans écrire une seule ligne de code.
+
+## Qu'est-ce que Streamlit ?
+
+`Streamlit`[^streamlit] est un framework `Python` qui permet de construire des applications web de visualisation de données sans écrire une ligne de `HTML`, `CSS` ou `JavaScript` (bien qu'on pourrait en injecter 👀). On écrit du `Python`, `Streamlit` se charge de l'interface.
+
+> L'intérêt ici est de franchir un cap : on ne livre plus un fichier, on expose un produit.
+
+## Redonner une place aux visualisations du notebook
+
+Souvenez-vous du notebook de départ. Il contenait des visualisations qui nous servaient à explorer les données et à comprendre leur forme, mais qui n'avaient aucune raison de figurer dans le reporting `Excel` final. Le reporting répond à un besoin réglementaire précis : des indicateurs attendus avec une contrainte de format. Pas de place pour de la dataviz.
+
+Ces visualisations ne sont pas perdues pour autant, elles trouvent ici leur véritable place. Dans l'application `Streamlit`, on les remet au service de l'utilisateur, non plus pour notre exploration de développeur mais pour lui permettre d'**observer la qualité des données** et de repérer d'éventuelles incohérences. La répartition PP/PM, la distribution des scores, la matrice de transition : autant de vues qui donnent une lecture immédiate de l'état des données sous-jacentes au reporting.
+
+C'est une distinction importante à garder en tête : le **reporting** est un livrable figé et contraint, l'**application** est un espace d'observation et de service. Les deux s'appuient sur les mêmes données mais répondent à des besoins différents (en se complètant).
+
+## Aller plus loin : du reporting au data product
+
+Notre application reste une démonstration. Un produit abouti pourrait offrir bien plus à l'utilisateur :
+
+- **filtrer sur une période précise** et visualiser l'état des données à cette période
+- **générer et télécharger un reporting à la demande** correspondant exactement au périmètre filtré, plutôt qu'un fichier unique figé
+- **comparer plusieurs périodes** pour suivre l'évolution des indicateurs dans le temps
+
+On passerait alors d'un reporting statique à un véritable outil d'analyse en libre-service où l'utilisateur compose lui-même la vue dont il a besoin. C'est tout l'enjeu d'un **data product** : ne pas seulement livrer un chiffre, mais donner les moyens de l'explorer et de le contextualiser les données.
+
+::: {.callout-note}
+## Et à plus grande échelle ?
+En poussant la logique, une application comme la nôtre pourrait devenir une brique d'un **data marketplace**.
+
+On pourrait imaginer que l'application mérite son propre repo, indépendant du code de génération, capable d'afficher n'importe quel reporting et pas seulement le nôtre. Se pose alors une question de **gouvernance** : une application par métier exposant plusieurs reportings ? Une plateforme centralisée pour toute l'entreprise ? Ce sont des choix d'architecture qui dépassent le cadre de ce projet mais qu'il est bon d'avoir en tête.
 :::
 
-intro à ce qu’est streamlit (description/définition) partager notre création, parle de data product, ouvert à une large game d’utilisateur via des apps webs
+## Le code
 
-data product, data markeplace, self bi, metabase / superset, mériterait peut-être son propre repo pour afficher tout type de reporting et pas seulement celui qu’on construit ensemble, à nosu de décider de la gouvernance (1 streamlit pour 1 métier pour X reportings différent)
+Pour lancer l'application, il nous faut un entrypoint comme on l'a fait pour le reporting. ⬇
 
-- on ne gère pas l’authent non plus
-- on veut quand même montrer qu’on peut logger
+::: {.callout-caution}
+## À vous de jouer
+Ajoutez un entrypoint `app` dans votre `pyproject.toml` pour pouvoir lancer l'application avec `uv run app`.
 
-créer un entrypoint dans pyproject.toml
+Attention au piège : une app Streamlit ne se lance pas en appelant `main()` directement, mais via la commande `streamlit run`. Pointez donc votre entrypoint vers la fonction `run()` du module, pas vers `main()`.
+:::
+
+<details>
+<summary>Solution</summary>
 
 ```toml
 [project.scripts]
 reporting = "medas_financial_reporting.financial_reporting.main:main"
-app = "medas_financial_reporting.streamlit_app.app:main"
+app = "medas_financial_reporting.streamlit_app.app:run"
 ```
 
-Lancer l’application avec `uv run app`
+L'application se lance alors avec :
+
+```bash
+uv run app
+```
+
+</details>
+
+Voici maintenant l'application dans son ensemble. Elle charge les données nettoyées depuis `MinIO`, affiche des métriques et des graphiques, propose une matrice de transition des scores et un explorateur filtrable, et permet de télécharger le reporting `Excel`.
+
+<details>
+<summary>Voir le code</summary>
+
+```python
+"""Streamlit app for financial reporting."""
+
+import matplotlib.pyplot as plt
+import pandas as pd
+import streamlit as st
+from loguru import logger
+
+from medas_financial_reporting.config import (
+    S3_BUCKET
+)
+from medas_financial_reporting.storage import get_fs, read_processed_data, read_reporting
+
+
+def run():
+    """Entry point pour lancer l'app Streamlit."""
+    import sys
+
+    from streamlit.web import cli as stcli
+
+    sys.argv = ["streamlit", "run", __file__]
+    stcli.main()
+
+
+# Palette partagée
+PALETTE = {
+    "PP": "#2C5F8A",
+    "PM": "#7BAFD4",
+    "V": "#4A7FA5",
+    "O": "#6B9EBF",
+    "R": "#8DBDD8",
+    "S": "#B0CDE0",
+    "N": "#D0E4EF",
+    "AUTO": "#2C5F8A",
+    "MANUEL": "#7BAFD4",
+}
+
+
+@st.cache_data(ttl=3600)
+def load_data() -> pd.DataFrame:
+    """Charge les données nettoyées (avec cache Streamlit)."""
+    return read_processed_data(get_fs(), S3_BUCKET)
+
+
+@st.cache_data(ttl=3600)
+def load_reporting() -> bytes:
+    """Charge le reporting final (avec cache Streamlit)."""
+    return read_reporting(get_fs(), S3_BUCKET)
+
+
+def plot_bar(series: pd.Series, title: str) -> plt.Figure:
+    """Génère un graphique en barres avec la palette partagée."""
+    fig, ax = plt.subplots(figsize=(6, 3))
+    colors = [PALETTE.get(str(k), "#7BAFD4") for k in series.index]
+    series.plot(kind="bar", ax=ax, color=colors, edgecolor="white", linewidth=0.5)
+    ax.set_title(title, fontsize=12, pad=10)
+    ax.set_xlabel("")
+    ax.tick_params(axis="x", rotation=0)
+    ax.spines[["top", "right"]].set_visible(False)
+    fig.tight_layout()
+    return fig
+
+
+def main():
+    st.set_page_config(
+        page_title="Reporting Financier",
+        page_icon="📊",
+        layout="wide",
+    )
+
+    # Sidebar
+    st.sidebar.title("📊 Reporting Financier")
+    st.sidebar.markdown("---")
+
+    try:
+        reporting_bytes = load_reporting()
+        if st.sidebar.download_button(
+            label="📥 Télécharger le reporting",
+            data=reporting_bytes,
+            file_name="Reporting_Financier.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        ):
+            logger.info("Reporting téléchargé")
+    except Exception:
+        st.sidebar.warning("Reporting non disponible")
+
+    st.sidebar.markdown("---")
+
+    # Chargement des données
+    with st.spinner("Chargement des données..."):
+        df = load_data()
+
+    st.title("Vue d'ensemble")
+    st.caption(f"{len(df):,} clients")
+
+    # Métriques
+    col1, col2, col3, col4 = st.columns(4)
+    col1.metric("Clients PP", df[df["type_client"] == "PP"].shape[0])
+    col2.metric("Clients PM", df[df["type_client"] == "PM"].shape[0])
+    col3.metric("DRC complets", int(df["drc_complet"].sum()))
+    col4.metric("Scorés AUTO", int((df["id_agent"] == "AUTO").sum()))
+
+    st.markdown("---")
+
+    # Graphiques
+    col1, col2 = st.columns(2)
+    with col1:
+        st.pyplot(plot_bar(df["type_client"].value_counts(), "Répartition PP / PM"))
+    with col2:
+        st.pyplot(plot_bar(df["score"].value_counts(), "Distribution des scores"))
+
+    col3, col4 = st.columns(2)
+    with col3:
+        st.pyplot(plot_bar(df["id_agent"].value_counts(), "Répartition AUTO / MANUEL"))
+    with col4:
+        drc_rate = df.groupby("type_client")["drc_complet"].mean() * 100
+        st.pyplot(plot_bar(drc_rate, "Taux DRC complété (%)"))
+
+    # Matrice des scores
+    st.markdown("---")
+    st.subheader("Matrice de transition des scores")
+    transition = pd.crosstab(df["score_prev"], df["score"], margins=True)
+    st.dataframe(transition, width="stretch")
+
+    # Exploration
+    st.markdown("---")
+    st.subheader("Exploration personnalisée")
+    col1, col2 = st.columns(2)
+    with col1:
+        type_sel = st.multiselect("Type de client", df["type_client"].unique())
+    with col2:
+        score_sel = st.multiselect("Score", df["score"].unique())
+
+    df_filtered = df.copy()
+    if type_sel:
+        df_filtered = df_filtered[df_filtered["type_client"].isin(type_sel)]
+    if score_sel:
+        df_filtered = df_filtered[df_filtered["score"].isin(score_sel)]
+
+    st.dataframe(df_filtered, width="stretch")
+    st.caption(f"{len(df_filtered):,} lignes affichées")
+
+
+if __name__ == "__main__":
+    main()
+```
+</details>
+
+## Ce qu'on a fait et comment
+
+Quelques points à relever sur cette implémentation. La lecture des données et du reporting ne se fait pas directement dans l'app : on appelle `read_processed_data` et `read_reporting` du module `storage`, les mêmes interactions MinIO que celles utilisées pour la génération. L'app se contente de les envelopper dans `load_data` et `load_reporting`, qui n'ajoutent qu'une seule chose : le cache.
+
+C'est tout l'intérêt d'avoir isolé les interactions MinIO dans un module partagé. La logique de stockage reste centralisée et testable dans `storage.py`, sans aucune dépendance à Streamlit, tandis que le décorateur `@st.cache_data(ttl=3600)` reste là où il a du sens, dans la couche interface. Il met en cache le résultat des chargements pendant une heure : sans lui, chaque interaction de l'utilisateur (un filtre, un clic) rechargerait les données depuis `MinIO`, ce qui serait lent et inutile. Enfin `PALETTE` centralise les couleurs pour garder une cohérence visuelle entre tous les graphiques.
+
+::: {.callout-tip}
+## Rappel SRP
+C'est aussi un bon rappel que la séparation des responsabilités a ses subtilités. La règle « la lecture MinIO va dans `storage` » est juste, mais le cache, lui, n'appartient pas au stockage : c'est une préoccupation de présentation, il reste donc dans l'app.
+:::
+
+
+::: {.callout-caution}
+## Une application monolithique et c'est ok
+Soyons honnêtes : tout ce code vit dans un seul fichier et la fonction `main()` fait beaucoup de choses à la fois. Chargement, mise en page, métriques, graphiques, matrice, exploration, tout est empilé dans une seule fonction. Nous sommes devenus comme ceux que nous avions pourtant juré de combattre mais je peux tout vous expliquer.
+
+::: {style="text-align: center;"}
+![](https://64.media.tumblr.com/c8153f3ede4e755f1f68faced7cab9c3/e3540861a67dbd28-b4/s400x600/f3a0f6cd184dd195062ae219071e754da51efac3.gif)
+:::
+
+Vu le faible nombre de fonctionnalités, c'est acceptable pour une démonstration et ça garde l'app facile à lire d'un seul coup d'œil. Mais ce n'est pas ce qu'on ferait sur un produit destiné à grandir. On aurait alors tout intérêt à découper : une fonction par section de l'interface (les métriques, les graphiques, l'explorateur), voire des modules séparés pour la mise en page et la logique de données. C'est exactement le principe de **responsabilité unique** appliqué avec soin au package `financial_reporting` qu'on s'autorise ici à relâcher parce que le périmètre est petit. 🤏
+:::
+
+## Ce qu'on n'a pas fait
+
+Deux limites assumées qu'il faut avoir en tête avant de parler de mise en production réelle :
+
+- **L'authentification.** Notre app est ouverte : n'importe qui ayant l'URL y accède. Dans un contexte réel, un reporting financier exigerait une couche d'authentification et de gestion des droits que nous ne mettons pas en place ici.
+- **La gestion fine des erreurs.** Le chargement du reporting est protégé par un `try/except` très large qui se contente d'afficher un avertissement. C'est suffisant pour une démo, mais en production on distinguerait les cas (fichier absent, credentials expirés, stockage indisponible) pour donner un message clair à l'utilisateur et tracer l'incident dans les logs.
+
+::: {.callout-tip}
+## Git time
+Pensez à commit et push votre travail avant de passer à la suite.
+:::
+
+[^streamlit]: Documentation de `Streamlit` : <https://docs.streamlit.io/>. Pour aller plus loin, deux ressources vidéo : [cette présentation de Xavki](https://www.youtube.com/watch?v=0ODb-_L6vHM) et la [chaîne d'Andfanilo](https://www.youtube.com/@andfanilo/videos).
