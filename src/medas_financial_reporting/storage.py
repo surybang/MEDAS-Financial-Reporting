@@ -82,3 +82,27 @@ def save_processed_data(fs: s3fs.S3FileSystem, df: pd.DataFrame, bucket: str) ->
     except Exception as e:
         logger.error(f"Impossible de sauvegarder les données : {e}")
         raise RuntimeError(f"Impossible de sauvegarder les données : {e}") from e
+
+
+def read_processed_data(fs: s3fs.S3FileSystem, bucket: str) -> pd.DataFrame:
+    """Charge les données nettoyées depuis MinIO."""
+    path = f"{bucket}/{S3_DATA_PROCESSED_KEY}"
+    logger.info(f"Chargement des données nettoyées depuis {path}")
+    try:
+        with fs.open(path, "rb") as f:
+            return pd.read_parquet(f)
+    except Exception as e:
+        logger.error(f"Impossible de charger les données : {e}")
+        raise RuntimeError(f"Impossible de charger les données : {e}") from e
+
+
+def read_reporting(fs: s3fs.S3FileSystem, bucket: str) -> bytes:
+    """Charge le reporting final depuis MinIO."""
+    path = f"{bucket}/{S3_OUTPUT_KEY}"
+    logger.info(f"Chargement du reporting depuis {path}")
+    try:
+        with fs.open(path, "rb") as f:
+            return f.read()
+    except Exception as e:
+        logger.error(f"Impossible de charger le reporting : {e}")
+        raise RuntimeError(f"Impossible de charger le reporting : {e}") from e
