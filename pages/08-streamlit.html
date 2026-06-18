@@ -318,7 +318,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pages/08-streamlit.html">En cours de rédaction</a></li><li class="breadcrumb-item"><a href="../pages/08-streamlit.html">Streamlit</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pages/01-introduction.html">Le long fleuve pas si tranquille</a></li><li class="breadcrumb-item"><a href="../pages/08-streamlit.html">Streamlit</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -347,7 +347,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
- <span class="menu-text">Le tutoriel</span></a>
+ <span class="menu-text">Le long fleuve pas si tranquille</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -395,6 +395,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Intégration Continue (CI)</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/08-streamlit.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Streamlit</span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -408,12 +414,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../pages/08-streamlit.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Streamlit</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="../pages/09-docker-argocd.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Docker</span></a>
   </div>
@@ -425,14 +425,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#quest-ce-que-streamlit" id="toc-quest-ce-que-streamlit" class="nav-link active" data-scroll-target="#quest-ce-que-streamlit">Qu’est-ce que Streamlit ?</a></li>
+  <li><a href="#redonner-une-place-aux-visualisations-du-notebook" id="toc-redonner-une-place-aux-visualisations-du-notebook" class="nav-link" data-scroll-target="#redonner-une-place-aux-visualisations-du-notebook">Redonner une place aux visualisations du notebook</a></li>
+  <li><a href="#aller-plus-loin-du-reporting-au-data-product" id="toc-aller-plus-loin-du-reporting-au-data-product" class="nav-link" data-scroll-target="#aller-plus-loin-du-reporting-au-data-product">Aller plus loin : du reporting au data product</a></li>
+  <li><a href="#le-code" id="toc-le-code" class="nav-link" data-scroll-target="#le-code">Le code</a></li>
+  <li><a href="#ce-quon-a-fait-et-comment" id="toc-ce-quon-a-fait-et-comment" class="nav-link" data-scroll-target="#ce-quon-a-fait-et-comment">Ce qu’on a fait et comment</a></li>
+  <li><a href="#ce-quon-na-pas-fait" id="toc-ce-quon-na-pas-fait" class="nav-link" data-scroll-target="#ce-quon-na-pas-fait">Ce qu’on n’a pas fait</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pages/08-streamlit.html">En cours de rédaction</a></li><li class="breadcrumb-item"><a href="../pages/08-streamlit.html">Streamlit</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pages/01-introduction.html">Le long fleuve pas si tranquille</a></li><li class="breadcrumb-item"><a href="../pages/08-streamlit.html">Streamlit</a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title">Streamlit</h1>
 </div>
@@ -451,34 +462,289 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<div class="callout callout-style-default callout-warning callout-titled">
+<p>Jusqu’ici nous avons construit un package qui génère un reporting, mais ce package reste pilotable uniquement en ligne de commande. Pour le faire tourner il faut un terminal, un environnement Python configuré et savoir quelle commande lancer. Autrement dit, notre code n’est utilisable que par des personnes techniques, nous-mêmes essentiellement.</p>
+<p>Or l’objectif d’un reporting est qu’il soit consulté par d’autres : le métier, la direction, des partenaires. C’est précisément le rôle de <code>Streamlit</code> : apporter une <strong>interface utilisateur</strong> par-dessus notre package. Le moteur de génération ne change pas, on vient simplement l’habiller d’une couche accessible depuis un navigateur, pour que n’importe qui puisse déclencher, consulter et explorer le reporting sans écrire une seule ligne de code.</p>
+<section id="quest-ce-que-streamlit" class="level2">
+<h2 class="anchored" data-anchor-id="quest-ce-que-streamlit">Qu’est-ce que Streamlit ?</h2>
+<p><code>Streamlit</code><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> est un framework <code>Python</code> qui permet de construire des applications web de visualisation de données sans écrire une ligne de <code>HTML</code>, <code>CSS</code> ou <code>JavaScript</code> (bien qu’on pourrait en injecter 👀). On écrit du <code>Python</code>, <code>Streamlit</code> se charge de l’interface.</p>
+<blockquote class="blockquote">
+<p>L’intérêt ici est de franchir un cap : on ne livre plus un fichier, on expose un produit.</p>
+</blockquote>
+</section>
+<section id="redonner-une-place-aux-visualisations-du-notebook" class="level2">
+<h2 class="anchored" data-anchor-id="redonner-une-place-aux-visualisations-du-notebook">Redonner une place aux visualisations du notebook</h2>
+<p>Souvenez-vous du notebook de départ. Il contenait des visualisations qui nous servaient à explorer les données et à comprendre leur forme, mais qui n’avaient aucune raison de figurer dans le reporting <code>Excel</code> final. Le reporting répond à un besoin réglementaire précis : des indicateurs attendus avec une contrainte de format. Pas de place pour de la dataviz.</p>
+<p>Ces visualisations ne sont pas perdues pour autant, elles trouvent ici leur véritable place. Dans l’application <code>Streamlit</code>, on les remet au service de l’utilisateur, non plus pour notre exploration de développeur mais pour lui permettre d’<strong>observer la qualité des données</strong> et de repérer d’éventuelles incohérences. La répartition PP/PM, la distribution des scores, la matrice de transition : autant de vues qui donnent une lecture immédiate de l’état des données sous-jacentes au reporting.</p>
+<p>C’est une distinction importante à garder en tête : le <strong>reporting</strong> est un livrable figé et contraint, l’<strong>application</strong> est un espace d’observation et de service. Les deux s’appuient sur les mêmes données mais répondent à des besoins différents (en se complètant).</p>
+</section>
+<section id="aller-plus-loin-du-reporting-au-data-product" class="level2">
+<h2 class="anchored" data-anchor-id="aller-plus-loin-du-reporting-au-data-product">Aller plus loin : du reporting au data product</h2>
+<p>Notre application reste une démonstration. Un produit abouti pourrait offrir bien plus à l’utilisateur :</p>
+<ul>
+<li><strong>filtrer sur une période précise</strong> et visualiser l’état des données à cette période</li>
+<li><strong>générer et télécharger un reporting à la demande</strong> correspondant exactement au périmètre filtré, plutôt qu’un fichier unique figé</li>
+<li><strong>comparer plusieurs périodes</strong> pour suivre l’évolution des indicateurs dans le temps</li>
+</ul>
+<p>On passerait alors d’un reporting statique à un véritable outil d’analyse en libre-service où l’utilisateur compose lui-même la vue dont il a besoin. C’est tout l’enjeu d’un <strong>data product</strong> : ne pas seulement livrer un chiffre, mais donner les moyens de l’explorer et de le contextualiser les données.</p>
+<div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Warning</span>En cours de rédaction
+<span class="screen-reader-only">Note</span>Et à plus grande échelle ?
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Cette section est encore à l’état de brouillon, son contenu va évoluer.</p>
+<p>En poussant la logique, une application comme la nôtre pourrait devenir une brique d’un <strong>data marketplace</strong>.</p>
+<p>On pourrait imaginer que l’application mérite son propre repo, indépendant du code de génération, capable d’afficher n’importe quel reporting et pas seulement le nôtre. Se pose alors une question de <strong>gouvernance</strong> : une application par métier exposant plusieurs reportings ? Une plateforme centralisée pour toute l’entreprise ? Ce sont des choix d’architecture qui dépassent le cadre de ce projet mais qu’il est bon d’avoir en tête.</p>
 </div>
 </div>
-<p>intro à ce qu’est streamlit (description/définition) partager notre création, parle de data product, ouvert à une large game d’utilisateur via des apps webs</p>
-<p>data product, data markeplace, self bi, metabase / superset, mériterait peut-être son propre repo pour afficher tout type de reporting et pas seulement celui qu’on construit ensemble, à nosu de décider de la gouvernance (1 streamlit pour 1 métier pour X reportings différent)</p>
-<ul>
-<li>on ne gère pas l’authent non plus</li>
-<li>on veut quand même montrer qu’on peut logger</li>
-</ul>
-<p>créer un entrypoint dans pyproject.toml</p>
+</section>
+<section id="le-code" class="level2">
+<h2 class="anchored" data-anchor-id="le-code">Le code</h2>
+<p>Pour lancer l’application, il nous faut un entrypoint comme on l’a fait pour le reporting. ⬇</p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>À vous de jouer
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Ajoutez un entrypoint <code>app</code> dans votre <code>pyproject.toml</code> pour pouvoir lancer l’application avec <code>uv run app</code>.</p>
+<p>Attention au piège : une app Streamlit ne se lance pas en appelant <code>main()</code> directement, mais via la commande <code>streamlit run</code>. Pointez donc votre entrypoint vers la fonction <code>run()</code> du module, pas vers <code>main()</code>.</p>
+</div>
+</div>
+<details>
+<summary>
+Solution
+</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[project.scripts]</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="dt">reporting</span> <span class="op">=</span> <span class="st">"medas_financial_reporting.financial_reporting.main:main"</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="dt">app</span> <span class="op">=</span> <span class="st">"medas_financial_reporting.streamlit_app.app:main"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Lancer l’application avec <code>uv run app</code></p>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="dt">app</span> <span class="op">=</span> <span class="st">"medas_financial_reporting.streamlit_app.app:run"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>L’application se lance alors avec :</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run app</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<p>Voici maintenant l’application dans son ensemble. Elle charge les données nettoyées depuis <code>MinIO</code>, affiche des métriques et des graphiques, propose une matrice de transition des scores et un explorateur filtrable, et permet de télécharger le reporting <code>Excel</code>.</p>
+<details>
+<summary>
+Voir le code
+</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Streamlit app for financial reporting."""</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> streamlit <span class="im">as</span> st</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> loguru <span class="im">import</span> logger</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> medas_financial_reporting.config <span class="im">import</span> (</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    S3_BUCKET</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> medas_financial_reporting.storage <span class="im">import</span> get_fs, read_processed_data, read_reporting</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> run():</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Entry point pour lancer l'app Streamlit."""</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> sys</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="im">from</span> streamlit.web <span class="im">import</span> cli <span class="im">as</span> stcli</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    sys.argv <span class="op">=</span> [<span class="st">"streamlit"</span>, <span class="st">"run"</span>, <span class="va">__file__</span>]</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    stcli.main()</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Palette partagée</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>PALETTE <span class="op">=</span> {</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    <span class="st">"PP"</span>: <span class="st">"#2C5F8A"</span>,</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    <span class="st">"PM"</span>: <span class="st">"#7BAFD4"</span>,</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>    <span class="st">"V"</span>: <span class="st">"#4A7FA5"</span>,</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    <span class="st">"O"</span>: <span class="st">"#6B9EBF"</span>,</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    <span class="st">"R"</span>: <span class="st">"#8DBDD8"</span>,</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>    <span class="st">"S"</span>: <span class="st">"#B0CDE0"</span>,</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>    <span class="st">"N"</span>: <span class="st">"#D0E4EF"</span>,</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>    <span class="st">"AUTO"</span>: <span class="st">"#2C5F8A"</span>,</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>    <span class="st">"MANUEL"</span>: <span class="st">"#7BAFD4"</span>,</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a><span class="at">@st.cache_data</span>(ttl<span class="op">=</span><span class="dv">3600</span>)</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_data() <span class="op">-&gt;</span> pd.DataFrame:</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Charge les données nettoyées (avec cache Streamlit)."""</span></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> read_processed_data(get_fs(), S3_BUCKET)</span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a><span class="at">@st.cache_data</span>(ttl<span class="op">=</span><span class="dv">3600</span>)</span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_reporting() <span class="op">-&gt;</span> <span class="bu">bytes</span>:</span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Charge le reporting final (avec cache Streamlit)."""</span></span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> read_reporting(get_fs(), S3_BUCKET)</span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_bar(series: pd.Series, title: <span class="bu">str</span>) <span class="op">-&gt;</span> plt.Figure:</span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Génère un graphique en barres avec la palette partagée."""</span></span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>    fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">3</span>))</span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>    colors <span class="op">=</span> [PALETTE.get(<span class="bu">str</span>(k), <span class="st">"#7BAFD4"</span>) <span class="cf">for</span> k <span class="kw">in</span> series.index]</span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>    series.plot(kind<span class="op">=</span><span class="st">"bar"</span>, ax<span class="op">=</span>ax, color<span class="op">=</span>colors, edgecolor<span class="op">=</span><span class="st">"white"</span>, linewidth<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>    ax.set_title(title, fontsize<span class="op">=</span><span class="dv">12</span>, pad<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>    ax.set_xlabel(<span class="st">""</span>)</span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>    ax.tick_params(axis<span class="op">=</span><span class="st">"x"</span>, rotation<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>    ax.spines[[<span class="st">"top"</span>, <span class="st">"right"</span>]].set_visible(<span class="va">False</span>)</span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>    fig.tight_layout()</span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> fig</span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> main():</span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a>    st.set_page_config(</span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a>        page_title<span class="op">=</span><span class="st">"Reporting Financier"</span>,</span>
+<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a>        page_icon<span class="op">=</span><span class="st">"📊"</span>,</span>
+<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a>        layout<span class="op">=</span><span class="st">"wide"</span>,</span>
+<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Sidebar</span></span>
+<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a>    st.sidebar.title(<span class="st">"📊 Reporting Financier"</span>)</span>
+<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a>    st.sidebar.markdown(<span class="st">"---"</span>)</span>
+<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a>        reporting_bytes <span class="op">=</span> load_reporting()</span>
+<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> st.sidebar.download_button(</span>
+<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a>            label<span class="op">=</span><span class="st">"📥 Télécharger le reporting"</span>,</span>
+<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a>            data<span class="op">=</span>reporting_bytes,</span>
+<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a>            file_name<span class="op">=</span><span class="st">"Reporting_Financier.xlsx"</span>,</span>
+<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a>            mime<span class="op">=</span><span class="st">"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"</span>,</span>
+<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a>        ):</span>
+<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a>            logger.info(<span class="st">"Reporting téléchargé"</span>)</span>
+<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span>:</span>
+<span id="cb3-84"><a href="#cb3-84" aria-hidden="true" tabindex="-1"></a>        st.sidebar.warning(<span class="st">"Reporting non disponible"</span>)</span>
+<span id="cb3-85"><a href="#cb3-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-86"><a href="#cb3-86" aria-hidden="true" tabindex="-1"></a>    st.sidebar.markdown(<span class="st">"---"</span>)</span>
+<span id="cb3-87"><a href="#cb3-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-88"><a href="#cb3-88" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Chargement des données</span></span>
+<span id="cb3-89"><a href="#cb3-89" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> st.spinner(<span class="st">"Chargement des données..."</span>):</span>
+<span id="cb3-90"><a href="#cb3-90" aria-hidden="true" tabindex="-1"></a>        df <span class="op">=</span> load_data()</span>
+<span id="cb3-91"><a href="#cb3-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-92"><a href="#cb3-92" aria-hidden="true" tabindex="-1"></a>    st.title(<span class="st">"Vue d'ensemble"</span>)</span>
+<span id="cb3-93"><a href="#cb3-93" aria-hidden="true" tabindex="-1"></a>    st.caption(<span class="ss">f"</span><span class="sc">{</span><span class="bu">len</span>(df)<span class="sc">:,}</span><span class="ss"> clients"</span>)</span>
+<span id="cb3-94"><a href="#cb3-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-95"><a href="#cb3-95" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Métriques</span></span>
+<span id="cb3-96"><a href="#cb3-96" aria-hidden="true" tabindex="-1"></a>    col1, col2, col3, col4 <span class="op">=</span> st.columns(<span class="dv">4</span>)</span>
+<span id="cb3-97"><a href="#cb3-97" aria-hidden="true" tabindex="-1"></a>    col1.metric(<span class="st">"Clients PP"</span>, df[df[<span class="st">"type_client"</span>] <span class="op">==</span> <span class="st">"PP"</span>].shape[<span class="dv">0</span>])</span>
+<span id="cb3-98"><a href="#cb3-98" aria-hidden="true" tabindex="-1"></a>    col2.metric(<span class="st">"Clients PM"</span>, df[df[<span class="st">"type_client"</span>] <span class="op">==</span> <span class="st">"PM"</span>].shape[<span class="dv">0</span>])</span>
+<span id="cb3-99"><a href="#cb3-99" aria-hidden="true" tabindex="-1"></a>    col3.metric(<span class="st">"DRC complets"</span>, <span class="bu">int</span>(df[<span class="st">"drc_complet"</span>].<span class="bu">sum</span>()))</span>
+<span id="cb3-100"><a href="#cb3-100" aria-hidden="true" tabindex="-1"></a>    col4.metric(<span class="st">"Scorés AUTO"</span>, <span class="bu">int</span>((df[<span class="st">"id_agent"</span>] <span class="op">==</span> <span class="st">"AUTO"</span>).<span class="bu">sum</span>()))</span>
+<span id="cb3-101"><a href="#cb3-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-102"><a href="#cb3-102" aria-hidden="true" tabindex="-1"></a>    st.markdown(<span class="st">"---"</span>)</span>
+<span id="cb3-103"><a href="#cb3-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-104"><a href="#cb3-104" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Graphiques</span></span>
+<span id="cb3-105"><a href="#cb3-105" aria-hidden="true" tabindex="-1"></a>    col1, col2 <span class="op">=</span> st.columns(<span class="dv">2</span>)</span>
+<span id="cb3-106"><a href="#cb3-106" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> col1:</span>
+<span id="cb3-107"><a href="#cb3-107" aria-hidden="true" tabindex="-1"></a>        st.pyplot(plot_bar(df[<span class="st">"type_client"</span>].value_counts(), <span class="st">"Répartition PP / PM"</span>))</span>
+<span id="cb3-108"><a href="#cb3-108" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> col2:</span>
+<span id="cb3-109"><a href="#cb3-109" aria-hidden="true" tabindex="-1"></a>        st.pyplot(plot_bar(df[<span class="st">"score"</span>].value_counts(), <span class="st">"Distribution des scores"</span>))</span>
+<span id="cb3-110"><a href="#cb3-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-111"><a href="#cb3-111" aria-hidden="true" tabindex="-1"></a>    col3, col4 <span class="op">=</span> st.columns(<span class="dv">2</span>)</span>
+<span id="cb3-112"><a href="#cb3-112" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> col3:</span>
+<span id="cb3-113"><a href="#cb3-113" aria-hidden="true" tabindex="-1"></a>        st.pyplot(plot_bar(df[<span class="st">"id_agent"</span>].value_counts(), <span class="st">"Répartition AUTO / MANUEL"</span>))</span>
+<span id="cb3-114"><a href="#cb3-114" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> col4:</span>
+<span id="cb3-115"><a href="#cb3-115" aria-hidden="true" tabindex="-1"></a>        drc_rate <span class="op">=</span> df.groupby(<span class="st">"type_client"</span>)[<span class="st">"drc_complet"</span>].mean() <span class="op">*</span> <span class="dv">100</span></span>
+<span id="cb3-116"><a href="#cb3-116" aria-hidden="true" tabindex="-1"></a>        st.pyplot(plot_bar(drc_rate, <span class="st">"Taux DRC complété (%)"</span>))</span>
+<span id="cb3-117"><a href="#cb3-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-118"><a href="#cb3-118" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Matrice des scores</span></span>
+<span id="cb3-119"><a href="#cb3-119" aria-hidden="true" tabindex="-1"></a>    st.markdown(<span class="st">"---"</span>)</span>
+<span id="cb3-120"><a href="#cb3-120" aria-hidden="true" tabindex="-1"></a>    st.subheader(<span class="st">"Matrice de transition des scores"</span>)</span>
+<span id="cb3-121"><a href="#cb3-121" aria-hidden="true" tabindex="-1"></a>    transition <span class="op">=</span> pd.crosstab(df[<span class="st">"score_prev"</span>], df[<span class="st">"score"</span>], margins<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb3-122"><a href="#cb3-122" aria-hidden="true" tabindex="-1"></a>    st.dataframe(transition, width<span class="op">=</span><span class="st">"stretch"</span>)</span>
+<span id="cb3-123"><a href="#cb3-123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-124"><a href="#cb3-124" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Exploration</span></span>
+<span id="cb3-125"><a href="#cb3-125" aria-hidden="true" tabindex="-1"></a>    st.markdown(<span class="st">"---"</span>)</span>
+<span id="cb3-126"><a href="#cb3-126" aria-hidden="true" tabindex="-1"></a>    st.subheader(<span class="st">"Exploration personnalisée"</span>)</span>
+<span id="cb3-127"><a href="#cb3-127" aria-hidden="true" tabindex="-1"></a>    col1, col2 <span class="op">=</span> st.columns(<span class="dv">2</span>)</span>
+<span id="cb3-128"><a href="#cb3-128" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> col1:</span>
+<span id="cb3-129"><a href="#cb3-129" aria-hidden="true" tabindex="-1"></a>        type_sel <span class="op">=</span> st.multiselect(<span class="st">"Type de client"</span>, df[<span class="st">"type_client"</span>].unique())</span>
+<span id="cb3-130"><a href="#cb3-130" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> col2:</span>
+<span id="cb3-131"><a href="#cb3-131" aria-hidden="true" tabindex="-1"></a>        score_sel <span class="op">=</span> st.multiselect(<span class="st">"Score"</span>, df[<span class="st">"score"</span>].unique())</span>
+<span id="cb3-132"><a href="#cb3-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-133"><a href="#cb3-133" aria-hidden="true" tabindex="-1"></a>    df_filtered <span class="op">=</span> df.copy()</span>
+<span id="cb3-134"><a href="#cb3-134" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> type_sel:</span>
+<span id="cb3-135"><a href="#cb3-135" aria-hidden="true" tabindex="-1"></a>        df_filtered <span class="op">=</span> df_filtered[df_filtered[<span class="st">"type_client"</span>].isin(type_sel)]</span>
+<span id="cb3-136"><a href="#cb3-136" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> score_sel:</span>
+<span id="cb3-137"><a href="#cb3-137" aria-hidden="true" tabindex="-1"></a>        df_filtered <span class="op">=</span> df_filtered[df_filtered[<span class="st">"score"</span>].isin(score_sel)]</span>
+<span id="cb3-138"><a href="#cb3-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-139"><a href="#cb3-139" aria-hidden="true" tabindex="-1"></a>    st.dataframe(df_filtered, width<span class="op">=</span><span class="st">"stretch"</span>)</span>
+<span id="cb3-140"><a href="#cb3-140" aria-hidden="true" tabindex="-1"></a>    st.caption(<span class="ss">f"</span><span class="sc">{</span><span class="bu">len</span>(df_filtered)<span class="sc">:,}</span><span class="ss"> lignes affichées"</span>)</span>
+<span id="cb3-141"><a href="#cb3-141" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-142"><a href="#cb3-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-143"><a href="#cb3-143" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
+<span id="cb3-144"><a href="#cb3-144" aria-hidden="true" tabindex="-1"></a>    main()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</section>
+<section id="ce-quon-a-fait-et-comment" class="level2">
+<h2 class="anchored" data-anchor-id="ce-quon-a-fait-et-comment">Ce qu’on a fait et comment</h2>
+<p>Quelques points à relever sur cette implémentation. La lecture des données et du reporting ne se fait pas directement dans l’app : on appelle <code>read_processed_data</code> et <code>read_reporting</code> du module <code>storage</code>, les mêmes interactions MinIO que celles utilisées pour la génération. L’app se contente de les envelopper dans <code>load_data</code> et <code>load_reporting</code>, qui n’ajoutent qu’une seule chose : le cache.</p>
+<p>C’est tout l’intérêt d’avoir isolé les interactions MinIO dans un module partagé. La logique de stockage reste centralisée et testable dans <code>storage.py</code>, sans aucune dépendance à Streamlit, tandis que le décorateur <code>@st.cache_data(ttl=3600)</code> reste là où il a du sens, dans la couche interface. Il met en cache le résultat des chargements pendant une heure : sans lui, chaque interaction de l’utilisateur (un filtre, un clic) rechargerait les données depuis <code>MinIO</code>, ce qui serait lent et inutile. Enfin <code>PALETTE</code> centralise les couleurs pour garder une cohérence visuelle entre tous les graphiques.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Rappel SRP
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>C’est aussi un bon rappel que la séparation des responsabilités a ses subtilités. La règle « la lecture MinIO va dans <code>storage</code> » est juste, mais le cache, lui, n’appartient pas au stockage : c’est une préoccupation de présentation, il reste donc dans l’app.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Une application monolithique et c’est ok
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Soyons honnêtes : tout ce code vit dans un seul fichier et la fonction <code>main()</code> fait beaucoup de choses à la fois. Chargement, mise en page, métriques, graphiques, matrice, exploration, tout est empilé dans une seule fonction. Nous sommes devenus comme ceux que nous avions pourtant juré de combattre mais je peux tout vous expliquer.</p>
+<div style="text-align: center;">
+<p><img src="https://64.media.tumblr.com/c8153f3ede4e755f1f68faced7cab9c3/e3540861a67dbd28-b4/s400x600/f3a0f6cd184dd195062ae219071e754da51efac3.gif" class="img-fluid"></p>
+</div>
+<p>Vu le faible nombre de fonctionnalités, c’est acceptable pour une démonstration et ça garde l’app facile à lire d’un seul coup d’œil. Mais ce n’est pas ce qu’on ferait sur un produit destiné à grandir. On aurait alors tout intérêt à découper : une fonction par section de l’interface (les métriques, les graphiques, l’explorateur), voire des modules séparés pour la mise en page et la logique de données. C’est exactement le principe de <strong>responsabilité unique</strong> appliqué avec soin au package <code>financial_reporting</code> qu’on s’autorise ici à relâcher parce que le périmètre est petit. 🤏</p>
+</div>
+</div>
+</section>
+<section id="ce-quon-na-pas-fait" class="level2">
+<h2 class="anchored" data-anchor-id="ce-quon-na-pas-fait">Ce qu’on n’a pas fait</h2>
+<p>Deux limites assumées qu’il faut avoir en tête avant de parler de mise en production réelle :</p>
+<ul>
+<li><strong>L’authentification.</strong> Notre app est ouverte : n’importe qui ayant l’URL y accède. Dans un contexte réel, un reporting financier exigerait une couche d’authentification et de gestion des droits que nous ne mettons pas en place ici.</li>
+<li><strong>La gestion fine des erreurs.</strong> Le chargement du reporting est protégé par un <code>try/except</code> très large qui se contente d’afficher un avertissement. C’est suffisant pour une démo, mais en production on distinguerait les cas (fichier absent, credentials expirés, stockage indisponible) pour donner un message clair à l’utilisateur et tracer l’incident dans les logs.</li>
+</ul>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Git time
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Pensez à commit et push votre travail avant de passer à la suite.</p>
+</div>
+</div>
 
 
+</section>
 
-</main> <!-- /main -->
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>Documentation de <code>Streamlit</code> : <a href="https://docs.streamlit.io/" class="uri">https://docs.streamlit.io/</a>. Pour aller plus loin, deux ressources vidéo : <a href="https://www.youtube.com/watch?v=0ODb-_L6vHM">cette présentation de Xavki</a> et la <a href="https://www.youtube.com/@andfanilo/videos">chaîne d’Andfanilo</a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
