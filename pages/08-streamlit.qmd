@@ -8,7 +8,7 @@ Or l'objectif d'un reporting est qu'il soit consulté par d'autres : le métier,
 
 ## Qu'est-ce que Streamlit ?
 
-`Streamlit` est un framework `Python` qui permet de construire des applications web de visualisation de données sans écrire une ligne de `HTML`, `CSS` ou `JavaScript` (bien qu'on pourrait en injecter 👀). On écrit du `Python`, `Streamlit` se charge de l'interface.
+`Streamlit`[^streamlit] est un framework `Python` qui permet de construire des applications web de visualisation de données sans écrire une ligne de `HTML`, `CSS` ou `JavaScript` (bien qu'on pourrait en injecter 👀). On écrit du `Python`, `Streamlit` se charge de l'interface.
 
 > L'intérêt ici est de franchir un cap : on ne livre plus un fichier, on expose un produit.
 
@@ -252,3 +252,5 @@ Deux limites assumées qu'il faut avoir en tête avant de parler de mise en prod
 ## Git time
 Pensez à commit et push votre travail avant de passer à la suite.
 :::
+
+[^streamlit]: Documentation de `Streamlit` : <https://docs.streamlit.io/>. Pour aller plus loin, deux ressources vidéo : [cette présentation de Xavki](https://www.youtube.com/watch?v=0ODb-_L6vHM) et la [chaîne d'Andfanilo](https://www.youtube.com/@andfanilo/videos).
