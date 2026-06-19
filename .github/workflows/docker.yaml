@@ -1,0 +1,54 @@
+name: Docker
+
+on:
+  push:
+    branches:
+      - feat-docker
+      - development
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-and-verify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📦 Cloner le dépôt
+        uses: actions/checkout@v4
+
+      - name: 🔐 Connexion à Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: 🏗️ Build et push de l'image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/medas-financial-reporting:latest
+
+      - name: 🚀 Démarrer le conteneur
+        run: |
+          docker run -d --name medas-app \
+            -p 8501:8501 \
+            ${{ secrets.DOCKERHUB_USERNAME }}/medas-financial-reporting:latest
+
+      - name: ⏳ Attendre que le site réponde
+        run: |
+          for i in $(seq 1 30); do
+            if curl -sf http://localhost:8501/_stcore/health; then
+              echo "Hello there !"
+              exit 0
+            fi
+            echo "Tentative $i : le site ne répond pas encore..."
+            sleep 2
+          done
+          echo "Tout est chaos"
+          docker logs medas-app
+          exit 1
+
+      - name: 🧹 Nettoyage
+        if: always()
+        run: docker rm -f medas-app
