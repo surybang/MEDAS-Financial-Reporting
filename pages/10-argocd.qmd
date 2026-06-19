@@ -1,0 +1,14 @@
+---
+title: "ArgoCD"
+---
+
+::: {.callout-warning}
+## En cours de rédaction
+Cette section est encore à l'état de brouillon, son contenu va évoluer.
+:::
+
+ARGOCD
+
+principes gitops et role de argo là dedans
+
+si vous connaissez airflow, dagster prefect ou luigi pour l’orchestration des pipelines de données, argo est un orchestrateur de composants (image docker ou helm kubernetes) sur kubernetes
