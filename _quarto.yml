@@ -31,9 +31,10 @@ website:
           - pages/06-tests.qmd
           - pages/07-integration-continue.qmd
           - pages/08-streamlit.qmd
+          - pages/09-docker.qmd
       - section: "En cours de rédaction"
         contents:
-          - pages/09-docker-argocd.qmd
+          - pages/10-argocd.qmd
 
 format:
   html:
