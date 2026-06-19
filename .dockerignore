@@ -1,0 +1,32 @@
+# Environnements et caches Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.coverage
+
+# Site Quarto
+_site/
+.quarto/
+pages/
+images/
+index.qmd
+_quarto.yml
+styles.css
+
+# Notebooks
+notebooks/
+
+# Git et CI
+.git/
+.github/
+.pre-commit-config.yaml
+
+# Fichiers temporaires et divers
+tmp/
+.cache/
+todo.md
+README.md
+Dockerfile
+.dockerignore
