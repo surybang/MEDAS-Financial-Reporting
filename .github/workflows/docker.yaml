@@ -27,13 +27,13 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/medas_financial_reporting:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/medas-financial-reporting:latest
 
       - name: 🚀 Démarrer le conteneur
         run: |
           docker run -d --name medas-app \
             -p 8501:8501 \
-            ${{ secrets.DOCKERHUB_USERNAME }}/medas_financial_reporting:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/medas-financial-reporting:latest
 
       - name: ⏳ Attendre que le site réponde
         run: |
