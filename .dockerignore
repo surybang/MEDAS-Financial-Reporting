@@ -27,6 +27,5 @@ notebooks/
 tmp/
 .cache/
 todo.md
-README.md
 Dockerfile
 .dockerignore
