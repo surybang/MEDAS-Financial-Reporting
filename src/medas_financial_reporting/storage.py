@@ -21,13 +21,13 @@ from medas_financial_reporting.config import (
 def get_fs() -> s3fs.S3FileSystem:
     """Retourne un filesystem S3 authentifié."""
     endpoint = S3_ENDPOINT
-    if not endpoint.startswith("https://"):
+    if not endpoint.startswith(("http://", "https://")):
         endpoint = f"https://{endpoint}"
     return s3fs.S3FileSystem(
         endpoint_url=endpoint,
         key=AWS_ACCESS_KEY_ID,
         secret=AWS_SECRET_ACCESS_KEY,
-        token=AWS_SESSION_TOKEN,
+        token=AWS_SESSION_TOKEN or None,
     )
 
 
