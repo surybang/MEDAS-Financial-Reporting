@@ -27,6 +27,9 @@ En realité ces étapes d’essais/erreurs seront plutôt invisible pour vous, j
 ![](../images/image-17.png)
 :::
 
+:::
+
+
 ## Ce qu'on va faire (et ce qu'on ne pourra pas faire)
 
 Le plan est le suivant : construire une image, l'envoyer sur [`Docker Hub`](https://hub.docker.com/) grâce à notre `CI` et vérifier via cette dernière que l'image **build** correctement et que le **site répond**.
