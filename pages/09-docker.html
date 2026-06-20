@@ -273,6 +273,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#où-faire-tourner-docker" id="toc-où-faire-tourner-docker" class="nav-link active" data-scroll-target="#où-faire-tourner-docker">Où faire tourner Docker ?</a></li>
+  <li><a href="#ce-quon-va-faire-et-ce-quon-ne-pourra-pas-faire" id="toc-ce-quon-va-faire-et-ce-quon-ne-pourra-pas-faire" class="nav-link" data-scroll-target="#ce-quon-va-faire-et-ce-quon-ne-pourra-pas-faire">Ce qu’on va faire (et ce qu’on ne pourra pas faire)</a></li>
+  <li><a href="#le-dockerfile" id="toc-le-dockerfile" class="nav-link" data-scroll-target="#le-dockerfile">Le Dockerfile</a></li>
+  <li><a href="#automatiser-la-livraison-de-limage-docker-dans-dockerhub" id="toc-automatiser-la-livraison-de-limage-docker-dans-dockerhub" class="nav-link" data-scroll-target="#automatiser-la-livraison-de-limage-docker-dans-dockerhub">Automatiser la livraison de l’image docker dans Dockerhub</a>
+  <ul class="collapse">
+  <li><a href="#docker.yaml" id="toc-docker.yaml" class="nav-link" data-scroll-target="#docker.yaml">docker.yaml</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -337,6 +343,9 @@ Note
 <div style="text-align: center;">
 <p><img src="../images/image-17.png" class="img-fluid"></p>
 </div>
+</div>
+</div>
+</section>
 <section id="ce-quon-va-faire-et-ce-quon-ne-pourra-pas-faire" class="level2">
 <h2 class="anchored" data-anchor-id="ce-quon-va-faire-et-ce-quon-ne-pourra-pas-faire">Ce qu’on va faire (et ce qu’on ne pourra pas faire)</h2>
 <p>Le plan est le suivant : construire une image, l’envoyer sur <a href="https://hub.docker.com/"><code>Docker Hub</code></a> grâce à notre <code>CI</code> et vérifier via cette dernière que l’image <strong>build</strong> correctement et que le <strong>site répond</strong>.</p>
@@ -630,9 +639,6 @@ Voir le code
 
 
 </section>
-</section>
-</div>
-</div>
 </section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a></div></div></section></div></main> <!-- /main -->
