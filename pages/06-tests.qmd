@@ -333,6 +333,8 @@ Là où les tests unitaires ne dépendent de rien d'externe, les tests d'intégr
 
 Créez un nouveau fichier `tests/test_integration.py` :
 
+<details>
+<summary>Voir le code</summary>
 ```python
 """Tests d'intégration"""
 
@@ -362,6 +364,7 @@ def test_get_data_schema_valid():
     assert df["type_client"].isin(["PP", "PM"]).all()
     assert df["drc_complet"].dtype == bool
 ```
+</details>
 
 Un mot sur le décorateur `@pytest.mark.integration`. Il sert à **marquer** ces tests pour pouvoir les lancer séparément des tests unitaires. C'est important car les tests d'intégration sont plus lents et nécessitent un accès réseau : on ne veut pas forcément les jouer à chaque fois. Pour garder un comportement symétrique, ajoutez `@pytest.mark.unit` devant chacun de vos tests unitaires.
 
@@ -393,6 +396,9 @@ uv run pytest
 Les tests E2E (*end-to-end*) vont encore plus loin que les tests d'intégration : ils valident la chaîne complète, du déclenchement du pipeline jusqu'au résultat final. Là où un test d'intégration vérifie qu'un composant communique avec un autre, un test E2E lance tout `main()` et contrôle que le reporting est bien généré localement, uploadé sur `MinIO` et correctement rempli.
 
 On utilise ici une fixture de portée *session* avec `autouse=True` pour ne lancer le pipeline qu'une seule fois, puis chaque test inspecte le résultat.
+
+<details>
+<summary>Solution</summary>
 
 ```python
 """Tests End-to-End."""
@@ -437,6 +443,7 @@ def test_indicators_are_filled():
     assert ws["E10"].value is not None
     wb.close()
 ```
+</details>
 
 Sans oublier d'ajouter le marqueur `e2e` dans `pyproject.toml` :
 
