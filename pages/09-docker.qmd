@@ -27,8 +27,6 @@ En realité ces étapes d’essais/erreurs seront plutôt invisible pour vous, j
 ![](../images/image-17.png)
 :::
 
-:::
-
 ## Ce qu'on va faire (et ce qu'on ne pourra pas faire)
 
 Le plan est le suivant : construire une image, l'envoyer sur [`Docker Hub`](https://hub.docker.com/) grâce à notre `CI` et vérifier via cette dernière que l'image **build** correctement et que le **site répond**.
@@ -52,11 +50,12 @@ flowchart TD
 
 ::: {.callout-note}
 
-## C'est quoi Docker Hub ?
+## C'est quoi DockerHub ?
 
 Docker Hub est un ***image registry*** (registre d'images) : un espace de stockage en ligne où l'on publie et récupère des images Docker, un peu comme GitHub l'est pour le code source. Quand notre `CI` aura construit l'image de notre application, elle l'y poussera. N'importe quel environnement capable de tirer une image (votre cluster, un collègue, un serveur) pourra alors la récupérer par son nom. C'est le maillon qui relie la construction de l'image à son déploiement. Pour information, en entreprise vous n’utiliserez que très rarement `DockerHub`, vous aurez votre propre *registry* comme `Artifactory` ou `Harbor`, peut-être que ces noms vous évoque quelque chose.
 :::
 
+::: {.callout-tip}
 ## Les bonnes habitudes
 
 On ne change pas nos habitudes : tout passe par une branche dédiée selon le workflow `feat-* → development → main`. On crée donc `feat-docker` depuis `development`.
@@ -64,6 +63,12 @@ On ne change pas nos habitudes : tout passe par une branche dédiée selon le wo
 ```bash
 git switch -c feat-docker
 ```
+
+::: {style="text-align: center;"}
+![](../images/police-meme.png){width=30%}
+:::
+
+:::
 
 ## Le Dockerfile
 
@@ -184,9 +189,9 @@ Dockerfile
 La règle est simple : si ce n'est pas indispensable pour faire **tourner** l'application en production, ça n'a pas sa place dans l'image.
 :::
 
-## Automatiser la livraison de l’image docker dans dockerhub
+## Automatiser la livraison de l’image docker dans Dockerhub
 
-Comme nous l'avions évoqué, il faut *push* l'image dans dockerhub
+Comme nous l'avions évoqué, il faut *push* l'image dans `Dockerhub`. Nous avons d'abord besoin de créer un compte sur ce dernier pour pouvoir stocker nos images.
 
 ::: {.callout-caution}
 
@@ -205,9 +210,9 @@ Comme nous l'avions évoqué, il faut *push* l'image dans dockerhub
 - Créer un deuxième secret nommé `DOCKERHUB_USERNAME` ayant comme valeur le nom d’utilisateur que vous avez créé sur `Dockerhub`.
 :::
 
-## docker.yaml
+### docker.yaml
 
-définir une nouvelle githubactions dans un nouveau fichier
+Maintenant que notre compte `DockerHub` et notre repo `GitHub` sont correctement configurés, nous pouvons écrire le mécanisme de *build* et de *push*.
 
 <details>
 <summary>Voir le code</summary>
@@ -271,9 +276,23 @@ jobs:
 
 </details>
 
+Déroulons ce que fait ce workflow.
+
+Le bloc `on` définit les déclencheurs : la `CI` se lance sur les branches `feat-docker`, `development` et `main`, ainsi que manuellement via `workflow_dispatch`. Pendant nos itérations, c'est surtout `feat-docker` qui nous intéresse.
+
+Le job `build-and-verify` enchaîne ensuite plusieurs étapes. On commence par **cloner le dépôt**, puis on se **connecte à `DockerHub`** grâce à nos deux secrets `DOCKERHUB_USERNAME` et `DOCKERHUB_TOKEN`.
+
+Vient ensuite le cœur du pipeline : le **build et le push de l'image**. L'action `docker/build-push-action` construit l'image à partir de notre `Dockerfile` et la publie directement sur `DockerHub` sous le tag `latest`.
+
+Les deux étapes suivantes constituent notre **smoke test**, c'est-à-dire la vérification minimale que nous avions annoncée. On **démarre le conteneur** en exposant le port `8501`, puis on **attend que le site réponde** : on interroge en boucle l'endpoint de santé de Streamlit (`/_stcore/health`), jusqu'à 30 fois avec deux secondes de pause. Dès qu'il renvoie une réponse, c'est gagné. Si après une minute il n'a toujours rien renvoyé, on affiche les logs du conteneur pour diagnostiquer et on fait échouer le job.
+
 ::: {style="text-align: center;"}
 ![](../images/hello-there.gif){width=40%}
 :::
+
+Enfin, l'étape de **nettoyage** supprime le conteneur. Le `if: always()` garantit qu'elle s'exécute même si une étape précédente a échoué, pour ne pas laisser de conteneur fantôme derrière nous.
+
+Pour déclencher ce workflow, il suffit de commit et push votre code. Rendez-vous ensuite dans l'onglet **Actions** de votre repo : si vous obtenez le même affichage que moi, félicitations, vous venez de décrocher une nouvelle étoile à votre tableau de chasse.
 
 ::: {style="text-align: center;"}
 ![](../images/image-19.png)

@@ -39,9 +39,7 @@ website:
 format:
   html:
     code-fold: true
-    theme:
-      light: flatly
-      dark: darkly
+    theme: cosmo
     css: styles.css
     toc: true
     toc-depth: 3
@@ -49,3 +47,5 @@ format:
     code-overflow: wrap
     anchor-sections: true
     smooth-scroll: true
+
+license: "CC BY-NC"
