@@ -513,7 +513,7 @@ Le logging trace chaque étape : chargement, validation, nettoyage. C'est ce qui
 `DATA_SCHEMA.validate(df)` est appelé immédiatement après la lecture du fichier. Si une colonne manque, si `score` contient une valeur inattendue ou si `type_client` sort des valeurs `PP`/`PM` connues, un `SchemaError` est levé **avant même** que les données n'entrent dans le pipeline. C'est notre Gandalf contre le Balrog, version data (sans tomber du pont).
 
 ::: {style="text-align: center;"}
-![](../images/image-07.png)
+![](../images/image-07.png){width=40%}
 :::
 
 :::
