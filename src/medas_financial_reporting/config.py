@@ -21,6 +21,9 @@ logger.add(
 # Données source
 DATA_URL = "https://minio.lab.sspcloud.fr/fabienhos/MEDAS-FinancialReporting/data/raw/financial_data.parquet"  # noqa: E501
 
+# Template URL
+TEMPLATE_URL = "https://minio.lab.sspcloud.fr/fabienhos/MEDAS-FinancialReporting/template/template_reporting.xlsx"  # noqa: E501
+
 # MinIO
 S3_ENDPOINT = os.environ.get("AWS_S3_ENDPOINT", "")
 AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID", "")
@@ -30,7 +33,6 @@ S3_BUCKET = os.environ.get("S3_BUCKET", "fabienhos")
 
 # Chemins MinIO
 S3_DATA_PROCESSED_KEY = "MEDAS-FinancialReporting/data/processed/financial_data.parquet"
-S3_TEMPLATE_KEY = "MEDAS-FinancialReporting/template/template_reporting.xlsx"
 S3_OUTPUT_KEY = "MEDAS-FinancialReporting/output/reporting.xlsx"
 
 # Chemins locaux temporaires
