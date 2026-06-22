@@ -57,7 +57,12 @@ def upload_reporting(fs: s3fs.S3FileSystem, bucket: str) -> None:
 
 
 def init_minio_structure(fs: s3fs.S3FileSystem, bucket):
-    """Génère la structure attendue pour le projet dans le stockage distant si elle n'existe pas."""  # noqa: E501
+    """Génère le bucket et la structure attendue si elle n'existe pas."""  # noqa: E501
+
+    if not fs.exists(bucket):
+        fs.mkdir(bucket)
+        logger.info(f"Bucket {bucket} créé")
+
     folders = [
         f"{bucket}/MEDAS-FinancialReporting/data/processed/",
         f"{bucket}/MEDAS-FinancialReporting/data/raw/",

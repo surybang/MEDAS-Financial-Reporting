@@ -190,6 +190,28 @@ spec:
 Le volume est ici un `emptyDir`, un stockage temporaire lié au cycle de vie du pod. Si le pod `MinIO` redémarre, les données sont perdues. C'est suffisant pour notre démonstration, puisque le pipeline régénère les données à chaque exécution. Pour un usage réel, on utiliserait un `PersistentVolumeClaim`. (Enfin on aimerait surtout pouvoir se brancher à un stockage distant distribué et permanent à toutes nos applications, c'est très atypique d'attribuer un `MinIO` pour une seule application.)
 :::
 
+### Créer le bucket
+
+Votre `MinIO` fraîchement déployé est vide. L'application a besoin que le bucket existe avant de pouvoir y écrire.
+
+::: {.callout-caution}
+## À vous de jouer
+Depuis le terminal de votre VS Code, créez le bucket :
+
+```bash
+mc alias set medas http://minio-medas-usid0f:9000 medas-admin <votre_mot_de_passe_solide>
+mc mb medas/medas
+mc ls medas
+```
+
+Le `mc ls medas` doit afficher votre bucket `medas`, confirmant qu'il a bien été créé.
+
+::: {style="text-align: center;"}
+![](../images/bucket_created_success.png)
+:::
+
+:::
+
 ### deployment.yaml
 
 C'est le manifest central : il déclare notre conteneur, à partir de l'image publiée sur `DockerHub`.
