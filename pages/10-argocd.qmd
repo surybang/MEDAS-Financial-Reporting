@@ -7,7 +7,7 @@ title: "ArgoCD"
 Cette section est encore en cours, certains passages et captures viendront la compléter.
 :::
 
->Comme pour `Docker`, je ne vais pas vous apprendre `Kubernetes` et `ArgoCD` dans leur intégralité, ce sont des univers à part entière. Mon objectif est que vous sachiez vous en servir dans notre cas concret : déployer automatiquement notre application et la rendre accessible via une URL.
+> Comme pour `Docker`, je ne vais pas vous apprendre `Kubernetes` et `ArgoCD` dans leur intégralité, ce sont des univers à part entière. Mon objectif est que vous sachiez vous en servir dans notre cas concret : déployer automatiquement notre application et la rendre accessible via une URL.
 
 ## C'est quoi ArgoCD ?
 
@@ -196,7 +196,7 @@ Votre `MinIO` fraîchement déployé est vide. L'application a besoin que le buc
 
 ::: {.callout-caution}
 ## À vous de jouer
-Depuis le terminal de votre VS Code, créez le bucket :
+Depuis le terminal de votre `VS Code`, créez le bucket :
 
 ```bash
 mc alias set medas http://minio-medas-usid0f:9000 medas-admin <votre_mot_de_passe_solide>
