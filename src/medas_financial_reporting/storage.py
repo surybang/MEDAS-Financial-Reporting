@@ -1,5 +1,7 @@
 """Storage functions for MinIO interactions."""
 
+import urllib.request
+
 import pandas as pd
 import s3fs
 from loguru import logger
@@ -14,7 +16,7 @@ from medas_financial_reporting.config import (
     S3_DATA_PROCESSED_KEY,
     S3_ENDPOINT,
     S3_OUTPUT_KEY,
-    S3_TEMPLATE_KEY,
+    TEMPLATE_URL,
 )
 
 
@@ -31,12 +33,12 @@ def get_fs() -> s3fs.S3FileSystem:
     )
 
 
-def download_template(fs: s3fs.S3FileSystem, bucket: str) -> None:
-    """Télécharge le template Excel depuis MinIO."""
+def download_template() -> None:
+    """Télécharge le template Excel depuis son URL publique."""
     LOCAL_TMP_DIR.mkdir(exist_ok=True)
-    logger.info(f"Téléchargement du template depuis {S3_TEMPLATE_KEY}")
+    logger.info(f"Téléchargement du template depuis {TEMPLATE_URL}")
     try:
-        fs.get(f"{bucket}/{S3_TEMPLATE_KEY}", str(LOCAL_TEMPLATE))
+        urllib.request.urlretrieve(TEMPLATE_URL, str(LOCAL_TEMPLATE))
         logger.success("Template téléchargé")
     except Exception as e:
         logger.critical(f"Impossible de télécharger le template : {e}")
