@@ -190,28 +190,6 @@ spec:
 Le volume est ici un `emptyDir`, un stockage temporaire lié au cycle de vie du pod. Si le pod `MinIO` redémarre, les données sont perdues. C'est suffisant pour notre démonstration, puisque le pipeline régénère les données à chaque exécution. Pour un usage réel, on utiliserait un `PersistentVolumeClaim`. (Enfin on aimerait surtout pouvoir se brancher à un stockage distant distribué et permanent à toutes nos applications, c'est très atypique d'attribuer un `MinIO` pour une seule application.)
 :::
 
-### Créer le bucket
-
-Votre `MinIO` fraîchement déployé est vide. L'application a besoin que le bucket existe avant de pouvoir y écrire.
-
-::: {.callout-caution}
-## À vous de jouer
-Depuis le terminal de votre `VS Code`, créez le bucket :
-
-```bash
-mc alias set medas http://minio-medas-usid0f:9000 medas-admin <votre_mot_de_passe_solide>
-mc mb medas/medas
-mc ls medas
-```
-
-Le `mc ls medas` doit afficher votre bucket `medas`, confirmant qu'il a bien été créé.
-
-::: {style="text-align: center;"}
-![](../images/bucket_created_success.png)
-:::
-
-:::
-
 ### deployment.yaml
 
 C'est le manifest central : il déclare notre conteneur, à partir de l'image publiée sur `DockerHub`.
@@ -236,7 +214,7 @@ spec:
     spec:
       containers:
         - name: medas-financial-reporting
-          image: <votre_username_github>/medas-financial-reporting:latest
+          image: <username_docker>/medas-financial-reporting:latest
           ports:
             - containerPort: 8501
           env:
@@ -311,24 +289,6 @@ spec:
 
 </details>
 
-### Un ajustement de code nécessaire
-
-Notre fonction `get_fs()` dans `storage.py` force le préfixe `https://` sur l'endpoint or notre `MinIO` interne tourne en `http://`. On l'assouplit pour accepter les deux et pour gérer l'absence de token de session :
-
-```python
-def get_fs() -> s3fs.S3FileSystem:
-    """Retourne un filesystem S3 authentifié."""
-    endpoint = S3_ENDPOINT
-    if not endpoint.startswith(("http://", "https://")):
-        endpoint = f"https://{endpoint}"
-    return s3fs.S3FileSystem(
-        endpoint_url=endpoint,
-        key=AWS_ACCESS_KEY_ID,
-        secret=AWS_SECRET_ACCESS_KEY,
-        token=AWS_SESSION_TOKEN or None,
-    )
-```
-
 
 ## Déclarer l'application dans ArgoCD
 
@@ -371,7 +331,75 @@ Le `selfHeal: true` est important : il indique à `ArgoCD` de corriger automatiq
 - Vérifiez que votre application est accessible via l'URL définie dans `ingress.yaml`
 :::
 
-Si tout va bien en accédant à l'URL renseigné dans l'Ingress, votre application devrait être accessible via votre navigateur préféré.
+Si tout va bien en accédant à l'URL renseigné dans l'Ingress, votre application devrait être accessible via votre navigateur préféré. Par contre  tout n'est pas totalement fonctionnel. (encore une fois)
+
+## Alimenter le stockage : lancer le pipeline
+
+Bon... il manque un truc là. On a déployé l'application, elle est accessible, mais elle affiche une erreur : impossible de charger les données. Et c'est logique : notre `MinIO` est tout neuf et vide. On le lance quand, notre pipeline ? Même si tout est statique, il faut bien l'exécuter au moins une fois pour produire les données nettoyées et le reporting que l'application va lire.
+
+C'est le chaînon manquant. Jusqu'ici on a déployé la brique qui **lit** (`Streamlit`), mais rien n'a encore **écrit** dans le bucket.
+
+::: {.callout-note}
+## Deux data products, un point de rencontre
+Notre projet contient en réalité deux *data products* de natures différentes. Le **package** produit et persiste : il lit les données source, les transforme et sauvegarde le résultat sur `MinIO`.**Streamlit** lit et expose : il se contente d'afficher ce que le package a généré. Le `MinIO` est le point de rencontre entre les deux, l'endroit où le premier dépose ce que le second consomme. C'est pour ça que la persistance compte : sans elle, on perd la trace de la transformation et l'application n'a plus rien à montrer.
+:::
+
+Pour exécuter le pipeline, on pourrait lancer la commande à la main dans un terminal mais c'est fastidieux, fragile et peu intuitif. Il faudrait réutiliser le `VS Code` d'admin et taper des commandes dans le `Terminal`. On va plutôt le faire proprement avec un **Job Kubernetes** : une tâche ponctuelle qui réutilise notre image mais lancée avec la commande `reporting` (`uv run reporting`). Le `Job` crée le bucket si besoin puis exécute le pipeline.
+
+<details>
+<summary>Voir le job-reporting.yaml</summary>
+
+```yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: medas-reporting-pipeline
+spec:
+  backoffLimit: 2
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: reporting
+          image: <username_docker>/medas-financial-reporting:latest
+          command: ["uv", "run", "reporting"]
+          env:
+            - name: AWS_S3_ENDPOINT
+              value: "http://minio-medas-usid0f:9000"
+            - name: S3_BUCKET
+              value: "medas"
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: minio-credentials
+                  key: access-key
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: minio-credentials
+                  key: secret-key
+```
+
+</details>
+
+::: {.callout-caution}
+## À vous de jouer
+- Ajoutez `job-reporting.yaml` au dossier `deployment/` de votre dépôt `GitOps`
+- Commitez et poussez : `ArgoCD` déploiera le Job, qui créera le bucket et remplira le stockage
+:::
+
+::: {.callout-tip}
+## Pour aller plus loin : orchestrer et séparer
+Deux limites de notre approche méritent d'être soulignées.
+
+D'abord, notre Job tourne une fois. En production, un reporting se régénère souvent à intervalle régulier (chaque nuit, chaque semaine, chaque mois ...) pour intégrer de nouvelles données. On utiliserait alors un déclenchement planifié plutôt qu'une exécution unique.
+
+Ensuite, regrouper le pipeline d'alimentation et l'application dans le même dépôt de déploiement est un raccourci de démonstration. Dans une vraie architecture, on **séparerait** ces deux responsabilités : l'alimentation du bucket (ingestion, transformation) d'un côté, l'exposition via `Streamlit` de l'autre. Deux mondes, deux cycles de vie.
+
+Les outils pour orchestrer cette alimentation dépendent de votre contexte : un `CronJob` ou `Argo Workflows` si vous restez dans l'écosystème `Kubernetes`, un orchestrateur dédié comme `Airflow` si votre organisation en a déjà un. Il n'y a pas de réponse unique. Ici, on met tout au même endroit pour garder une vue d'ensemble lisible, mais gardez en tête que ce n'est pas le plus optimal.
+:::
+
+Et voilà. Cette fois, l'application est pleinement fonctionnelle : les données se chargent, les graphiques s'affichent et le reporting est téléchargeable. Vous venez de boucler la chaîne complète, du code poussé jusqu'à un data product en ligne, accessible à n'importe qui via une simple URL.
 
 ::: {style="text-align: center;"}
 ![](../images/happy.png){width=50%}
@@ -425,7 +453,7 @@ Ensuite, on ajoute une étape `docker/metadata-action` qui génère les tags d'i
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: surybang/medas-financial-reporting
+          images: <username_docker>/medas-financial-reporting
           tags: |
             type=ref,event=branch
             type=semver,pattern={{version}}
@@ -455,7 +483,7 @@ Vérifiez sur `GitHub` que ce tag déclenche bien un pipeline de `CI`, puis sur 
 La partie `CI` a fait son travail. Passons à la `CD` : sur le dépôt `GitOps`, mettez à jour la version de l'image dans `deployment/deployment.yaml`, en remplaçant `latest` par `v0.0.1`.
 
 ```yaml
-    image: surybang/medas-financial-reporting:v0.0.1
+    image: <username_docker>/medas-financial-reporting:v0.0.1
 ```
 
 ::: {.callout-tip}
@@ -471,8 +499,3 @@ Mettre à jour le tag à la main dans le dépôt GitOps fonctionne, mais on peut
 Après avoir commité et poussé, observez le statut de votre application dans `ArgoCD`. L'opérateur devrait identifier automatiquement le changement et mettre à jour le déploiement.
 
 Vérifiez enfin que votre application en ligne reflète bien la modification. Vous venez de boucler une chaîne complète : du code poussé jusqu'à une version précise déployée en production, sans aucune intervention manuelle sur le cluster.
-
-::: {.callout-tip}
-## Git time
-Pensez à commit et push sur vos deux dépôts.
-:::
