@@ -148,7 +148,7 @@ Nous allons construire le sous-package `financial_reporting` **module par module
 
 ### config.py
 
-La première étape consiste à remplir `config.py` à la racine de `src/<project>/`. Ce module centralise toute la configuration commune aux deux sous-packages : accès MinIO, chemins distants, constantes Excel et indicateurs.
+La première étape consiste à remplir `config.py` à la racine de `src/medas_financial_reporting/`. Ce module centralise toute la configuration commune aux deux sous-packages : accès MinIO, chemins distants, constantes Excel et indicateurs.
 
 Quelques contraintes à respecter :
 
@@ -180,6 +180,7 @@ logger.add(
 
 # Données source
 DATA_URL = "https://minio.lab.sspcloud.fr/fabienhos/MEDAS-FinancialReporting/data/raw/financial_data.parquet"  # noqa: E501
+TEMPLATE_URL = "https://minio.lab.sspcloud.fr/fabienhos/MEDAS-FinancialReporting/template/template_reporting.xlsx"  # noqa: E501
 
 # MinIO
 S3_ENDPOINT = os.environ.get("AWS_S3_ENDPOINT", "")
@@ -190,7 +191,6 @@ S3_BUCKET = os.environ.get("S3_BUCKET", "mettre_votre_username_onyxia")
 
 # Chemins MinIO
 S3_DATA_PROCESSED_KEY = "MEDAS-FinancialReporting/data/processed/financial_data.parquet"
-S3_TEMPLATE_KEY = "MEDAS-FinancialReporting/template/template_reporting.xlsx"
 S3_OUTPUT_KEY = "MEDAS-FinancialReporting/output/reporting.xlsx"
 
 # Chemins locaux temporaires
@@ -338,7 +338,7 @@ On ne `print()` plus, on logue. La documentation complète est disponible [ici](
 
 ### storage.py
 
-Tout comme `config.py`, ce module vit à la racine de `src/<project>/` car il est partagé entre les deux sous-packages. En effet, la génération du reporting interagit avec `MinIO` tout comme `Streamlit` en aura aussi besoin pour exposer le fichier final à l'utilisateur.
+Tout comme `config.py`, ce module vit à la racine de `src/medas_financial_reporting/` car il est partagé entre les deux sous-packages. En effet, la génération du reporting interagit avec `MinIO` tout comme `Streamlit` en aura aussi besoin pour exposer le fichier final à l'utilisateur.
 
 Ce module a une responsabilité unique : encapsuler toutes les interactions avec `MinIO`. On y trouve la création du filesystem S3, l'initialisation de la structure de dossiers, le téléchargement du template, la sauvegarde des données nettoyées et l'upload du reporting final.
 
@@ -348,46 +348,50 @@ Ce module a une responsabilité unique : encapsuler toutes les interactions avec
 ```python
 """Storage functions for MinIO interactions."""
 
+import urllib.request
+
+import pandas as pd
 import s3fs
 from loguru import logger
-import pandas as pd
 
 from medas_financial_reporting.config import (
-    S3_ENDPOINT,
     AWS_ACCESS_KEY_ID,
     AWS_SECRET_ACCESS_KEY,
     AWS_SESSION_TOKEN,
-    S3_BUCKET,
-    S3_TEMPLATE_KEY,
-    S3_OUTPUT_KEY,
-    S3_DATA_PROCESSED_KEY,
+    LOCAL_OUTPUT,
     LOCAL_TEMPLATE,
     LOCAL_TMP_DIR,
-    LOCAL_OUTPUT,
+    S3_DATA_PROCESSED_KEY,
+    S3_ENDPOINT,
+    S3_OUTPUT_KEY,
+    TEMPLATE_URL,
 )
+
 
 def get_fs() -> s3fs.S3FileSystem:
     """Retourne un filesystem S3 authentifié."""
     endpoint = S3_ENDPOINT
-    if not endpoint.startswith("https://"):
+    if not endpoint.startswith(("http://", "https://")):
         endpoint = f"https://{endpoint}"
     return s3fs.S3FileSystem(
         endpoint_url=endpoint,
         key=AWS_ACCESS_KEY_ID,
         secret=AWS_SECRET_ACCESS_KEY,
-        token=AWS_SESSION_TOKEN,
+        token=AWS_SESSION_TOKEN or None,
     )
 
-def download_template(fs: s3fs.S3FileSystem, bucket: str) -> None:
-    """Télécharge le template Excel depuis MinIO."""
+
+def download_template() -> None:
+    """Télécharge le template Excel depuis son URL publique."""
     LOCAL_TMP_DIR.mkdir(exist_ok=True)
-    logger.info(f"Téléchargement du template depuis {S3_TEMPLATE_KEY}")
+    logger.info(f"Téléchargement du template depuis {TEMPLATE_URL}")
     try:
-        fs.get(f"{bucket}/{S3_TEMPLATE_KEY}", str(LOCAL_TEMPLATE))
+        urllib.request.urlretrieve(TEMPLATE_URL, str(LOCAL_TEMPLATE))
         logger.success("Template téléchargé")
     except Exception as e:
         logger.critical(f"Impossible de télécharger le template : {e}")
         raise RuntimeError(f"Impossible de télécharger le template : {e}") from e
+
 
 def upload_reporting(fs: s3fs.S3FileSystem, bucket: str) -> None:
     """Upload le reporting final vers MinIO."""
@@ -399,8 +403,9 @@ def upload_reporting(fs: s3fs.S3FileSystem, bucket: str) -> None:
         logger.error(f"Impossible d'uploader le reporting : {e}")
         raise RuntimeError(f"Impossible d'uploader le reporting : {e}") from e
 
+
 def init_minio_structure(fs: s3fs.S3FileSystem, bucket):
-    """Génère la structure attendue pour le projet dans le stockage distant si elle n'existe pas."""
+    """Génère la structure attendue pour le projet dans le stockage distant si elle n'existe pas."""  # noqa: E501
     folders = [
         f"{bucket}/MEDAS-FinancialReporting/data/processed/",
         f"{bucket}/MEDAS-FinancialReporting/data/raw/",
@@ -415,6 +420,7 @@ def init_minio_structure(fs: s3fs.S3FileSystem, bucket):
                 logger.debug(f"Dossier créé : {path}")
     logger.info("Structure minio déjà existante")
 
+
 def save_processed_data(fs: s3fs.S3FileSystem, df: pd.DataFrame, bucket: str) -> None:
     """Sauvegarde les données nettoyées sur MinIO."""
     path = f"{bucket}/{S3_DATA_PROCESSED_KEY}"
@@ -427,10 +433,34 @@ def save_processed_data(fs: s3fs.S3FileSystem, df: pd.DataFrame, bucket: str) ->
         logger.error(f"Impossible de sauvegarder les données : {e}")
         raise RuntimeError(f"Impossible de sauvegarder les données : {e}") from e
 
+
+def read_processed_data(fs: s3fs.S3FileSystem, bucket: str) -> pd.DataFrame:
+    """Charge les données nettoyées depuis MinIO."""
+    path = f"{bucket}/{S3_DATA_PROCESSED_KEY}"
+    logger.info(f"Chargement des données nettoyées depuis {path}")
+    try:
+        with fs.open(path, "rb") as f:
+            return pd.read_parquet(f)
+    except Exception as e:
+        logger.error(f"Impossible de charger les données : {e}")
+        raise RuntimeError(f"Impossible de charger les données : {e}") from e
+
+
+def read_reporting(fs: s3fs.S3FileSystem, bucket: str) -> bytes:
+    """Charge le reporting final depuis MinIO."""
+    path = f"{bucket}/{S3_OUTPUT_KEY}"
+    logger.info(f"Chargement du reporting depuis {path}")
+    try:
+        with fs.open(path, "rb") as f:
+            return f.read()
+    except Exception as e:
+        logger.error(f"Impossible de charger le reporting : {e}")
+        raise RuntimeError(f"Impossible de charger le reporting : {e}") from e
+
 ```
 </details>
 
-La gestion des erreurs est volontairement simple ici : un `try/except` avec logging et `raise` pour interrompre le pipeline proprement. Dans un contexte de production plus exigeant, on irait plus loin : distinguer les erreurs de permissions (credentials expirés), les erreurs réseau (stockage indisponible), les erreurs d'intégrité (fichier corrompu à l'upload). Il n'est d'ailleurs pas rare de définir ses propres exceptions métier pour rendre ces cas explicites. C'est un sujet à part entière que nous n'aborderons pas ici, mais gardez-le en tête.
+La gestion des erreurs est volontairement simple ici : un `try/except` avec logging et `raise` pour interrompre le pipeline proprement. Dans un contexte plus exigeant, on irait plus loin : distinguer les erreurs de permissions (credentials expirés), les erreurs réseau (stockage indisponible), les erreurs d'intégrité (fichier corrompu à l'upload). Il n'est d'ailleurs pas rare de définir ses propres exceptions métier pour rendre ces cas explicites. C'est un sujet à part entière que nous n'aborderons pas ici mais gardez-le en tête.
 
 ### data.py
 
@@ -649,6 +679,7 @@ from medas_financial_reporting.financial_reporting import (
     write_data_to_excel,
 )
 
+
 def main() -> None:
 
     bucket = S3_BUCKET
@@ -670,7 +701,7 @@ def main() -> None:
     save_processed_data(fs, df, bucket)
 
     # Télécharger le template
-    download_template(fs, bucket)
+    download_template()
 
     # Insérer les données et remplir les indicateurs
     write_data_to_excel(df)
@@ -678,6 +709,7 @@ def main() -> None:
 
     # Uploader le reporting sur MinIO
     upload_reporting(fs, bucket)
+
 
 if __name__ == "__main__":
     main()
