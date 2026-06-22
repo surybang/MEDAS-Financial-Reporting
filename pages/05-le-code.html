@@ -484,7 +484,7 @@ Voir la solution
 <p>Nous allons construire le sous-package <code>financial_reporting</code> <strong>module par module</strong>, dans l’ordre où les dépendances s’enchaînent : d’abord <code>config.py</code> (la configuration partagée), puis <code>storage.py</code> (les interactions MinIO), <code>data.py</code> (récupération et nettoyage), <code>reporting.py</code> (génération Excel) et enfin <code>main.py</code> (l’orchestration). Chaque module a une responsabilité unique, c’est le fil conducteur de toute cette partie.</p>
 <section id="config.py" class="level3">
 <h3 class="anchored" data-anchor-id="config.py">config.py</h3>
-<p>La première étape consiste à remplir <code>config.py</code> à la racine de <code>src/&lt;project&gt;/</code>. Ce module centralise toute la configuration commune aux deux sous-packages : accès MinIO, chemins distants, constantes Excel et indicateurs.</p>
+<p>La première étape consiste à remplir <code>config.py</code> à la racine de <code>src/medas_financial_reporting/</code>. Ce module centralise toute la configuration commune aux deux sous-packages : accès MinIO, chemins distants, constantes Excel et indicateurs.</p>
 <p>Quelques contraintes à respecter :</p>
 <ul>
 <li><strong>Pas d’artefacts locaux persistants,</strong> le template et le reporting final vivent sur MinIO, pas dans le repo.</li>
@@ -516,17 +516,17 @@ Afficher le code
 <span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Données source</span></span>
 <span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>DATA_URL <span class="op">=</span> <span class="st">"https://minio.lab.sspcloud.fr/fabienhos/MEDAS-FinancialReporting/data/raw/financial_data.parquet"</span>  <span class="co"># noqa: E501</span></span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="co"># MinIO</span></span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>S3_ENDPOINT <span class="op">=</span> os.environ.get(<span class="st">"AWS_S3_ENDPOINT"</span>, <span class="st">""</span>)</span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>AWS_ACCESS_KEY_ID <span class="op">=</span> os.environ.get(<span class="st">"AWS_ACCESS_KEY_ID"</span>, <span class="st">""</span>)</span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>AWS_SECRET_ACCESS_KEY <span class="op">=</span> os.environ.get(<span class="st">"AWS_SECRET_ACCESS_KEY"</span>, <span class="st">""</span>)</span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>AWS_SESSION_TOKEN <span class="op">=</span> os.environ.get(<span class="st">"AWS_SESSION_TOKEN"</span>, <span class="st">""</span>)</span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>S3_BUCKET <span class="op">=</span> os.environ.get(<span class="st">"S3_BUCKET"</span>, <span class="st">"mettre_votre_username_onyxia"</span>)</span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Chemins MinIO</span></span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>S3_DATA_PROCESSED_KEY <span class="op">=</span> <span class="st">"MEDAS-FinancialReporting/data/processed/financial_data.parquet"</span></span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>S3_TEMPLATE_KEY <span class="op">=</span> <span class="st">"MEDAS-FinancialReporting/template/template_reporting.xlsx"</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>TEMPLATE_URL <span class="op">=</span> <span class="st">"https://minio.lab.sspcloud.fr/fabienhos/MEDAS-FinancialReporting/template/template_reporting.xlsx"</span>  <span class="co"># noqa: E501</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="co"># MinIO</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>S3_ENDPOINT <span class="op">=</span> os.environ.get(<span class="st">"AWS_S3_ENDPOINT"</span>, <span class="st">""</span>)</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>AWS_ACCESS_KEY_ID <span class="op">=</span> os.environ.get(<span class="st">"AWS_ACCESS_KEY_ID"</span>, <span class="st">""</span>)</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>AWS_SECRET_ACCESS_KEY <span class="op">=</span> os.environ.get(<span class="st">"AWS_SECRET_ACCESS_KEY"</span>, <span class="st">""</span>)</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>AWS_SESSION_TOKEN <span class="op">=</span> os.environ.get(<span class="st">"AWS_SESSION_TOKEN"</span>, <span class="st">""</span>)</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>S3_BUCKET <span class="op">=</span> os.environ.get(<span class="st">"S3_BUCKET"</span>, <span class="st">"mettre_votre_username_onyxia"</span>)</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Chemins MinIO</span></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>S3_DATA_PROCESSED_KEY <span class="op">=</span> <span class="st">"MEDAS-FinancialReporting/data/processed/financial_data.parquet"</span></span>
 <span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>S3_OUTPUT_KEY <span class="op">=</span> <span class="st">"MEDAS-FinancialReporting/output/reporting.xlsx"</span></span>
 <span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Chemins locaux temporaires</span></span>
@@ -668,7 +668,7 @@ Afficher le code
 </section>
 <section id="storage.py" class="level3">
 <h3 class="anchored" data-anchor-id="storage.py">storage.py</h3>
-<p>Tout comme <code>config.py</code>, ce module vit à la racine de <code>src/&lt;project&gt;/</code> car il est partagé entre les deux sous-packages. En effet, la génération du reporting interagit avec <code>MinIO</code> tout comme <code>Streamlit</code> en aura aussi besoin pour exposer le fichier final à l’utilisateur.</p>
+<p>Tout comme <code>config.py</code>, ce module vit à la racine de <code>src/medas_financial_reporting/</code> car il est partagé entre les deux sous-packages. En effet, la génération du reporting interagit avec <code>MinIO</code> tout comme <code>Streamlit</code> en aura aussi besoin pour exposer le fichier final à l’utilisateur.</p>
 <p>Ce module a une responsabilité unique : encapsuler toutes les interactions avec <code>MinIO</code>. On y trouve la création du filesystem S3, l’initialisation de la structure de dossiers, le téléchargement du template, la sauvegarde des données nettoyées et l’upload du reporting final.</p>
 <details>
 <summary>
@@ -676,86 +676,116 @@ Afficher le code
 </summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""Storage functions for MinIO interactions."""</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> s3fs</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> loguru <span class="im">import</span> logger</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> urllib.request</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> medas_financial_reporting.config <span class="im">import</span> (</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    S3_ENDPOINT,</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    AWS_ACCESS_KEY_ID,</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    AWS_SECRET_ACCESS_KEY,</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    AWS_SESSION_TOKEN,</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    S3_BUCKET,</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    S3_TEMPLATE_KEY,</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    S3_OUTPUT_KEY,</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    S3_DATA_PROCESSED_KEY,</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    LOCAL_TEMPLATE,</span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    LOCAL_TMP_DIR,</span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    LOCAL_OUTPUT,</span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_fs() <span class="op">-&gt;</span> s3fs.S3FileSystem:</span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Retourne un filesystem S3 authentifié."""</span></span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>    endpoint <span class="op">=</span> S3_ENDPOINT</span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> endpoint.startswith(<span class="st">"https://"</span>):</span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>        endpoint <span class="op">=</span> <span class="ss">f"https://</span><span class="sc">{</span>endpoint<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> s3fs.S3FileSystem(</span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>        endpoint_url<span class="op">=</span>endpoint,</span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>        key<span class="op">=</span>AWS_ACCESS_KEY_ID,</span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>        secret<span class="op">=</span>AWS_SECRET_ACCESS_KEY,</span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>        token<span class="op">=</span>AWS_SESSION_TOKEN,</span>
-<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> download_template(fs: s3fs.S3FileSystem, bucket: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
-<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Télécharge le template Excel depuis MinIO."""</span></span>
-<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>    LOCAL_TMP_DIR.mkdir(exist_ok<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>    logger.info(<span class="ss">f"Téléchargement du template depuis </span><span class="sc">{</span>S3_TEMPLATE_KEY<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
-<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>        fs.get(<span class="ss">f"</span><span class="sc">{</span>bucket<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>S3_TEMPLATE_KEY<span class="sc">}</span><span class="ss">"</span>, <span class="bu">str</span>(LOCAL_TEMPLATE))</span>
-<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>        logger.success(<span class="st">"Template téléchargé"</span>)</span>
-<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
-<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>        logger.critical(<span class="ss">f"Impossible de télécharger le template : </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">RuntimeError</span>(<span class="ss">f"Impossible de télécharger le template : </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>) <span class="im">from</span> e</span>
-<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> upload_reporting(fs: s3fs.S3FileSystem, bucket: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
-<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Upload le reporting final vers MinIO."""</span></span>
-<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>    logger.info(<span class="ss">f"Upload du reporting vers </span><span class="sc">{</span>S3_OUTPUT_KEY<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
-<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>        fs.put(<span class="bu">str</span>(LOCAL_OUTPUT), <span class="ss">f"</span><span class="sc">{</span>bucket<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>S3_OUTPUT_KEY<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a>        logger.success(<span class="st">"Reporting uploadé"</span>)</span>
-<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
-<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a>        logger.error(<span class="ss">f"Impossible d'uploader le reporting : </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">RuntimeError</span>(<span class="ss">f"Impossible d'uploader le reporting : </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>) <span class="im">from</span> e</span>
-<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> init_minio_structure(fs: s3fs.S3FileSystem, bucket):</span>
-<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Génère la structure attendue pour le projet dans le stockage distant si elle n'existe pas."""</span></span>
-<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a>    folders <span class="op">=</span> [</span>
-<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"</span><span class="sc">{</span>bucket<span class="sc">}</span><span class="ss">/MEDAS-FinancialReporting/data/processed/"</span>,</span>
-<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"</span><span class="sc">{</span>bucket<span class="sc">}</span><span class="ss">/MEDAS-FinancialReporting/data/raw/"</span>,</span>
-<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"</span><span class="sc">{</span>bucket<span class="sc">}</span><span class="ss">/MEDAS-FinancialReporting/template/"</span>,</span>
-<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"</span><span class="sc">{</span>bucket<span class="sc">}</span><span class="ss">/MEDAS-FinancialReporting/output/"</span>,</span>
-<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a>    ]</span>
-<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> path <span class="kw">in</span> folders:</span>
-<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> fs.exists(path):</span>
-<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a>            <span class="cf">with</span> fs.<span class="bu">open</span>(path, <span class="st">"wb"</span>) <span class="im">as</span> f:</span>
-<span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a>                f.write(<span class="st">b""</span>)</span>
-<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a>                logger.debug(<span class="ss">f"Dossier créé : </span><span class="sc">{</span>path<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb6-68"><a href="#cb6-68" aria-hidden="true" tabindex="-1"></a>    logger.info(<span class="st">"Structure minio déjà existante"</span>)</span>
-<span id="cb6-69"><a href="#cb6-69" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-70"><a href="#cb6-70" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> save_processed_data(fs: s3fs.S3FileSystem, df: pd.DataFrame, bucket: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
-<span id="cb6-71"><a href="#cb6-71" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Sauvegarde les données nettoyées sur MinIO."""</span></span>
-<span id="cb6-72"><a href="#cb6-72" aria-hidden="true" tabindex="-1"></a>    path <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span>bucket<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>S3_DATA_PROCESSED_KEY<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb6-73"><a href="#cb6-73" aria-hidden="true" tabindex="-1"></a>    logger.info(<span class="ss">f"Sauvegarde des données nettoyées vers </span><span class="sc">{</span>path<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb6-74"><a href="#cb6-74" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
-<span id="cb6-75"><a href="#cb6-75" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> fs.<span class="bu">open</span>(path, <span class="st">"wb"</span>) <span class="im">as</span> f:</span>
-<span id="cb6-76"><a href="#cb6-76" aria-hidden="true" tabindex="-1"></a>            df.to_parquet(f)</span>
-<span id="cb6-77"><a href="#cb6-77" aria-hidden="true" tabindex="-1"></a>        logger.success(<span class="st">"Données nettoyées sauvegardées"</span>)</span>
-<span id="cb6-78"><a href="#cb6-78" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
-<span id="cb6-79"><a href="#cb6-79" aria-hidden="true" tabindex="-1"></a>        logger.error(<span class="ss">f"Impossible de sauvegarder les données : </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb6-80"><a href="#cb6-80" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">RuntimeError</span>(<span class="ss">f"Impossible de sauvegarder les données : </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>) <span class="im">from</span> e</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> s3fs</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> loguru <span class="im">import</span> logger</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> medas_financial_reporting.config <span class="im">import</span> (</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    AWS_ACCESS_KEY_ID,</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    AWS_SECRET_ACCESS_KEY,</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    AWS_SESSION_TOKEN,</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    LOCAL_OUTPUT,</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    LOCAL_TEMPLATE,</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    LOCAL_TMP_DIR,</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    S3_DATA_PROCESSED_KEY,</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    S3_ENDPOINT,</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    S3_OUTPUT_KEY,</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    TEMPLATE_URL,</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_fs() <span class="op">-&gt;</span> s3fs.S3FileSystem:</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Retourne un filesystem S3 authentifié."""</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>    endpoint <span class="op">=</span> S3_ENDPOINT</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> endpoint.startswith((<span class="st">"http://"</span>, <span class="st">"https://"</span>)):</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>        endpoint <span class="op">=</span> <span class="ss">f"https://</span><span class="sc">{</span>endpoint<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> s3fs.S3FileSystem(</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>        endpoint_url<span class="op">=</span>endpoint,</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>        key<span class="op">=</span>AWS_ACCESS_KEY_ID,</span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>        secret<span class="op">=</span>AWS_SECRET_ACCESS_KEY,</span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>        token<span class="op">=</span>AWS_SESSION_TOKEN <span class="kw">or</span> <span class="va">None</span>,</span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> download_template() <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Télécharge le template Excel depuis son URL publique."""</span></span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>    LOCAL_TMP_DIR.mkdir(exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>    logger.info(<span class="ss">f"Téléchargement du template depuis </span><span class="sc">{</span>TEMPLATE_URL<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>        urllib.request.urlretrieve(TEMPLATE_URL, <span class="bu">str</span>(LOCAL_TEMPLATE))</span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>        logger.success(<span class="st">"Template téléchargé"</span>)</span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>        logger.critical(<span class="ss">f"Impossible de télécharger le template : </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">RuntimeError</span>(<span class="ss">f"Impossible de télécharger le template : </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>) <span class="im">from</span> e</span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> upload_reporting(fs: s3fs.S3FileSystem, bucket: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Upload le reporting final vers MinIO."""</span></span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a>    logger.info(<span class="ss">f"Upload du reporting vers </span><span class="sc">{</span>S3_OUTPUT_KEY<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a>        fs.put(<span class="bu">str</span>(LOCAL_OUTPUT), <span class="ss">f"</span><span class="sc">{</span>bucket<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>S3_OUTPUT_KEY<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>        logger.success(<span class="st">"Reporting uploadé"</span>)</span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a>        logger.error(<span class="ss">f"Impossible d'uploader le reporting : </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">RuntimeError</span>(<span class="ss">f"Impossible d'uploader le reporting : </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>) <span class="im">from</span> e</span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> init_minio_structure(fs: s3fs.S3FileSystem, bucket):</span>
+<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Génère la structure attendue pour le projet dans le stockage distant si elle n'existe pas."""</span>  <span class="co"># noqa: E501</span></span>
+<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a>    folders <span class="op">=</span> [</span>
+<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"</span><span class="sc">{</span>bucket<span class="sc">}</span><span class="ss">/MEDAS-FinancialReporting/data/processed/"</span>,</span>
+<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"</span><span class="sc">{</span>bucket<span class="sc">}</span><span class="ss">/MEDAS-FinancialReporting/data/raw/"</span>,</span>
+<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"</span><span class="sc">{</span>bucket<span class="sc">}</span><span class="ss">/MEDAS-FinancialReporting/template/"</span>,</span>
+<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"</span><span class="sc">{</span>bucket<span class="sc">}</span><span class="ss">/MEDAS-FinancialReporting/output/"</span>,</span>
+<span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-68"><a href="#cb6-68" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> path <span class="kw">in</span> folders:</span>
+<span id="cb6-69"><a href="#cb6-69" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> fs.exists(path):</span>
+<span id="cb6-70"><a href="#cb6-70" aria-hidden="true" tabindex="-1"></a>            <span class="cf">with</span> fs.<span class="bu">open</span>(path, <span class="st">"wb"</span>) <span class="im">as</span> f:</span>
+<span id="cb6-71"><a href="#cb6-71" aria-hidden="true" tabindex="-1"></a>                f.write(<span class="st">b""</span>)</span>
+<span id="cb6-72"><a href="#cb6-72" aria-hidden="true" tabindex="-1"></a>                logger.debug(<span class="ss">f"Dossier créé : </span><span class="sc">{</span>path<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-73"><a href="#cb6-73" aria-hidden="true" tabindex="-1"></a>    logger.info(<span class="st">"Structure minio déjà existante"</span>)</span>
+<span id="cb6-74"><a href="#cb6-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-75"><a href="#cb6-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-76"><a href="#cb6-76" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> save_processed_data(fs: s3fs.S3FileSystem, df: pd.DataFrame, bucket: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="cb6-77"><a href="#cb6-77" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Sauvegarde les données nettoyées sur MinIO."""</span></span>
+<span id="cb6-78"><a href="#cb6-78" aria-hidden="true" tabindex="-1"></a>    path <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span>bucket<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>S3_DATA_PROCESSED_KEY<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb6-79"><a href="#cb6-79" aria-hidden="true" tabindex="-1"></a>    logger.info(<span class="ss">f"Sauvegarde des données nettoyées vers </span><span class="sc">{</span>path<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-80"><a href="#cb6-80" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb6-81"><a href="#cb6-81" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> fs.<span class="bu">open</span>(path, <span class="st">"wb"</span>) <span class="im">as</span> f:</span>
+<span id="cb6-82"><a href="#cb6-82" aria-hidden="true" tabindex="-1"></a>            df.to_parquet(f)</span>
+<span id="cb6-83"><a href="#cb6-83" aria-hidden="true" tabindex="-1"></a>        logger.success(<span class="st">"Données nettoyées sauvegardées"</span>)</span>
+<span id="cb6-84"><a href="#cb6-84" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb6-85"><a href="#cb6-85" aria-hidden="true" tabindex="-1"></a>        logger.error(<span class="ss">f"Impossible de sauvegarder les données : </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-86"><a href="#cb6-86" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">RuntimeError</span>(<span class="ss">f"Impossible de sauvegarder les données : </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>) <span class="im">from</span> e</span>
+<span id="cb6-87"><a href="#cb6-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-88"><a href="#cb6-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-89"><a href="#cb6-89" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> read_processed_data(fs: s3fs.S3FileSystem, bucket: <span class="bu">str</span>) <span class="op">-&gt;</span> pd.DataFrame:</span>
+<span id="cb6-90"><a href="#cb6-90" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Charge les données nettoyées depuis MinIO."""</span></span>
+<span id="cb6-91"><a href="#cb6-91" aria-hidden="true" tabindex="-1"></a>    path <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span>bucket<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>S3_DATA_PROCESSED_KEY<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb6-92"><a href="#cb6-92" aria-hidden="true" tabindex="-1"></a>    logger.info(<span class="ss">f"Chargement des données nettoyées depuis </span><span class="sc">{</span>path<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-93"><a href="#cb6-93" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb6-94"><a href="#cb6-94" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> fs.<span class="bu">open</span>(path, <span class="st">"rb"</span>) <span class="im">as</span> f:</span>
+<span id="cb6-95"><a href="#cb6-95" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> pd.read_parquet(f)</span>
+<span id="cb6-96"><a href="#cb6-96" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb6-97"><a href="#cb6-97" aria-hidden="true" tabindex="-1"></a>        logger.error(<span class="ss">f"Impossible de charger les données : </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-98"><a href="#cb6-98" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">RuntimeError</span>(<span class="ss">f"Impossible de charger les données : </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>) <span class="im">from</span> e</span>
+<span id="cb6-99"><a href="#cb6-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-100"><a href="#cb6-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-101"><a href="#cb6-101" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> read_reporting(fs: s3fs.S3FileSystem, bucket: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">bytes</span>:</span>
+<span id="cb6-102"><a href="#cb6-102" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Charge le reporting final depuis MinIO."""</span></span>
+<span id="cb6-103"><a href="#cb6-103" aria-hidden="true" tabindex="-1"></a>    path <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span>bucket<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>S3_OUTPUT_KEY<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb6-104"><a href="#cb6-104" aria-hidden="true" tabindex="-1"></a>    logger.info(<span class="ss">f"Chargement du reporting depuis </span><span class="sc">{</span>path<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-105"><a href="#cb6-105" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb6-106"><a href="#cb6-106" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> fs.<span class="bu">open</span>(path, <span class="st">"rb"</span>) <span class="im">as</span> f:</span>
+<span id="cb6-107"><a href="#cb6-107" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> f.read()</span>
+<span id="cb6-108"><a href="#cb6-108" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb6-109"><a href="#cb6-109" aria-hidden="true" tabindex="-1"></a>        logger.error(<span class="ss">f"Impossible de charger le reporting : </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-110"><a href="#cb6-110" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">RuntimeError</span>(<span class="ss">f"Impossible de charger le reporting : </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>) <span class="im">from</span> e</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<p>La gestion des erreurs est volontairement simple ici : un <code>try/except</code> avec logging et <code>raise</code> pour interrompre le pipeline proprement. Dans un contexte de production plus exigeant, on irait plus loin : distinguer les erreurs de permissions (credentials expirés), les erreurs réseau (stockage indisponible), les erreurs d’intégrité (fichier corrompu à l’upload). Il n’est d’ailleurs pas rare de définir ses propres exceptions métier pour rendre ces cas explicites. C’est un sujet à part entière que nous n’aborderons pas ici, mais gardez-le en tête.</p>
+<p>La gestion des erreurs est volontairement simple ici : un <code>try/except</code> avec logging et <code>raise</code> pour interrompre le pipeline proprement. Dans un contexte plus exigeant, on irait plus loin : distinguer les erreurs de permissions (credentials expirés), les erreurs réseau (stockage indisponible), les erreurs d’intégrité (fichier corrompu à l’upload). Il n’est d’ailleurs pas rare de définir ses propres exceptions métier pour rendre ces cas explicites. C’est un sujet à part entière que nous n’aborderons pas ici mais gardez-le en tête.</p>
 </section>
 <section id="data.py" class="level3">
 <h3 class="anchored" data-anchor-id="data.py">data.py</h3>
@@ -967,38 +997,40 @@ Afficher le code
 <span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>    write_data_to_excel,</span>
 <span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> main() <span class="op">-&gt;</span> <span class="va">None</span>:</span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>    bucket <span class="op">=</span> S3_BUCKET</span>
-<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>    LOCAL_TMP_DIR.mkdir(exist_ok<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Intialiser le filesystem</span></span>
-<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>    fs <span class="op">=</span> get_fs()</span>
-<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Créer la structure sur MinIO si elles n'existent pas</span></span>
-<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>    init_minio_structure(fs, bucket)</span>
-<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Récupérer et valider les données brutes</span></span>
-<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> get_data()</span>
-<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Nettoyer les données</span></span>
-<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> clean_data(df)</span>
-<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Sauvegarder les données nettoyées sur MinIO</span></span>
-<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>    save_processed_data(fs, df, bucket)</span>
-<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Télécharger le template</span></span>
-<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a>    download_template(fs, bucket)</span>
-<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Insérer les données et remplir les indicateurs</span></span>
-<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a>    write_data_to_excel(df)</span>
-<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a>    fill_indicators()</span>
-<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Uploader le reporting sur MinIO</span></span>
-<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a>    upload_reporting(fs, bucket)</span>
-<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
-<span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a>    main()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> main() <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>    bucket <span class="op">=</span> S3_BUCKET</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>    LOCAL_TMP_DIR.mkdir(exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Intialiser le filesystem</span></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>    fs <span class="op">=</span> get_fs()</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Créer la structure sur MinIO si elles n'existent pas</span></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>    init_minio_structure(fs, bucket)</span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Récupérer et valider les données brutes</span></span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> get_data()</span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Nettoyer les données</span></span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> clean_data(df)</span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Sauvegarder les données nettoyées sur MinIO</span></span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>    save_processed_data(fs, df, bucket)</span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Télécharger le template</span></span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a>    download_template()</span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Insérer les données et remplir les indicateurs</span></span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a>    write_data_to_excel(df)</span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a>    fill_indicators()</span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Uploader le reporting sur MinIO</span></span>
+<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a>    upload_reporting(fs, bucket)</span>
+<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-53"><a href="#cb9-53" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
+<span id="cb9-54"><a href="#cb9-54" aria-hidden="true" tabindex="-1"></a>    main()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <p>Regardez <code>main()</code> : des étapes lisibles comme une recette. Pas de logique métier ici, pas de formules Excel ni de transformations. Chaque ligne dit ce qui se passe, dans quel ordre et avec quoi. C’est vers quoi on devrait tendre quand on veut faire du code simple mais efficace.</p>
 <p>Pour terminer cette partie, assurez-vous d’avoir lancer votre <code>main.py</code> et d’obtenir les mêmes logs que moi, n’oubliez pas de consulter votre <code>MinIO</code> pour voir si le fichier est bien présent ainsi que de le télécharger pour s’assurer des bonnes transformations.</p>
