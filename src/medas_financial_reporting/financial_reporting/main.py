@@ -40,7 +40,7 @@ def main() -> None:
     save_processed_data(fs, df, bucket)
 
     # Télécharger le template
-    download_template(fs, bucket)
+    download_template()
 
     # Insérer les données et remplir les indicateurs
     write_data_to_excel(df)
