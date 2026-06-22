@@ -1,5 +1,7 @@
 """Storage functions for MinIO interactions."""
 
+import urllib.request
+
 import pandas as pd
 import s3fs
 from loguru import logger
@@ -14,29 +16,29 @@ from medas_financial_reporting.config import (
     S3_DATA_PROCESSED_KEY,
     S3_ENDPOINT,
     S3_OUTPUT_KEY,
-    S3_TEMPLATE_KEY,
+    TEMPLATE_URL,
 )
 
 
 def get_fs() -> s3fs.S3FileSystem:
     """Retourne un filesystem S3 authentifié."""
     endpoint = S3_ENDPOINT
-    if not endpoint.startswith("https://"):
+    if not endpoint.startswith(("http://", "https://")):
         endpoint = f"https://{endpoint}"
     return s3fs.S3FileSystem(
         endpoint_url=endpoint,
         key=AWS_ACCESS_KEY_ID,
         secret=AWS_SECRET_ACCESS_KEY,
-        token=AWS_SESSION_TOKEN,
+        token=AWS_SESSION_TOKEN or None,
     )
 
 
-def download_template(fs: s3fs.S3FileSystem, bucket: str) -> None:
-    """Télécharge le template Excel depuis MinIO."""
+def download_template() -> None:
+    """Télécharge le template Excel depuis son URL publique."""
     LOCAL_TMP_DIR.mkdir(exist_ok=True)
-    logger.info(f"Téléchargement du template depuis {S3_TEMPLATE_KEY}")
+    logger.info(f"Téléchargement du template depuis {TEMPLATE_URL}")
     try:
-        fs.get(f"{bucket}/{S3_TEMPLATE_KEY}", str(LOCAL_TEMPLATE))
+        urllib.request.urlretrieve(TEMPLATE_URL, str(LOCAL_TEMPLATE))
         logger.success("Template téléchargé")
     except Exception as e:
         logger.critical(f"Impossible de télécharger le template : {e}")
@@ -55,7 +57,12 @@ def upload_reporting(fs: s3fs.S3FileSystem, bucket: str) -> None:
 
 
 def init_minio_structure(fs: s3fs.S3FileSystem, bucket):
-    """Génère la structure attendue pour le projet dans le stockage distant si elle n'existe pas."""  # noqa: E501
+    """Génère le bucket et la structure attendue si elle n'existe pas."""  # noqa: E501
+
+    if not fs.exists(bucket):
+        fs.mkdir(bucket)
+        logger.info(f"Bucket {bucket} créé")
+
     folders = [
         f"{bucket}/MEDAS-FinancialReporting/data/processed/",
         f"{bucket}/MEDAS-FinancialReporting/data/raw/",
@@ -82,3 +89,27 @@ def save_processed_data(fs: s3fs.S3FileSystem, df: pd.DataFrame, bucket: str) ->
     except Exception as e:
         logger.error(f"Impossible de sauvegarder les données : {e}")
         raise RuntimeError(f"Impossible de sauvegarder les données : {e}") from e
+
+
+def read_processed_data(fs: s3fs.S3FileSystem, bucket: str) -> pd.DataFrame:
+    """Charge les données nettoyées depuis MinIO."""
+    path = f"{bucket}/{S3_DATA_PROCESSED_KEY}"
+    logger.info(f"Chargement des données nettoyées depuis {path}")
+    try:
+        with fs.open(path, "rb") as f:
+            return pd.read_parquet(f)
+    except Exception as e:
+        logger.error(f"Impossible de charger les données : {e}")
+        raise RuntimeError(f"Impossible de charger les données : {e}") from e
+
+
+def read_reporting(fs: s3fs.S3FileSystem, bucket: str) -> bytes:
+    """Charge le reporting final depuis MinIO."""
+    path = f"{bucket}/{S3_OUTPUT_KEY}"
+    logger.info(f"Chargement du reporting depuis {path}")
+    try:
+        with fs.open(path, "rb") as f:
+            return f.read()
+    except Exception as e:
+        logger.error(f"Impossible de charger le reporting : {e}")
+        raise RuntimeError(f"Impossible de charger le reporting : {e}") from e

@@ -5,12 +5,12 @@ import pandas as pd
 import streamlit as st
 from loguru import logger
 
-from medas_financial_reporting.config import (
-    S3_BUCKET,
-    S3_DATA_PROCESSED_KEY,
-    S3_OUTPUT_KEY,
+from medas_financial_reporting.config import S3_BUCKET
+from medas_financial_reporting.storage import (
+    get_fs,
+    read_processed_data,
+    read_reporting,
 )
-from medas_financial_reporting.storage import get_fs
 
 
 def run():
@@ -39,18 +39,14 @@ PALETTE = {
 
 @st.cache_data(ttl=3600)
 def load_data() -> pd.DataFrame:
-    """Charge les données nettoyées depuis MinIO."""
-    fs = get_fs()
-    with fs.open(f"{S3_BUCKET}/{S3_DATA_PROCESSED_KEY}", "rb") as f:
-        return pd.read_parquet(f)
+    """Charge les données nettoyées (avec cache Streamlit)."""
+    return read_processed_data(get_fs(), S3_BUCKET)
 
 
 @st.cache_data(ttl=3600)
 def load_reporting() -> bytes:
-    """Charge le reporting final depuis MinIO."""
-    fs = get_fs()
-    with fs.open(f"{S3_BUCKET}/{S3_OUTPUT_KEY}", "rb") as f:
-        return f.read()
+    """Charge le reporting final (avec cache Streamlit)."""
+    return read_reporting(get_fs(), S3_BUCKET)
 
 
 def plot_bar(series: pd.Series, title: str) -> plt.Figure:
