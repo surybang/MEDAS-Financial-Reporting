@@ -404,8 +404,12 @@ def upload_reporting(fs: s3fs.S3FileSystem, bucket: str) -> None:
         raise RuntimeError(f"Impossible d'uploader le reporting : {e}") from e
 
 
-def init_minio_structure(fs: s3fs.S3FileSystem, bucket):
-    """Génère la structure attendue pour le projet dans le stockage distant si elle n'existe pas."""  # noqa: E501
+def init_minio_structure(fs: s3fs.S3FileSystem, bucket: str) -> None:
+    """Génère le bucket et la structure de dossiers si elle n'existe pas."""
+    if not fs.exists(bucket):
+        fs.mkdir(bucket)
+        logger.info(f"Bucket {bucket} créé")
+
     folders = [
         f"{bucket}/MEDAS-FinancialReporting/data/processed/",
         f"{bucket}/MEDAS-FinancialReporting/data/raw/",
@@ -418,7 +422,7 @@ def init_minio_structure(fs: s3fs.S3FileSystem, bucket):
             with fs.open(path, "wb") as f:
                 f.write(b"")
                 logger.debug(f"Dossier créé : {path}")
-    logger.info("Structure minio déjà existante")
+    logger.info("Structure MinIO prête")
 
 
 def save_processed_data(fs: s3fs.S3FileSystem, df: pd.DataFrame, bucket: str) -> None:
