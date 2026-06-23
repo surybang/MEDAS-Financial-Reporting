@@ -1,8 +1,8 @@
 ---
-title: "Streamlit"
+title: "Un hublot pour notre application"
 ---
 
-Jusqu'ici nous avons construit un package qui génère un reporting, mais ce package reste pilotable uniquement en ligne de commande. Pour le faire tourner il faut un terminal, un environnement Python configuré et savoir quelle commande lancer. Autrement dit, notre code n'est utilisable que par des personnes techniques, nous-mêmes essentiellement.
+Jusqu'ici nous avons construit un package qui génère un reporting mais ce package reste pilotable uniquement en ligne de commande. Pour le faire tourner il faut un `Terminal`, un environnement `Python` configuré et savoir quelle commande lancer. Autrement dit, notre code n'est utilisable que par des personnes techniques, nous-mêmes essentiellement.
 
 Or l'objectif d'un reporting est qu'il soit consulté par d'autres : le métier, la direction, des partenaires. C'est précisément le rôle de `Streamlit` : apporter une **interface utilisateur** par-dessus notre package. Le moteur de génération ne change pas, on vient simplement l'habiller d'une couche accessible depuis un navigateur, pour que n'importe qui puisse déclencher, consulter et explorer le reporting sans écrire une seule ligne de code.
 
@@ -220,7 +220,7 @@ if __name__ == "__main__":
 
 ## Ce qu'on a fait et comment
 
-Quelques points à relever sur cette implémentation. La lecture des données et du reporting ne se fait pas directement dans l'app : on appelle `read_processed_data` et `read_reporting` du module `storage`, les mêmes interactions MinIO que celles utilisées pour la génération. L'app se contente de les envelopper dans `load_data` et `load_reporting`, qui n'ajoutent qu'une seule chose : le cache.
+Quelques points à relever sur cette implémentation. La lecture des données et du reporting ne se fait pas directement dans l'app : on appelle `read_processed_data` et `read_reporting` du module `storage`, les mêmes interactions `MinIO` que celles utilisées pour la génération. L'app se contente de les envelopper dans `load_data` et `load_reporting`, qui n'ajoutent qu'une seule chose : le cache.
 
 C'est tout l'intérêt d'avoir isolé les interactions MinIO dans un module partagé. La logique de stockage reste centralisée et testable dans `storage.py`, sans aucune dépendance à Streamlit, tandis que le décorateur `@st.cache_data(ttl=3600)` reste là où il a du sens, dans la couche interface. Il met en cache le résultat des chargements pendant une heure : sans lui, chaque interaction de l'utilisateur (un filtre, un clic) rechargerait les données depuis `MinIO`, ce qui serait lent et inutile. Enfin `PALETTE` centralise les couleurs pour garder une cohérence visuelle entre tous les graphiques.
 

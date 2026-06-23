@@ -1,5 +1,5 @@
 ---
-title: "Situation ciblée"
+title: "L'horizon visé"
 ---
 
 Voici notre cible (voir le schéma plus bas ⬇), nous souhaitons créer un projet `Python` composé de plusieurs *packages* avec une responsabilité propre afin d’exposer notre *reporting* au travers d’une interface utilisateur `Streamlit`. La chaine CI/CD sera expliquée plus tard dans l’article, pour l’heure contentez vous de garder en tête ce schéma pour savoir où on va.

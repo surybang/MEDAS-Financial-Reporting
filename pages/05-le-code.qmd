@@ -152,8 +152,8 @@ La première étape consiste à remplir `config.py` à la racine de `src/medas_f
 
 Quelques contraintes à respecter :
 
-- **Pas d'artefacts locaux persistants,** le template et le reporting final vivent sur MinIO, pas dans le repo.
-- **Un dossier temporaire** `tmp/` est créé au runtime pour écrire le fichier avant upload, puis ignoré par git.
+- **Pas d'artefacts locaux persistants,** le template et le reporting final vivent dans `MinIO`
+- **Un dossier temporaire** `tmp/` est créé au runtime pour écrire le fichier avant upload
 
 <details>
 <summary>Afficher le code</summary>
@@ -301,11 +301,11 @@ DATA_SCHEMA = DataFrameSchema(
 ```
 </details>
 
-Vous remarquez que `config.py` a évolué par rapport à la version précédente. Dans le projet initial, ce fichier était minimal : une URL, les indicateurs, quelques chemins locaux. C'était suffisant pour un script autonome.
+Vous remarquez que `config.py` a évolué par rapport à la [version précédente](https://github.com/surybang/MEDAS-TP-Financial-Reporting/blob/refactor/src/medas_tp_financial_reporting/config.py). Dans le projet initial, ce fichier était minimal : une URL, les indicateurs, quelques chemins locaux. C'était suffisant pour un script autonome.
 
 Dans notre nouvelle architecture, `config.py` prend une dimension différente. Il est désormais **partagé entre les deux sous-packages :**`financial_reporting` et `streamlit_app` ce qui implique qu'il doit centraliser tout ce dont ils ont besoin en commun.
 
-Quatre choses ont changé :
+Plus précisement, quatre choses ont changé :
 
 **Comme prévu les chemins locaux disparaissent presque entièrement.** `PATH_TEMPLATE` et `PATH_OUTPUT` pointaient vers des fichiers locaux dans le repo. Dans notre nouvelle structure, le template et le reporting final vivent sur MinIO. Le seul artefact local qui subsiste est dans `tmp/` (un dossier temporaire).
 

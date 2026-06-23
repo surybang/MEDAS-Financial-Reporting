@@ -1,5 +1,5 @@
 ---
-title: "Docker"
+title: "À bord du conteneur"
 ---
 
 > Une précision avant de commencer. Mon objectif n'est pas de vous apprendre Docker dans son intégralité, le sujet est bien trop vaste pour tenir dans cette section et mériterait un cours à lui seul. Ce que je veux, c'est vous faire manipuler Docker dans un cas concret et utile : conteneuriser notre data product pour le déployer.
