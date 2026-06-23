@@ -21,7 +21,7 @@ website:
     contents:
       - text: "Accueil"
         href: index.qmd
-      - section: "Le long fleuve pas si tranquille"
+      - section: "Un long fleuve pas si tranquille"
         contents:
           - pages/01-introduction.qmd
           - pages/02-situation-de-depart.qmd
@@ -32,8 +32,6 @@ website:
           - pages/07-integration-continue.qmd
           - pages/08-streamlit.qmd
           - pages/09-docker.qmd
-      - section: "En cours de rédaction"
-        contents:
           - pages/10-argocd.qmd
 
 format:

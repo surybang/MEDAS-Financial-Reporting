@@ -1,23 +1,69 @@
 ---
-title: "ArgoCD"
+title: "Déployer les amarres"
 ---
 
-::: {.callout-warning}
-## En cours de rédaction
-Cette section est encore en cours, certains passages et captures viendront la compléter.
-:::
-
 > Comme pour `Docker`, je ne vais pas vous apprendre `Kubernetes` et `ArgoCD` dans leur intégralité, ce sont des univers à part entière. Mon objectif est que vous sachiez vous en servir dans notre cas concret : déployer automatiquement notre application et la rendre accessible via une URL.
+
 
 ## C'est quoi ArgoCD ?
 
 `ArgoCD` est un **opérateur de déploiement continu** pour `Kubernetes`. Si vous connaissez `Airflow`, `Dagster`, `Prefect` ou `Luigi` pour orchestrer des pipelines de données, voyez `ArgoCD` comme un orchestrateur d'un autre genre : il orchestre le **déploiement de composants** (images `Docker`, charts `Helm`) sur un cluster `Kubernetes`.
 
+## C'est quoi Kubernetes ?
+
+On ne peut pas parler `d'ArgoCD` sans que je vous parle un peu de *Kube*. Pas d'inquiétude, l'objectif n'est toujours pas de faire de vous des administrateurs `Kubernetes` mais de vous donner le vocabulaire minimal pour comprendre ce qu'`ArgoCD` manipule pour vous en secret.
+
+**Kubernetes** (que vous retrouverez aussi sous l'abréviation `k8s`) est un orchestrateur de conteneurs[^container]. Concrètement : vous lui décrivez l'état que vous voulez ("je veux trois exemplaires de mon application qui tournent, accessibles sur tel port") et c'est lui qui se débrouille pour l'atteindre et le maintenir. Si un conteneur plante, il le redémarre. Si vous demandez plus d'exemplaires, il les crée. C'est cette idée d'**état désiré** que vous devez retenir.
+
+[^container]: Oui les mêmes conteneurs qu'avec `Docker`.
+
+Toute la communication avec `Kubernetes` se fait de manière **déclarative** : vous ne lui donnez pas une suite d'ordres ("crée ceci, puis lance cela"), vous lui décrivez le résultat voulu et il calcule lui-même les étapes pour y arriver. Ce résultat, vous l'écrivez dans des **manifestes**.
+
+### Le manifeste
+
+Un **manifeste** est un fichier (en général au format YAML) qui décrit une ressource `Kubernetes`. C'est la brique de base de tout ce que vous ferez : chaque objet de votre cluster, du conteneur jusqu'au routage réseau est défini par un manifeste.
+
+Un manifeste suit toujours la même structure de quatre champs principaux :
+
+```yaml
+apiVersion: apps/v1        # la version de l'API concernée
+kind: Deployment           # le type de ressource décrite
+metadata:                  # son identité (nom, namespace, labels)
+  name: medas-app
+spec:                      # l'état désiré, le cœur du fichier
+  replicas: 3
+```
+
+### Le namespace
+
+Un **namespace** est un espace de cloisonnement logique à l'intérieur du cluster. Si vous voulez une image pour visualiser tout ça, imaginez simplement un immeuble (le cluster) découpé en appartements (les namespaces) : chaque locataire a ses ressources chez lui, sans marcher sur celles du voisin.
+
+Ils servent à :
+
+- **Isoler** des projets ou des environnements les uns des autres (par exemple un namespace `staging` et un namespace `production`).
+- **Organiser** les ressources pour s'y retrouver quand le cluster grossit.
+- **Appliquer des règles** par espace : quotas de ressources, droits d'accès, politiques réseau.
+
+Sur un cluster mutualisé comme le `SSP Cloud`, vous travaillez dans votre propre namespace : c'est votre périmètre.
+
+::: {.callout-note}
+## Quelques notions supplémentaires
+
+Au delà du namespace, voici les ressources `Kubernetes` les plus courantes.
+
+- **Pod** : la plus petite unité déployable. C'est l'enveloppe qui fait tourner un (ou plusieurs) conteneur. Vous en créez rarement à la main : ce sont les ressources de plus haut niveau qui s'en chargent.
+- **Deployment** : décrit l'état désiré pour une application (quelle image, combien d'exemplaires) et gère les Pods correspondants. C'est lui qui redémarre un Pod qui tombe ou qui orchestre une montée de version sans coupure.
+- **Service** : donne un point d'accès réseau stable à un ensemble de Pods. Comme les Pods vont et viennent (et changent d'adresse), le Service offre une porte d'entrée fixe pour les joindre.
+- **Ingress** : gère l'accès depuis l'extérieur du cluster, typiquement le routage HTTP/HTTPS vers le bon Service. C'est par lui que votre application devient accessible depuis un navigateur.
+- **ConfigMap** et **Secret** : externalisent la configuration et les données sensibles (mots de passe, clés) hors de l'image, pour ne pas avoir à reconstruire votre conteneur à chaque changement de paramètre.
+:::
+
+
 ::: {.callout-note}
 ## Le principe GitOps
 ArgoCD repose sur l'approche **GitOps**. L'idée tient en une phrase : un dépôt `Git` fait office de **source de vérité unique** de l'état voulu de l'application. Tout changement poussé sur ce dépôt doit se répercuter immédiatement sur le déploiement réel.
 
-On ne modifie plus le cluster à la main : on décrit l'état souhaité dans `Git` et `ArgoCD` se charge de faire converger le cluster vers cet état. L'historique `Git` devient alors l'historique exact de ce qui tourne en production, ce qui est précieux pour l'audit et le retour arrière.
+On ne modifie pas le cluster à la main : on décrit l'état souhaité dans `Git` et `ArgoCD` se charge de faire converger le cluster vers cet état. L'historique `Git` devient alors l'historique exact de ce qui tourne en production, ce qui est précieux pour l'audit et le retour arrière.
 :::
 
 ## Le workflow : deux dépôts
@@ -43,9 +89,31 @@ flowchart TD
 ```
 
 ::: {.callout-tip}
-## Pourquoi séparer les deux dépôts ?
-On pourrait être tenté de tout mettre dans un seul repo. La séparation est pourtant une bonne pratique GitOps : elle découple le **cycle de vie du code** de celui du **déploiement**. Votre code peut évoluer sans redéployer et votre configuration de déploiement peut changer (montée de version, scaling) sans toucher au code. L'historique de chaque dépôt reste clair et dédié à une seule préoccupation.
+## Pourquoi utiliser deux dépôts ?
+
+On pourrait en effet être tenté de tout mettre dans un seul repo, en se disant que la séparation se fait "physiquement" via des dossiers au sein du dépôt. Cependant, si vous avez bien suivi depuis le début, la direction de la réponse devrait vous paraître familière : c'est une question de **séparation des préoccupations** (*separation of concerns*).
+
+On serait tenté de parler de séparation des *responsabilités*, mais soyons précis : là où le principe de responsabilité unique (SRP) s'applique au code, nous reprenons ici la même intuition un cran au-dessus mais à l'échelle du dépôt.
+
+Vous pourriez alors objecter : "Mais je viens justement de dire qu'on pouvait séparer avec des dossiers, alors pourquoi ne pas simplement créer un dossier `deployment` dans le repo du projet ?" La réponse tient en partie à une histoire de norme, mais surtout à un principe fondamental de **GitOps[^gitops] : découpler le cycle de vie du code de celui du déploiement.**
+
+Concrètement, cela signifie que :
+
+- Votre **code applicatif** peut évoluer (nouvelles fonctionnalités, corrections de bugs) sans nécessairement déclencher de redéploiement.
+- Votre **configuration de déploiement** peut changer (montée de version, scaling, ajustement des ressources) sans toucher une seule ligne de code métier.
+
+Cette séparation apporte plusieurs bénéfices très concrets :
+
+- **Un historique Git clair et dédié.** Chaque dépôt raconte une seule histoire. Dans le repo applicatif, vous lisez l'évolution de la logique métier ; dans le repo de déploiement, vous lisez l'évolution de l'infrastructure. Plus besoin de fouiller dans un historique mélangé pour comprendre "qui a changé quoi et pourquoi".
+- **Une gestion des droits plus fine.** Les développeurs n'ont pas forcément à toucher à la configuration de production, et les personnes en charge de l'infrastructure n'ont pas à plonger dans le code applicatif. Chaque dépôt peut avoir ses propres règles d'accès et de revue.
+- **Pas de boucle de build infinie.** Si votre pipeline d'intégration continue pousse les mises à jour de manifestes (par exemple le nouveau tag d'image) dans le dépôt qui contient aussi le code, ce commit peut redéclencher la CI, qui repousse un commit, qui redéclenche la CI... Séparer les dépôts coupe court à cet emballement.
+- **Une boucle de réconciliation propre pour Argo CD.** L'outil GitOps surveille en continu le repo de déploiement comme source de vérité. Si ce repo ne contient *que* de la configuration, Argo CD a une vision nette et non ambiguë de l'état désiré du cluster.
+
+Finalement, le problème ici c'est le couplage. Mettre la configuration dans un dépôt séparé, ce n'est pas de la rigidité administrative, c'est ce qui garantit que chaque préoccupation reste indépendante, traçable et maintenable dans le temps.
+
+[^gitops]: Les quatre principes fondateurs sont définis par le projet [OpenGitOps](https://opengitops.dev/) (CNCF). Pour la pratique précise de la séparation des dépôts, voir la page [best practices de la documentation Argo CD](https://argo-cd.readthedocs.io/en/stable/user-guide/best_practices/).
 :::
+
 
 ## Lancer ArgoCD sur Onyxia
 
@@ -72,14 +140,13 @@ Nous allons y placer quatre fichiers de déploiement `Kubernetes`. Avant de copi
 - `ingress.yaml` expose le service **à l'extérieur** en associant une URL publique à notre application.
 
 
-
 ### La gestion des Secrets
 
-Nos credentials `MinIO` ne doivent jamais finir en clair dans un dépôt, même privé (je l'ai déjà mais c'est au cas où pour ceux du fond). On ne les met donc pas dans nos manifests : on crée un **Secret Kubernetes** directement dans notre namespace et nos manifests le référenceront sans jamais contenir sa valeur.
+Au risque de me répéter, nos credentials ne doivent jamais finir en clair dans un dépôt, même privé. On ne les met donc pas dans nos manifests : on crée un **Secret Kubernetes** directement dans notre `namespace` et nos manifests le référenceront sans jamais contenir sa valeur.
 
 ::: {.callout-note}
 ## Un service VS Code admin sur votre namespace
-La création d'un `Secret Kubernetes` demande des droits d'administration sur le namespace. Sur `Onyxia`, vous pouvez lancer un service `VS Code` en activant le **rôle admin** sur votre propre namespace en passant par un nouveau service et en sélectionnant le bon rôle. Vous aurez ainsi accès à la commande `kubectl create secret`.
+La création d'un `Secret Kubernetes` demande des droits d'administration sur le `namespace`. Sur `Onyxia`, vous pouvez lancer un service `VS Code` en activant le **rôle admin** sur votre propre namespace en passant par un nouveau service et en sélectionnant le bon rôle. Vous aurez ainsi accès à la commande `kubectl create secret`.
 
 ::: {style="text-align: center;"}
 ![](../images/role-admin.png){width=50%}
@@ -114,19 +181,19 @@ git clone <votre_repo_gitops>
 
 ::: {.callout-note}
 ## Deux clés, et un mot de passe d'au moins 8 caractères
-Ce secret sert à la fois à MinIO (ses identifiants administrateur `MINIO_ROOT_USER` / `MINIO_ROOT_PASSWORD`) et à l'application (son `access-key` / `secret-key`). Comme nos credentials sont durables, pas de token de session : deux clés suffisent. Attention, `MinIO` refuse de démarrer si le mot de passe fait moins de 8 caractères.
+Ce secret sert à la fois à `MinIO` (ses identifiants administrateur `MINIO_ROOT_USER` / `MINIO_ROOT_PASSWORD`) et à l'application (son `access-key` / `secret-key`). Comme nos credentials sont durables, pas de token de session : deux clés suffisent. Attention, `MinIO` refuse de démarrer si le mot de passe fait moins de 8 caractères.
 :::
 
 ::: {.callout-tip}
 ## Une limite à connaître
-Créer le secret à la main fonctionne très bien, mais notez qu'il ne vit pas dans votre dépôt `GitOps`. Quelqu'un qui clonerait votre dépôt de déploiement n'aurait donc pas ce secret : ce n'est pas du pur `GitOps`. C'est un compromis par soucis technique sur ce que l'on a le droit de faire sur `Onyxia`. La gestion sécurisée et reproductible passerait par `Vault`[^vault] ou un opérateur dédié.
+Créer le secret à la main fonctionne très bien, mais notez qu'il ne vit pas dans votre dépôt `GitOps`. Quelqu'un qui clonerait votre dépôt de déploiement n'aurait donc pas ce secret : ce n'est pas du pur `GitOps`. C'est un compromis par souci technique sur ce que l'on a le droit de faire sur `Onyxia`. La gestion sécurisée et reproductible passerait par `Vault`[^vault] ou un opérateur dédié.
 :::
 
 [^vault]: `Vault` est un gestionnaire de secrets développé par HashiCorp. Il stocke de façon chiffrée et centralisée les informations sensibles (mots de passe, clés d'API, tokens) et contrôle finement qui peut y accéder. Sur SSP Cloud, c'est le coffre-fort derrière la page [Mes secrets](https://docs.sspcloud.fr/content/secrets.html). Nous ne pouvons pas l'utiliser dans le cadre de notre application car il est utilisé uniquement au lancement d'un formulaire de service, ce qui ne colle pas à la situation actuelle.
 
 ### Le déploiement de MinIO
 
-On déploie ensuite `MinIO` et son service. MinIO expose un seul port : `9000` pour l'API S3 (celle que notre app utilise). Les identifiants administrateur de `MinIO` sont lus depuis le secret qu'on vient de créer.
+On déploie ensuite `MinIO` et son service. Ce dernier expose un seul port : `9000` pour l'API S3 (celle que notre app utilise). Les identifiants administrateur de `MinIO` sont lus depuis le secret qu'on vient de créer.
 
 <details>
 <summary>Voir le minio.yaml</summary>
@@ -318,7 +385,7 @@ spec:
 
 </details>
 
-Deux choses à adapter ici de votre coté : l'URL de votre dépôt `GitOps` en saisissant votre `username GitHub` et votre `namespace Kubernetes`.
+Deux choses à adapter ici de votre côté : l'URL de votre dépôt `GitOps` en saisissant votre `username GitHub` et votre `namespace Kubernetes`.
 
 Le `selfHeal: true` est important : il indique à `ArgoCD` de corriger automatiquement toute dérive entre l'état du cluster et celui décrit dans `Git`. Si quelqu'un modifie le déploiement à la main sur le cluster, `ArgoCD` le ramènera à l'état déclaré dans le dépôt.
 
@@ -331,20 +398,15 @@ Le `selfHeal: true` est important : il indique à `ArgoCD` de corriger automatiq
 - Vérifiez que votre application est accessible via l'URL définie dans `ingress.yaml`
 :::
 
-Si tout va bien en accédant à l'URL renseigné dans l'Ingress, votre application devrait être accessible via votre navigateur préféré. Par contre  tout n'est pas totalement fonctionnel. (encore une fois)
+Si tout va bien en accédant à l'URL renseignée dans l'`Ingress`, votre application devrait être accessible via votre navigateur préféré. Par contre, tout n'est pas totalement fonctionnel. (encore une fois ! ![](https://emj.discordl.org/1/1491806829536215240.webp){width=2%})
 
 ## Alimenter le stockage : lancer le pipeline
 
-Bon... il manque un truc là. On a déployé l'application, elle est accessible, mais elle affiche une erreur : impossible de charger les données. Et c'est logique : notre `MinIO` est tout neuf et vide. On le lance quand, notre pipeline ? Même si tout est statique, il faut bien l'exécuter au moins une fois pour produire les données nettoyées et le reporting que l'application va lire.
+Bon... il manque un truc là. On a déployé l'application, elle est accessible mais elle affiche une erreur : impossible de charger les données. Et c'est logique : notre `MinIO` est tout neuf et vide. Il faut lancer notre pipeline ! Même si tout est statique, il faut bien au moins l'exécuter une première fois pour produire les données et le reporting que l'application va exposer.
 
-C'est le chaînon manquant. Jusqu'ici on a déployé la brique qui **lit** (`Streamlit`), mais rien n'a encore **écrit** dans le bucket.
+Jusqu'ici nous avons seulement déployé la brique qui **lit** (`Streamlit`) mais rien n'a encore **écrit** dans le bucket.
 
-::: {.callout-note}
-## Deux data products, un point de rencontre
-Notre projet contient en réalité deux *data products* de natures différentes. Le **package** produit et persiste : il lit les données source, les transforme et sauvegarde le résultat sur `MinIO`.**Streamlit** lit et expose : il se contente d'afficher ce que le package a généré. Le `MinIO` est le point de rencontre entre les deux, l'endroit où le premier dépose ce que le second consomme. C'est pour ça que la persistance compte : sans elle, on perd la trace de la transformation et l'application n'a plus rien à montrer.
-:::
-
-Pour exécuter le pipeline, on pourrait lancer la commande à la main dans un terminal mais c'est fastidieux, fragile et peu intuitif. Il faudrait réutiliser le `VS Code` d'admin et taper des commandes dans le `Terminal`. On va plutôt le faire proprement avec un **Job Kubernetes** : une tâche ponctuelle qui réutilise notre image mais lancée avec la commande `reporting` (`uv run reporting`). Le `Job` crée le bucket si besoin puis exécute le pipeline.
+Pour exécuter le pipeline, on pourrait lancer la commande à la main dans un `Terminal` mais c'est plutôt fragile et peu intuitif (et ça va à l'encontre de nos principes `GitOps`!). Nous allons donc plutôt respecter nos principes et le faire proprement avec un **Job Kubernetes** : une tâche ponctuelle qui réutilise notre image mais lancée avec la commande `reporting` (`uv run reporting`).
 
 <details>
 <summary>Voir le job-reporting.yaml</summary>
@@ -385,21 +447,21 @@ spec:
 ::: {.callout-caution}
 ## À vous de jouer
 - Ajoutez `job-reporting.yaml` au dossier `deployment/` de votre dépôt `GitOps`
-- Commitez et poussez : `ArgoCD` déploiera le Job, qui créera le bucket et remplira le stockage
+- Commitez et poussez : `ArgoCD` déploiera le `Job`
 :::
 
 ::: {.callout-tip}
 ## Pour aller plus loin : orchestrer et séparer
 Deux limites de notre approche méritent d'être soulignées.
 
-D'abord, notre Job tourne une fois. En production, un reporting se régénère souvent à intervalle régulier (chaque nuit, chaque semaine, chaque mois ...) pour intégrer de nouvelles données. On utiliserait alors un déclenchement planifié plutôt qu'une exécution unique.
+D'abord, notre `Job` tourne une fois. Dans la vraie vie, un reporting se régénère souvent à intervalle régulier (chaque nuit, chaque semaine, chaque mois ...) pour intégrer de nouvelles données. Nous aurions alors besoin d'un déclenchement planifié plutôt qu'une exécution unique.
 
-Ensuite, regrouper le pipeline d'alimentation et l'application dans le même dépôt de déploiement est un raccourci de démonstration. Dans une vraie architecture, on **séparerait** ces deux responsabilités : l'alimentation du bucket (ingestion, transformation) d'un côté, l'exposition via `Streamlit` de l'autre. Deux mondes, deux cycles de vie.
+Ensuite, regrouper le pipeline d'alimentation et l'application dans le même dépôt de déploiement est un raccourci de démonstration. Dans une vraie architecture, on **séparerait** ces deux responsabilités : l'alimentation du bucket (ingestion, transformation) d'un côté, l'exposition via `Streamlit` de l'autre.
 
 Les outils pour orchestrer cette alimentation dépendent de votre contexte : un `CronJob` ou `Argo Workflows` si vous restez dans l'écosystème `Kubernetes`, un orchestrateur dédié comme `Airflow` si votre organisation en a déjà un. Il n'y a pas de réponse unique. Ici, on met tout au même endroit pour garder une vue d'ensemble lisible, mais gardez en tête que ce n'est pas le plus optimal.
 :::
 
-Et voilà. Cette fois, l'application est pleinement fonctionnelle : les données se chargent, les graphiques s'affichent et le reporting est téléchargeable. Vous venez de boucler la chaîne complète, du code poussé jusqu'à un data product en ligne, accessible à n'importe qui via une simple URL.
+Si vous rafraîchissez votre application, vous devriez maintenant vous rendre compte qu'elle est pleinement fonctionnelle : les données se chargent, les graphiques s'affichent et le reporting est téléchargeable. Vous venez de boucler la chaîne complète, du code poussé jusqu'à un data product en ligne, accessible à n'importe qui via une simple URL.
 
 ::: {style="text-align: center;"}
 ![](../images/happy.png){width=50%}
