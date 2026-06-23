@@ -1,5 +1,5 @@
 ---
-title: "Situation de départ"
+title: "D'où l'on vient"
 ---
 
 Faisons le point sur la situation actuelle en nous basant sur le repo [MEDAS-TP-Financial-Reporting](https://github.com/surybang/MEDAS-TP-Financial-Reporting). Vous avez normalement dans un premier temps rempli le notebook pour générer le reporting demandé. La situation ci-dessous devrait vous sembler familière : c'est ce que vous avez fait.

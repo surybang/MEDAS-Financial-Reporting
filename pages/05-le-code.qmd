@@ -152,8 +152,8 @@ La première étape consiste à remplir `config.py` à la racine de `src/medas_f
 
 Quelques contraintes à respecter :
 
-- **Pas d'artefacts locaux persistants,** le template et le reporting final vivent sur MinIO, pas dans le repo.
-- **Un dossier temporaire** `tmp/` est créé au runtime pour écrire le fichier avant upload, puis ignoré par git.
+- **Pas d'artefacts locaux persistants,** le template et le reporting final vivent dans `MinIO`
+- **Un dossier temporaire** `tmp/` est créé au runtime pour écrire le fichier avant upload
 
 <details>
 <summary>Afficher le code</summary>

@@ -1,5 +1,5 @@
 ---
-title: "Intégration Continue (CI)"
+title: "Le courant continu"
 ---
 
 Parmi les avantages des tests, nous avons cité la prévention des régressions. Mais si vous avez bien suivi, vous vous demandez peut-être comment des tests lancés manuellement peuvent prévenir quoi que ce soit. Après tout, rien ne vous empêche de ne pas les lancer du tout.

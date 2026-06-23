@@ -1,5 +1,5 @@
 ---
-title: "Planifions notre construction"
+title: "Planifions notre voyage"
 ---
 
 Avant de commencer à coder il faut savoir quoi coder. Nous avons déjà établi notre cible avec un premier schéma mais celui-ci présente une vue macro de la structure de notre projet. Je vous propose de faire un premier *dive* dans cette dernière.
