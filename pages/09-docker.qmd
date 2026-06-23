@@ -20,10 +20,10 @@ Sans image, impossible de livrer notre data product sur le cluster de façon fia
 
 ::: {.callout-note}
 ## Docker n'est pas magique
-Il faut quand même nuancer un peu ces propos, ils ne sortent pas seulement de mes doigts ? C'est les explications que vous retrouverez un peu partout. Il faut toutefois savoir que conteneuriser réduit drastiquement les "ça marche chez moi", mais ne les élimine pas. L'architecture de la machine (ARM vs x86), tout ce qui vit *hors* du conteneur (réseau, volumes, secrets, services voisins) ou un build mal figé peuvent encore vous jouer des tours. Finalement, la bonne promesse de Docker n'est pas "ça marchera partout" mais "le même environnement applicatif partout". Sans vouloir vous spoiler, Vous en ferez d'ailleurs l'expérience très vite : notre image va build et démarrer correctement, sans que l'application soit pour autant pleinement fonctionnelle. 👀
+Il faut quand même nuancer un peu ces propos concernant `Docker`, ce dernier ne permet pas résoudre tous les problèmes d'environnement, il contribue très fortemment à les limiter sans les éliminer. L'architecture de la machine (ARM vs x86), tout ce qui vit *hors* du conteneur (réseau, volumes, secrets, services voisins) ou un build mal figé peuvent encore vous jouer des tours. Finalement, la bonne promesse de `Docker` n'est pas "ça marchera partout" mais "le même environnement applicatif partout". Sans vouloir vous spoiler, vous allez en faire l'expérience très vite : notre image va build et démarrer correctement, sans que l'application soit pour autant pleinement fonctionnelle. 👀
 
 ::: {style="text-align: center;"}
-![](../images/worksonmymachine.png)
+![](../images/worksonmymachine.png){width=60%}
 :::
 
 :::
