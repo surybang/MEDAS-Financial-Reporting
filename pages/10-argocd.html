@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>ArgoCD – MEDAS Financial Reporting</title>
+<title>Déployer les amarres – MEDAS Financial Reporting</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -153,7 +153,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pages/10-argocd.html">En cours de rédaction</a></li><li class="breadcrumb-item"><a href="../pages/10-argocd.html">ArgoCD</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pages/01-introduction.html">Un long fleuve pas si tranquille</a></li><li class="breadcrumb-item"><a href="../pages/10-argocd.html">Déployer les amarres</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -182,7 +182,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
- <span class="menu-text">Le long fleuve pas si tranquille</span></a>
+ <span class="menu-text">Un long fleuve pas si tranquille</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -197,19 +197,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../pages/02-situation-de-depart.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Situation de départ</span></a>
+ <span class="menu-text">D’où l’on vient</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../pages/03-situation-cible.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Situation ciblée</span></a>
+ <span class="menu-text">L’horizon visé</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../pages/04-planification.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Planifions notre construction</span></a>
+ <span class="menu-text">Planifions notre voyage</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -227,36 +227,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../pages/07-integration-continue.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Intégration Continue (CI)</span></a>
+ <span class="menu-text">Le courant continu</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../pages/08-streamlit.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Streamlit</span></a>
+ <span class="menu-text">Un hublot pour notre application</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../pages/09-docker.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Docker</span></a>
+ <span class="menu-text">À bord du conteneur</span></a>
   </div>
 </li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
- <span class="menu-text">En cours de rédaction</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../pages/10-argocd.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">ArgoCD</span></a>
+ <span class="menu-text">Déployer les amarres</span></a>
   </div>
 </li>
       </ul>
@@ -272,6 +261,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#cest-quoi-argocd" id="toc-cest-quoi-argocd" class="nav-link active" data-scroll-target="#cest-quoi-argocd">C’est quoi ArgoCD ?</a></li>
+  <li><a href="#cest-quoi-kubernetes" id="toc-cest-quoi-kubernetes" class="nav-link" data-scroll-target="#cest-quoi-kubernetes">C’est quoi Kubernetes ?</a>
+  <ul class="collapse">
+  <li><a href="#le-manifeste" id="toc-le-manifeste" class="nav-link" data-scroll-target="#le-manifeste">Le manifeste</a></li>
+  <li><a href="#le-namespace" id="toc-le-namespace" class="nav-link" data-scroll-target="#le-namespace">Le namespace</a></li>
+  </ul></li>
   <li><a href="#le-workflow-deux-dépôts" id="toc-le-workflow-deux-dépôts" class="nav-link" data-scroll-target="#le-workflow-deux-dépôts">Le workflow : deux dépôts</a></li>
   <li><a href="#lancer-argocd-sur-onyxia" id="toc-lancer-argocd-sur-onyxia" class="nav-link" data-scroll-target="#lancer-argocd-sur-onyxia">Lancer ArgoCD sur Onyxia</a></li>
   <li><a href="#créer-le-repo-gitops" id="toc-créer-le-repo-gitops" class="nav-link" data-scroll-target="#créer-le-repo-gitops">Créer le repo GitOps</a>
@@ -292,9 +286,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pages/10-argocd.html">En cours de rédaction</a></li><li class="breadcrumb-item"><a href="../pages/10-argocd.html">ArgoCD</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pages/01-introduction.html">Un long fleuve pas si tranquille</a></li><li class="breadcrumb-item"><a href="../pages/10-argocd.html">Déployer les amarres</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">ArgoCD</h1>
+<h1 class="title">Déployer les amarres</h1>
 </div>
 
 
@@ -311,25 +305,59 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Warning</span>En cours de rédaction
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Cette section est encore en cours, certains passages et captures viendront la compléter.</p>
-</div>
-</div>
 <blockquote class="blockquote">
 <p>Comme pour <code>Docker</code>, je ne vais pas vous apprendre <code>Kubernetes</code> et <code>ArgoCD</code> dans leur intégralité, ce sont des univers à part entière. Mon objectif est que vous sachiez vous en servir dans notre cas concret : déployer automatiquement notre application et la rendre accessible via une URL.</p>
 </blockquote>
 <section id="cest-quoi-argocd" class="level2">
 <h2 class="anchored" data-anchor-id="cest-quoi-argocd">C’est quoi ArgoCD ?</h2>
 <p><code>ArgoCD</code> est un <strong>opérateur de déploiement continu</strong> pour <code>Kubernetes</code>. Si vous connaissez <code>Airflow</code>, <code>Dagster</code>, <code>Prefect</code> ou <code>Luigi</code> pour orchestrer des pipelines de données, voyez <code>ArgoCD</code> comme un orchestrateur d’un autre genre : il orchestre le <strong>déploiement de composants</strong> (images <code>Docker</code>, charts <code>Helm</code>) sur un cluster <code>Kubernetes</code>.</p>
+</section>
+<section id="cest-quoi-kubernetes" class="level2">
+<h2 class="anchored" data-anchor-id="cest-quoi-kubernetes">C’est quoi Kubernetes ?</h2>
+<p>On ne peut pas parler <code>d'ArgoCD</code> sans que je vous parle un peu de <em>Kube</em>. Pas d’inquiétude, l’objectif n’est toujours pas de faire de vous des administrateurs <code>Kubernetes</code> mais de vous donner le vocabulaire minimal pour comprendre ce qu’<code>ArgoCD</code> manipule pour vous en secret.</p>
+<p><strong>Kubernetes</strong> (que vous retrouverez aussi sous l’abréviation <code>k8s</code>) est un orchestrateur de conteneurs<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. Concrètement : vous lui décrivez l’état que vous voulez (“je veux trois exemplaires de mon application qui tournent, accessibles sur tel port”) et c’est lui qui se débrouille pour l’atteindre et le maintenir. Si un conteneur plante, il le redémarre. Si vous demandez plus d’exemplaires, il les crée. C’est cette idée d’<strong>état désiré</strong> que vous devez retenir.</p>
+<p>Toute la communication avec <code>Kubernetes</code> se fait de manière <strong>déclarative</strong> : vous ne lui donnez pas une suite d’ordres (“crée ceci, puis lance cela”), vous lui décrivez le résultat voulu et il calcule lui-même les étapes pour y arriver. Ce résultat, vous l’écrivez dans des <strong>manifestes</strong>.</p>
+<section id="le-manifeste" class="level3">
+<h3 class="anchored" data-anchor-id="le-manifeste">Le manifeste</h3>
+<p>Un <strong>manifeste</strong> est un fichier (en général au format YAML) qui décrit une ressource <code>Kubernetes</code>. C’est la brique de base de tout ce que vous ferez : chaque objet de votre cluster, du conteneur jusqu’au routage réseau est défini par un manifeste.</p>
+<p>Un manifeste suit toujours la même structure de quatre champs principaux :</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apiVersion</span><span class="kw">:</span><span class="at"> apps/v1</span><span class="co">        # la version de l'API concernée</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kind</span><span class="kw">:</span><span class="at"> Deployment</span><span class="co">           # le type de ressource décrite</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">metadata</span><span class="kw">:</span><span class="co">                  # son identité (nom, namespace, labels)</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> medas-app</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">spec</span><span class="kw">:</span><span class="co">                      # l'état désiré, le cœur du fichier</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">replicas</span><span class="kw">:</span><span class="at"> </span><span class="dv">3</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="le-namespace" class="level3">
+<h3 class="anchored" data-anchor-id="le-namespace">Le namespace</h3>
+<p>Un <strong>namespace</strong> est un espace de cloisonnement logique à l’intérieur du cluster. Si vous voulez une image pour visualiser tout ça, imaginez simplement un immeuble (le cluster) découpé en appartements (les namespaces) : chaque locataire a ses ressources chez lui, sans marcher sur celles du voisin.</p>
+<p>Ils servent à :</p>
+<ul>
+<li><strong>Isoler</strong> des projets ou des environnements les uns des autres (par exemple un namespace <code>staging</code> et un namespace <code>production</code>).</li>
+<li><strong>Organiser</strong> les ressources pour s’y retrouver quand le cluster grossit.</li>
+<li><strong>Appliquer des règles</strong> par espace : quotas de ressources, droits d’accès, politiques réseau.</li>
+</ul>
+<p>Sur un cluster mutualisé comme le <code>SSP Cloud</code>, vous travaillez dans votre propre namespace : c’est votre périmètre.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Quelques notions supplémentaires
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Au delà du namespace, voici les ressources <code>Kubernetes</code> les plus courantes.</p>
+<ul>
+<li><strong>Pod</strong> : la plus petite unité déployable. C’est l’enveloppe qui fait tourner un (ou plusieurs) conteneur. Vous en créez rarement à la main : ce sont les ressources de plus haut niveau qui s’en chargent.</li>
+<li><strong>Deployment</strong> : décrit l’état désiré pour une application (quelle image, combien d’exemplaires) et gère les Pods correspondants. C’est lui qui redémarre un Pod qui tombe ou qui orchestre une montée de version sans coupure.</li>
+<li><strong>Service</strong> : donne un point d’accès réseau stable à un ensemble de Pods. Comme les Pods vont et viennent (et changent d’adresse), le Service offre une porte d’entrée fixe pour les joindre.</li>
+<li><strong>Ingress</strong> : gère l’accès depuis l’extérieur du cluster, typiquement le routage HTTP/HTTPS vers le bon Service. C’est par lui que votre application devient accessible depuis un navigateur.</li>
+<li><strong>ConfigMap</strong> et <strong>Secret</strong> : externalisent la configuration et les données sensibles (mots de passe, clés) hors de l’image, pour ne pas avoir à reconstruire votre conteneur à chaque changement de paramètre.</li>
+</ul>
+</div>
+</div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -341,9 +369,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="callout-body-container callout-body">
 <p>ArgoCD repose sur l’approche <strong>GitOps</strong>. L’idée tient en une phrase : un dépôt <code>Git</code> fait office de <strong>source de vérité unique</strong> de l’état voulu de l’application. Tout changement poussé sur ce dépôt doit se répercuter immédiatement sur le déploiement réel.</p>
-<p>On ne modifie plus le cluster à la main : on décrit l’état souhaité dans <code>Git</code> et <code>ArgoCD</code> se charge de faire converger le cluster vers cet état. L’historique <code>Git</code> devient alors l’historique exact de ce qui tourne en production, ce qui est précieux pour l’audit et le retour arrière.</p>
+<p>On ne modifie pas le cluster à la main : on décrit l’état souhaité dans <code>Git</code> et <code>ArgoCD</code> se charge de faire converger le cluster vers cet état. L’historique <code>Git</code> devient alors l’historique exact de ce qui tourne en production, ce qui est précieux pour l’audit et le retour arrière.</p>
 </div>
 </div>
+</section>
 </section>
 <section id="le-workflow-deux-dépôts" class="level2">
 <h2 class="anchored" data-anchor-id="le-workflow-deux-dépôts">Le workflow : deux dépôts</h2>
@@ -383,11 +412,26 @@ Figure&nbsp;1: La chaîne CI/CD complète : du push de code jusqu’à l’appli
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Pourquoi séparer les deux dépôts ?
+<span class="screen-reader-only">Tip</span>Pourquoi utiliser deux dépôts ?
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>On pourrait être tenté de tout mettre dans un seul repo. La séparation est pourtant une bonne pratique GitOps : elle découple le <strong>cycle de vie du code</strong> de celui du <strong>déploiement</strong>. Votre code peut évoluer sans redéployer et votre configuration de déploiement peut changer (montée de version, scaling) sans toucher au code. L’historique de chaque dépôt reste clair et dédié à une seule préoccupation.</p>
+<p>On pourrait en effet être tenté de tout mettre dans un seul repo, en se disant que la séparation se fait “physiquement” via des dossiers au sein du dépôt. Cependant, si vous avez bien suivi depuis le début, la direction de la réponse devrait vous paraître familière : c’est une question de <strong>séparation des préoccupations</strong> (<em>separation of concerns</em>).</p>
+<p>On serait tenté de parler de séparation des <em>responsabilités</em>, mais soyons précis : là où le principe de responsabilité unique (SRP) s’applique au code, nous reprenons ici la même intuition un cran au-dessus mais à l’échelle du dépôt.</p>
+<p>Vous pourriez alors objecter : “Mais je viens justement de dire qu’on pouvait séparer avec des dossiers, alors pourquoi ne pas simplement créer un dossier <code>deployment</code> dans le repo du projet ?” La réponse tient en partie à une histoire de norme, mais surtout à un principe fondamental de <strong>GitOps<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> : découpler le cycle de vie du code de celui du déploiement.</strong></p>
+<p>Concrètement, cela signifie que :</p>
+<ul>
+<li>Votre <strong>code applicatif</strong> peut évoluer (nouvelles fonctionnalités, corrections de bugs) sans nécessairement déclencher de redéploiement.</li>
+<li>Votre <strong>configuration de déploiement</strong> peut changer (montée de version, scaling, ajustement des ressources) sans toucher une seule ligne de code métier.</li>
+</ul>
+<p>Cette séparation apporte plusieurs bénéfices très concrets :</p>
+<ul>
+<li><strong>Un historique Git clair et dédié.</strong> Chaque dépôt raconte une seule histoire. Dans le repo applicatif, vous lisez l’évolution de la logique métier ; dans le repo de déploiement, vous lisez l’évolution de l’infrastructure. Plus besoin de fouiller dans un historique mélangé pour comprendre “qui a changé quoi et pourquoi”.</li>
+<li><strong>Une gestion des droits plus fine.</strong> Les développeurs n’ont pas forcément à toucher à la configuration de production, et les personnes en charge de l’infrastructure n’ont pas à plonger dans le code applicatif. Chaque dépôt peut avoir ses propres règles d’accès et de revue.</li>
+<li><strong>Pas de boucle de build infinie.</strong> Si votre pipeline d’intégration continue pousse les mises à jour de manifestes (par exemple le nouveau tag d’image) dans le dépôt qui contient aussi le code, ce commit peut redéclencher la CI, qui repousse un commit, qui redéclenche la CI… Séparer les dépôts coupe court à cet emballement.</li>
+<li><strong>Une boucle de réconciliation propre pour Argo CD.</strong> L’outil GitOps surveille en continu le repo de déploiement comme source de vérité. Si ce repo ne contient <em>que</em> de la configuration, Argo CD a une vision nette et non ambiguë de l’état désiré du cluster.</li>
+</ul>
+<p>Finalement, le problème ici c’est le couplage. Mettre la configuration dans un dépôt séparé, ce n’est pas de la rigidité administrative, c’est ce qui garantit que chaque préoccupation reste indépendante, traçable et maintenable dans le temps.</p>
 </div>
 </div>
 </section>
@@ -438,7 +482,7 @@ Figure&nbsp;1: La chaîne CI/CD complète : du push de code jusqu’à l’appli
 </ul>
 <section id="la-gestion-des-secrets" class="level3">
 <h3 class="anchored" data-anchor-id="la-gestion-des-secrets">La gestion des Secrets</h3>
-<p>Nos credentials <code>MinIO</code> ne doivent jamais finir en clair dans un dépôt, même privé (je l’ai déjà mais c’est au cas où pour ceux du fond). On ne les met donc pas dans nos manifests : on crée un <strong>Secret Kubernetes</strong> directement dans notre namespace et nos manifests le référenceront sans jamais contenir sa valeur.</p>
+<p>Au risque de me répéter, nos credentials ne doivent jamais finir en clair dans un dépôt, même privé. On ne les met donc pas dans nos manifests : on crée un <strong>Secret Kubernetes</strong> directement dans notre <code>namespace</code> et nos manifests le référenceront sans jamais contenir sa valeur.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -449,7 +493,7 @@ Figure&nbsp;1: La chaîne CI/CD complète : du push de code jusqu’à l’appli
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>La création d’un <code>Secret Kubernetes</code> demande des droits d’administration sur le namespace. Sur <code>Onyxia</code>, vous pouvez lancer un service <code>VS Code</code> en activant le <strong>rôle admin</strong> sur votre propre namespace en passant par un nouveau service et en sélectionnant le bon rôle. Vous aurez ainsi accès à la commande <code>kubectl create secret</code>.</p>
+<p>La création d’un <code>Secret Kubernetes</code> demande des droits d’administration sur le <code>namespace</code>. Sur <code>Onyxia</code>, vous pouvez lancer un service <code>VS Code</code> en activant le <strong>rôle admin</strong> sur votre propre namespace en passant par un nouveau service et en sélectionnant le bon rôle. Vous aurez ainsi accès à la commande <code>kubectl create secret</code>.</p>
 <div style="text-align: center;">
 <p><img src="../images/role-admin.png" class="img-fluid" style="width:50.0%"></p>
 </div>
@@ -469,18 +513,18 @@ Figure&nbsp;1: La chaîne CI/CD complète : du push de code jusqu’à l’appli
 <li>Depuis le catalogue <code>Onyxia</code>, lancez un service <strong>VS Code</strong> avec le <strong>rôle admin</strong> sur votre namespace</li>
 <li>Ouvrez son <code>Terminal</code> et créez le secret (pensez à bien garder votre mot de passe):</li>
 </ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">kubectl</span> create secret generic minio-credentials <span class="dt">\</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">--from-literal</span><span class="op">=</span>access-key=medas-admin <span class="dt">\</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">--from-literal</span><span class="op">=</span>secret-key=changez-moi-par-un-mot-de-passe-solide <span class="dt">\</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">-n</span> user-<span class="op">&lt;</span>username<span class="op">&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">kubectl</span> create secret generic minio-credentials <span class="dt">\</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">--from-literal</span><span class="op">=</span>access-key=medas-admin <span class="dt">\</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">--from-literal</span><span class="op">=</span>secret-key=changez-moi-par-un-mot-de-passe-solide <span class="dt">\</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">-n</span> user-<span class="op">&lt;</span>username<span class="op">&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>Vérifiez qu’il existe :</li>
 </ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">kubectl</span> get secret minio-credentials <span class="at">-n</span> user-<span class="op">&lt;</span>username<span class="op">&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">kubectl</span> get secret minio-credentials <span class="at">-n</span> user-<span class="op">&lt;</span>username<span class="op">&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>Clonez votre dépôt <code>GitOps</code> dans ce service :</li>
 </ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone <span class="op">&lt;</span>votre_repo_gitops<span class="op">&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone <span class="op">&lt;</span>votre_repo_gitops<span class="op">&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -493,7 +537,7 @@ Figure&nbsp;1: La chaîne CI/CD complète : du push de code jusqu’à l’appli
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Ce secret sert à la fois à MinIO (ses identifiants administrateur <code>MINIO_ROOT_USER</code> / <code>MINIO_ROOT_PASSWORD</code>) et à l’application (son <code>access-key</code> / <code>secret-key</code>). Comme nos credentials sont durables, pas de token de session : deux clés suffisent. Attention, <code>MinIO</code> refuse de démarrer si le mot de passe fait moins de 8 caractères.</p>
+<p>Ce secret sert à la fois à <code>MinIO</code> (ses identifiants administrateur <code>MINIO_ROOT_USER</code> / <code>MINIO_ROOT_PASSWORD</code>) et à l’application (son <code>access-key</code> / <code>secret-key</code>). Comme nos credentials sont durables, pas de token de session : deux clés suffisent. Attention, <code>MinIO</code> refuse de démarrer si le mot de passe fait moins de 8 caractères.</p>
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
@@ -506,66 +550,66 @@ Figure&nbsp;1: La chaîne CI/CD complète : du push de code jusqu’à l’appli
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Créer le secret à la main fonctionne très bien, mais notez qu’il ne vit pas dans votre dépôt <code>GitOps</code>. Quelqu’un qui clonerait votre dépôt de déploiement n’aurait donc pas ce secret : ce n’est pas du pur <code>GitOps</code>. C’est un compromis par soucis technique sur ce que l’on a le droit de faire sur <code>Onyxia</code>. La gestion sécurisée et reproductible passerait par <code>Vault</code><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> ou un opérateur dédié.</p>
+<p>Créer le secret à la main fonctionne très bien, mais notez qu’il ne vit pas dans votre dépôt <code>GitOps</code>. Quelqu’un qui clonerait votre dépôt de déploiement n’aurait donc pas ce secret : ce n’est pas du pur <code>GitOps</code>. C’est un compromis par souci technique sur ce que l’on a le droit de faire sur <code>Onyxia</code>. La gestion sécurisée et reproductible passerait par <code>Vault</code><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> ou un opérateur dédié.</p>
 </div>
 </div>
 </section>
 <section id="le-déploiement-de-minio" class="level3">
 <h3 class="anchored" data-anchor-id="le-déploiement-de-minio">Le déploiement de MinIO</h3>
-<p>On déploie ensuite <code>MinIO</code> et son service. MinIO expose un seul port : <code>9000</code> pour l’API S3 (celle que notre app utilise). Les identifiants administrateur de <code>MinIO</code> sont lus depuis le secret qu’on vient de créer.</p>
+<p>On déploie ensuite <code>MinIO</code> et son service. Ce dernier expose un seul port : <code>9000</code> pour l’API S3 (celle que notre app utilise). Les identifiants administrateur de <code>MinIO</code> sont lus depuis le secret qu’on vient de créer.</p>
 <details>
 <summary>
 Voir le minio.yaml
 </summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apiVersion</span><span class="kw">:</span><span class="at"> apps/v1</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kind</span><span class="kw">:</span><span class="at"> Deployment</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">metadata</span><span class="kw">:</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> minio-medas-usid0f</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">spec</span><span class="kw">:</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">replicas</span><span class="kw">:</span><span class="at"> </span><span class="dv">1</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">selector</span><span class="kw">:</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">matchLabels</span><span class="kw">:</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">app</span><span class="kw">:</span><span class="at"> minio-medas-usid0f</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">template</span><span class="kw">:</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">metadata</span><span class="kw">:</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">labels</span><span class="kw">:</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">app</span><span class="kw">:</span><span class="at"> minio-medas-usid0f</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">spec</span><span class="kw">:</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">containers</span><span class="kw">:</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> minio</span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">image</span><span class="kw">:</span><span class="at"> minio/minio:latest</span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">args</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="st">"server"</span><span class="kw">,</span><span class="at"> </span><span class="st">"/data"</span><span class="kw">]</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">env</span><span class="kw">:</span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> MINIO_ROOT_USER</span></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="at">              </span><span class="fu">valueFrom</span><span class="kw">:</span></span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">secretKeyRef</span><span class="kw">:</span></span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="at">                  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> minio-credentials</span></span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="at">                  </span><span class="fu">key</span><span class="kw">:</span><span class="at"> access-key</span></span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> MINIO_ROOT_PASSWORD</span></span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="at">              </span><span class="fu">valueFrom</span><span class="kw">:</span></span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">secretKeyRef</span><span class="kw">:</span></span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="at">                  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> minio-credentials</span></span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="at">                  </span><span class="fu">key</span><span class="kw">:</span><span class="at"> secret-key</span></span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">ports</span><span class="kw">:</span></span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="kw">-</span><span class="at"> </span><span class="fu">containerPort</span><span class="kw">:</span><span class="at"> </span><span class="dv">9000</span></span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">volumeMounts</span><span class="kw">:</span></span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> data</span></span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a><span class="at">              </span><span class="fu">mountPath</span><span class="kw">:</span><span class="at"> /data</span></span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">volumes</span><span class="kw">:</span></span>
-<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> data</span></span>
-<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">emptyDir</span><span class="kw">:</span><span class="at"> </span><span class="kw">{}</span></span>
-<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a><span class="fu">apiVersion</span><span class="kw">:</span><span class="at"> v1</span></span>
-<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a><span class="fu">kind</span><span class="kw">:</span><span class="at"> Service</span></span>
-<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a><span class="fu">metadata</span><span class="kw">:</span></span>
-<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> minio-medas-usid0f</span></span>
-<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a><span class="fu">spec</span><span class="kw">:</span></span>
-<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">selector</span><span class="kw">:</span></span>
-<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">app</span><span class="kw">:</span><span class="at"> minio-medas-usid0f</span></span>
-<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">ports</span><span class="kw">:</span></span>
-<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> api</span></span>
-<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">port</span><span class="kw">:</span><span class="at"> </span><span class="dv">9000</span></span>
-<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">targetPort</span><span class="kw">:</span><span class="at"> </span><span class="dv">9000</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apiVersion</span><span class="kw">:</span><span class="at"> apps/v1</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kind</span><span class="kw">:</span><span class="at"> Deployment</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">metadata</span><span class="kw">:</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> minio-medas-usid0f</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">spec</span><span class="kw">:</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">replicas</span><span class="kw">:</span><span class="at"> </span><span class="dv">1</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">selector</span><span class="kw">:</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">matchLabels</span><span class="kw">:</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">app</span><span class="kw">:</span><span class="at"> minio-medas-usid0f</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">template</span><span class="kw">:</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">metadata</span><span class="kw">:</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">labels</span><span class="kw">:</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">app</span><span class="kw">:</span><span class="at"> minio-medas-usid0f</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">spec</span><span class="kw">:</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">containers</span><span class="kw">:</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> minio</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">image</span><span class="kw">:</span><span class="at"> minio/minio:latest</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">args</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="st">"server"</span><span class="kw">,</span><span class="at"> </span><span class="st">"/data"</span><span class="kw">]</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">env</span><span class="kw">:</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> MINIO_ROOT_USER</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="at">              </span><span class="fu">valueFrom</span><span class="kw">:</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">secretKeyRef</span><span class="kw">:</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="at">                  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> minio-credentials</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="at">                  </span><span class="fu">key</span><span class="kw">:</span><span class="at"> access-key</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> MINIO_ROOT_PASSWORD</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="at">              </span><span class="fu">valueFrom</span><span class="kw">:</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">secretKeyRef</span><span class="kw">:</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="at">                  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> minio-credentials</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="at">                  </span><span class="fu">key</span><span class="kw">:</span><span class="at"> secret-key</span></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="kw">-</span><span class="at"> </span><span class="fu">containerPort</span><span class="kw">:</span><span class="at"> </span><span class="dv">9000</span></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">volumeMounts</span><span class="kw">:</span></span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> data</span></span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a><span class="at">              </span><span class="fu">mountPath</span><span class="kw">:</span><span class="at"> /data</span></span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">volumes</span><span class="kw">:</span></span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> data</span></span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">emptyDir</span><span class="kw">:</span><span class="at"> </span><span class="kw">{}</span></span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a><span class="fu">apiVersion</span><span class="kw">:</span><span class="at"> v1</span></span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a><span class="fu">kind</span><span class="kw">:</span><span class="at"> Service</span></span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a><span class="fu">metadata</span><span class="kw">:</span></span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> minio-medas-usid0f</span></span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a><span class="fu">spec</span><span class="kw">:</span></span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">selector</span><span class="kw">:</span></span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">app</span><span class="kw">:</span><span class="at"> minio-medas-usid0f</span></span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> api</span></span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">port</span><span class="kw">:</span><span class="at"> </span><span class="dv">9000</span></span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">targetPort</span><span class="kw">:</span><span class="at"> </span><span class="dv">9000</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -588,40 +632,40 @@ Voir le minio.yaml
 <summary>
 Voir le deployment.yaml
 </summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apiVersion</span><span class="kw">:</span><span class="at"> apps/v1</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kind</span><span class="kw">:</span><span class="at"> Deployment</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">metadata</span><span class="kw">:</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> medas-financial-reporting</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">spec</span><span class="kw">:</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">replicas</span><span class="kw">:</span><span class="at"> </span><span class="dv">1</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">selector</span><span class="kw">:</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">matchLabels</span><span class="kw">:</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">app</span><span class="kw">:</span><span class="at"> medas-financial-reporting</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">template</span><span class="kw">:</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">metadata</span><span class="kw">:</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">labels</span><span class="kw">:</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">app</span><span class="kw">:</span><span class="at"> medas-financial-reporting</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">spec</span><span class="kw">:</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">containers</span><span class="kw">:</span></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> medas-financial-reporting</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">image</span><span class="kw">:</span><span class="at"> &lt;username_docker&gt;/medas-financial-reporting:latest</span></span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">ports</span><span class="kw">:</span></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="kw">-</span><span class="at"> </span><span class="fu">containerPort</span><span class="kw">:</span><span class="at"> </span><span class="dv">8501</span></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">env</span><span class="kw">:</span></span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> AWS_S3_ENDPOINT</span></span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="at">              </span><span class="fu">value</span><span class="kw">:</span><span class="at"> </span><span class="st">"http://minio-medas-usid0f:9000"</span></span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> S3_BUCKET</span></span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="at">              </span><span class="fu">value</span><span class="kw">:</span><span class="at"> </span><span class="st">"medas"</span></span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> AWS_ACCESS_KEY_ID</span></span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="at">              </span><span class="fu">valueFrom</span><span class="kw">:</span></span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">secretKeyRef</span><span class="kw">:</span></span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="at">                  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> minio-credentials</span></span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="at">                  </span><span class="fu">key</span><span class="kw">:</span><span class="at"> access-key</span></span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> AWS_SECRET_ACCESS_KEY</span></span>
-<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a><span class="at">              </span><span class="fu">valueFrom</span><span class="kw">:</span></span>
-<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">secretKeyRef</span><span class="kw">:</span></span>
-<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a><span class="at">                  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> minio-credentials</span></span>
-<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a><span class="at">                  </span><span class="fu">key</span><span class="kw">:</span><span class="at"> secret-key</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apiVersion</span><span class="kw">:</span><span class="at"> apps/v1</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kind</span><span class="kw">:</span><span class="at"> Deployment</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">metadata</span><span class="kw">:</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> medas-financial-reporting</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">spec</span><span class="kw">:</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">replicas</span><span class="kw">:</span><span class="at"> </span><span class="dv">1</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">selector</span><span class="kw">:</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">matchLabels</span><span class="kw">:</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">app</span><span class="kw">:</span><span class="at"> medas-financial-reporting</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">template</span><span class="kw">:</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">metadata</span><span class="kw">:</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">labels</span><span class="kw">:</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">app</span><span class="kw">:</span><span class="at"> medas-financial-reporting</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">spec</span><span class="kw">:</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">containers</span><span class="kw">:</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> medas-financial-reporting</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">image</span><span class="kw">:</span><span class="at"> &lt;username_docker&gt;/medas-financial-reporting:latest</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="kw">-</span><span class="at"> </span><span class="fu">containerPort</span><span class="kw">:</span><span class="at"> </span><span class="dv">8501</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">env</span><span class="kw">:</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> AWS_S3_ENDPOINT</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="at">              </span><span class="fu">value</span><span class="kw">:</span><span class="at"> </span><span class="st">"http://minio-medas-usid0f:9000"</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> S3_BUCKET</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="at">              </span><span class="fu">value</span><span class="kw">:</span><span class="at"> </span><span class="st">"medas"</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> AWS_ACCESS_KEY_ID</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a><span class="at">              </span><span class="fu">valueFrom</span><span class="kw">:</span></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">secretKeyRef</span><span class="kw">:</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a><span class="at">                  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> minio-credentials</span></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a><span class="at">                  </span><span class="fu">key</span><span class="kw">:</span><span class="at"> access-key</span></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> AWS_SECRET_ACCESS_KEY</span></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a><span class="at">              </span><span class="fu">valueFrom</span><span class="kw">:</span></span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">secretKeyRef</span><span class="kw">:</span></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a><span class="at">                  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> minio-credentials</span></span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a><span class="at">                  </span><span class="fu">key</span><span class="kw">:</span><span class="at"> secret-key</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </section>
 <section id="service.yaml" class="level3">
@@ -630,16 +674,16 @@ Voir le deployment.yaml
 <summary>
 Voir le service.yaml
 </summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apiVersion</span><span class="kw">:</span><span class="at"> v1</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kind</span><span class="kw">:</span><span class="at"> Service</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">metadata</span><span class="kw">:</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> medas-financial-reporting</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">spec</span><span class="kw">:</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">selector</span><span class="kw">:</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">app</span><span class="kw">:</span><span class="at"> medas-financial-reporting</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">ports</span><span class="kw">:</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">port</span><span class="kw">:</span><span class="at"> </span><span class="dv">80</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">targetPort</span><span class="kw">:</span><span class="at"> </span><span class="dv">8501</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apiVersion</span><span class="kw">:</span><span class="at"> v1</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kind</span><span class="kw">:</span><span class="at"> Service</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">metadata</span><span class="kw">:</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> medas-financial-reporting</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">spec</span><span class="kw">:</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">selector</span><span class="kw">:</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">app</span><span class="kw">:</span><span class="at"> medas-financial-reporting</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">port</span><span class="kw">:</span><span class="at"> </span><span class="dv">80</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">targetPort</span><span class="kw">:</span><span class="at"> </span><span class="dv">8501</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </section>
 <section id="ingress.yaml" class="level3">
@@ -649,27 +693,27 @@ Voir le service.yaml
 <summary>
 Voir le ingress.yaml
 </summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apiVersion</span><span class="kw">:</span><span class="at"> networking.k8s.io/v1</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kind</span><span class="kw">:</span><span class="at"> Ingress</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">metadata</span><span class="kw">:</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> medas-financial-reporting</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="fu">spec</span><span class="kw">:</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">ingressClassName</span><span class="kw">:</span><span class="at"> nginx</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">tls</span><span class="kw">:</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">hosts</span><span class="kw">:</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> &lt;votre_url_a_saisir&gt;.lab.sspcloud.fr</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">rules</span><span class="kw">:</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">host</span><span class="kw">:</span><span class="at"> &lt;votre_url_a_saisir&gt;.lab.sspcloud.fr</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">http</span><span class="kw">:</span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">paths</span><span class="kw">:</span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="kw">-</span><span class="at"> </span><span class="fu">path</span><span class="kw">:</span><span class="at"> /</span></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="fu">pathType</span><span class="kw">:</span><span class="at"> Prefix</span></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="fu">backend</span><span class="kw">:</span></span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="at">              </span><span class="fu">service</span><span class="kw">:</span></span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">name</span><span class="kw">:</span><span class="at"> medas-financial-reporting</span></span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">port</span><span class="kw">:</span></span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="at">                  </span><span class="fu">number</span><span class="kw">:</span><span class="at"> </span><span class="dv">80</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apiVersion</span><span class="kw">:</span><span class="at"> networking.k8s.io/v1</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kind</span><span class="kw">:</span><span class="at"> Ingress</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">metadata</span><span class="kw">:</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> medas-financial-reporting</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="fu">spec</span><span class="kw">:</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">ingressClassName</span><span class="kw">:</span><span class="at"> nginx</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">tls</span><span class="kw">:</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">hosts</span><span class="kw">:</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> &lt;votre_url_a_saisir&gt;.lab.sspcloud.fr</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">rules</span><span class="kw">:</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">host</span><span class="kw">:</span><span class="at"> &lt;votre_url_a_saisir&gt;.lab.sspcloud.fr</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">http</span><span class="kw">:</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">paths</span><span class="kw">:</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="kw">-</span><span class="at"> </span><span class="fu">path</span><span class="kw">:</span><span class="at"> /</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="fu">pathType</span><span class="kw">:</span><span class="at"> Prefix</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="fu">backend</span><span class="kw">:</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="at">              </span><span class="fu">service</span><span class="kw">:</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">name</span><span class="kw">:</span><span class="at"> medas-financial-reporting</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">port</span><span class="kw">:</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="at">                  </span><span class="fu">number</span><span class="kw">:</span><span class="at"> </span><span class="dv">80</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </section>
 </section>
@@ -680,24 +724,24 @@ Voir le ingress.yaml
 <summary>
 Voir le application.yaml
 </summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apiVersion</span><span class="kw">:</span><span class="at"> argoproj.io/v1alpha1</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kind</span><span class="kw">:</span><span class="at"> Application</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">metadata</span><span class="kw">:</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> medas-financial-reporting</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">spec</span><span class="kw">:</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">project</span><span class="kw">:</span><span class="at"> default</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">source</span><span class="kw">:</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">repoURL</span><span class="kw">:</span><span class="at"> https://github.com/&lt;votre_username_github&gt;/medas-financial-reporting-deployment.git</span><span class="co">  # votre dépôt GitOps</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">targetRevision</span><span class="kw">:</span><span class="at"> main</span><span class="co">          # la branche à déployer</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">path</span><span class="kw">:</span><span class="at"> deployment</span><span class="co">              # le dossier contenant les manifests</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">destination</span><span class="kw">:</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">server</span><span class="kw">:</span><span class="at"> https://kubernetes.default.svc</span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">namespace</span><span class="kw">:</span><span class="at"> user-&lt;username&gt;</span><span class="co">     # votre namespace de la forme user-&lt;username&gt;</span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">syncPolicy</span><span class="kw">:</span></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">automated</span><span class="kw">:</span></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">selfHeal</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apiVersion</span><span class="kw">:</span><span class="at"> argoproj.io/v1alpha1</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kind</span><span class="kw">:</span><span class="at"> Application</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">metadata</span><span class="kw">:</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> medas-financial-reporting</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">spec</span><span class="kw">:</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">project</span><span class="kw">:</span><span class="at"> default</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">source</span><span class="kw">:</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">repoURL</span><span class="kw">:</span><span class="at"> https://github.com/&lt;votre_username_github&gt;/medas-financial-reporting-deployment.git</span><span class="co">  # votre dépôt GitOps</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">targetRevision</span><span class="kw">:</span><span class="at"> main</span><span class="co">          # la branche à déployer</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">path</span><span class="kw">:</span><span class="at"> deployment</span><span class="co">              # le dossier contenant les manifests</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">destination</span><span class="kw">:</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">server</span><span class="kw">:</span><span class="at"> https://kubernetes.default.svc</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">namespace</span><span class="kw">:</span><span class="at"> user-&lt;username&gt;</span><span class="co">     # votre namespace de la forme user-&lt;username&gt;</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">syncPolicy</span><span class="kw">:</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">automated</span><span class="kw">:</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">selfHeal</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<p>Deux choses à adapter ici de votre coté : l’URL de votre dépôt <code>GitOps</code> en saisissant votre <code>username GitHub</code> et votre <code>namespace Kubernetes</code>.</p>
+<p>Deux choses à adapter ici de votre côté : l’URL de votre dépôt <code>GitOps</code> en saisissant votre <code>username GitHub</code> et votre <code>namespace Kubernetes</code>.</p>
 <p>Le <code>selfHeal: true</code> est important : il indique à <code>ArgoCD</code> de corriger automatiquement toute dérive entre l’état du cluster et celui décrit dans <code>Git</code>. Si quelqu’un modifie le déploiement à la main sur le cluster, <code>ArgoCD</code> le ramènera à l’état déclaré dans le dépôt.</p>
 <div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -718,58 +762,45 @@ Voir le application.yaml
 </ul>
 </div>
 </div>
-<p>Si tout va bien en accédant à l’URL renseigné dans l’Ingress, votre application devrait être accessible via votre navigateur préféré. Par contre tout n’est pas totalement fonctionnel. (encore une fois)</p>
+<p>Si tout va bien en accédant à l’URL renseignée dans l’<code>Ingress</code>, votre application devrait être accessible via votre navigateur préféré. Par contre, tout n’est pas totalement fonctionnel. (encore une fois ! <img src="https://emj.discordl.org/1/1491806829536215240.webp" class="img-fluid" style="width:2.0%">)</p>
 </section>
 <section id="alimenter-le-stockage-lancer-le-pipeline" class="level2">
 <h2 class="anchored" data-anchor-id="alimenter-le-stockage-lancer-le-pipeline">Alimenter le stockage : lancer le pipeline</h2>
-<p>Bon… il manque un truc là. On a déployé l’application, elle est accessible, mais elle affiche une erreur : impossible de charger les données. Et c’est logique : notre <code>MinIO</code> est tout neuf et vide. On le lance quand, notre pipeline ? Même si tout est statique, il faut bien l’exécuter au moins une fois pour produire les données nettoyées et le reporting que l’application va lire.</p>
-<p>C’est le chaînon manquant. Jusqu’ici on a déployé la brique qui <strong>lit</strong> (<code>Streamlit</code>), mais rien n’a encore <strong>écrit</strong> dans le bucket.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Deux data products, un point de rencontre
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Notre projet contient en réalité deux <em>data products</em> de natures différentes. Le <strong>package</strong> produit et persiste : il lit les données source, les transforme et sauvegarde le résultat sur <code>MinIO</code>.<strong>Streamlit</strong> lit et expose : il se contente d’afficher ce que le package a généré. Le <code>MinIO</code> est le point de rencontre entre les deux, l’endroit où le premier dépose ce que le second consomme. C’est pour ça que la persistance compte : sans elle, on perd la trace de la transformation et l’application n’a plus rien à montrer.</p>
-</div>
-</div>
-<p>Pour exécuter le pipeline, on pourrait lancer la commande à la main dans un terminal mais c’est fastidieux, fragile et peu intuitif. Il faudrait réutiliser le <code>VS Code</code> d’admin et taper des commandes dans le <code>Terminal</code>. On va plutôt le faire proprement avec un <strong>Job Kubernetes</strong> : une tâche ponctuelle qui réutilise notre image mais lancée avec la commande <code>reporting</code> (<code>uv run reporting</code>). Le <code>Job</code> crée le bucket si besoin puis exécute le pipeline.</p>
+<p>Bon… il manque un truc là. On a déployé l’application, elle est accessible mais elle affiche une erreur : impossible de charger les données. Et c’est logique : notre <code>MinIO</code> est tout neuf et vide. Il faut lancer notre pipeline ! Même si tout est statique, il faut bien au moins l’exécuter une première fois pour produire les données et le reporting que l’application va exposer.</p>
+<p>Jusqu’ici nous avons seulement déployé la brique qui <strong>lit</strong> (<code>Streamlit</code>) mais rien n’a encore <strong>écrit</strong> dans le bucket.</p>
+<p>Pour exécuter le pipeline, on pourrait lancer la commande à la main dans un <code>Terminal</code> mais c’est plutôt fragile et peu intuitif (et ça va à l’encontre de nos principes <code>GitOps</code>!). Nous allons donc plutôt respecter nos principes et le faire proprement avec un <strong>Job Kubernetes</strong> : une tâche ponctuelle qui réutilise notre image mais lancée avec la commande <code>reporting</code> (<code>uv run reporting</code>).</p>
 <details>
 <summary>
 Voir le job-reporting.yaml
 </summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apiVersion</span><span class="kw">:</span><span class="at"> batch/v1</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kind</span><span class="kw">:</span><span class="at"> Job</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">metadata</span><span class="kw">:</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> medas-reporting-pipeline</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">spec</span><span class="kw">:</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">backoffLimit</span><span class="kw">:</span><span class="at"> </span><span class="dv">2</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">template</span><span class="kw">:</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">spec</span><span class="kw">:</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">restartPolicy</span><span class="kw">:</span><span class="at"> Never</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">containers</span><span class="kw">:</span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> reporting</span></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">image</span><span class="kw">:</span><span class="at"> &lt;username_docker&gt;/medas-financial-reporting:latest</span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">command</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="st">"uv"</span><span class="kw">,</span><span class="at"> </span><span class="st">"run"</span><span class="kw">,</span><span class="at"> </span><span class="st">"reporting"</span><span class="kw">]</span></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">env</span><span class="kw">:</span></span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> AWS_S3_ENDPOINT</span></span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="at">              </span><span class="fu">value</span><span class="kw">:</span><span class="at"> </span><span class="st">"http://minio-medas-usid0f:9000"</span></span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> S3_BUCKET</span></span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="at">              </span><span class="fu">value</span><span class="kw">:</span><span class="at"> </span><span class="st">"medas"</span></span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> AWS_ACCESS_KEY_ID</span></span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="at">              </span><span class="fu">valueFrom</span><span class="kw">:</span></span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">secretKeyRef</span><span class="kw">:</span></span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="at">                  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> minio-credentials</span></span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="at">                  </span><span class="fu">key</span><span class="kw">:</span><span class="at"> access-key</span></span>
-<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> AWS_SECRET_ACCESS_KEY</span></span>
-<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a><span class="at">              </span><span class="fu">valueFrom</span><span class="kw">:</span></span>
-<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">secretKeyRef</span><span class="kw">:</span></span>
-<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a><span class="at">                  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> minio-credentials</span></span>
-<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a><span class="at">                  </span><span class="fu">key</span><span class="kw">:</span><span class="at"> secret-key</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apiVersion</span><span class="kw">:</span><span class="at"> batch/v1</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kind</span><span class="kw">:</span><span class="at"> Job</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">metadata</span><span class="kw">:</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> medas-reporting-pipeline</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="fu">spec</span><span class="kw">:</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">backoffLimit</span><span class="kw">:</span><span class="at"> </span><span class="dv">2</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">template</span><span class="kw">:</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">spec</span><span class="kw">:</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">restartPolicy</span><span class="kw">:</span><span class="at"> Never</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">containers</span><span class="kw">:</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> reporting</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">image</span><span class="kw">:</span><span class="at"> &lt;username_docker&gt;/medas-financial-reporting:latest</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">command</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="st">"uv"</span><span class="kw">,</span><span class="at"> </span><span class="st">"run"</span><span class="kw">,</span><span class="at"> </span><span class="st">"reporting"</span><span class="kw">]</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">env</span><span class="kw">:</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> AWS_S3_ENDPOINT</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="at">              </span><span class="fu">value</span><span class="kw">:</span><span class="at"> </span><span class="st">"http://minio-medas-usid0f:9000"</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> S3_BUCKET</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="at">              </span><span class="fu">value</span><span class="kw">:</span><span class="at"> </span><span class="st">"medas"</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> AWS_ACCESS_KEY_ID</span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="at">              </span><span class="fu">valueFrom</span><span class="kw">:</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">secretKeyRef</span><span class="kw">:</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a><span class="at">                  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> minio-credentials</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a><span class="at">                  </span><span class="fu">key</span><span class="kw">:</span><span class="at"> access-key</span></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a><span class="at">            </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> AWS_SECRET_ACCESS_KEY</span></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a><span class="at">              </span><span class="fu">valueFrom</span><span class="kw">:</span></span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a><span class="at">                </span><span class="fu">secretKeyRef</span><span class="kw">:</span></span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a><span class="at">                  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> minio-credentials</span></span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a><span class="at">                  </span><span class="fu">key</span><span class="kw">:</span><span class="at"> secret-key</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -783,7 +814,7 @@ Voir le job-reporting.yaml
 <div class="callout-body-container callout-body">
 <ul>
 <li>Ajoutez <code>job-reporting.yaml</code> au dossier <code>deployment/</code> de votre dépôt <code>GitOps</code></li>
-<li>Commitez et poussez : <code>ArgoCD</code> déploiera le Job, qui créera le bucket et remplira le stockage</li>
+<li>Commitez et poussez : <code>ArgoCD</code> déploiera le <code>Job</code></li>
 </ul>
 </div>
 </div>
@@ -798,12 +829,12 @@ Voir le job-reporting.yaml
 </div>
 <div class="callout-body-container callout-body">
 <p>Deux limites de notre approche méritent d’être soulignées.</p>
-<p>D’abord, notre Job tourne une fois. En production, un reporting se régénère souvent à intervalle régulier (chaque nuit, chaque semaine, chaque mois …) pour intégrer de nouvelles données. On utiliserait alors un déclenchement planifié plutôt qu’une exécution unique.</p>
-<p>Ensuite, regrouper le pipeline d’alimentation et l’application dans le même dépôt de déploiement est un raccourci de démonstration. Dans une vraie architecture, on <strong>séparerait</strong> ces deux responsabilités : l’alimentation du bucket (ingestion, transformation) d’un côté, l’exposition via <code>Streamlit</code> de l’autre. Deux mondes, deux cycles de vie.</p>
+<p>D’abord, notre <code>Job</code> tourne une fois. Dans la vraie vie, un reporting se régénère souvent à intervalle régulier (chaque nuit, chaque semaine, chaque mois …) pour intégrer de nouvelles données. Nous aurions alors besoin d’un déclenchement planifié plutôt qu’une exécution unique.</p>
+<p>Ensuite, regrouper le pipeline d’alimentation et l’application dans le même dépôt de déploiement est un raccourci de démonstration. Dans une vraie architecture, on <strong>séparerait</strong> ces deux responsabilités : l’alimentation du bucket (ingestion, transformation) d’un côté, l’exposition via <code>Streamlit</code> de l’autre.</p>
 <p>Les outils pour orchestrer cette alimentation dépendent de votre contexte : un <code>CronJob</code> ou <code>Argo Workflows</code> si vous restez dans l’écosystème <code>Kubernetes</code>, un orchestrateur dédié comme <code>Airflow</code> si votre organisation en a déjà un. Il n’y a pas de réponse unique. Ici, on met tout au même endroit pour garder une vue d’ensemble lisible, mais gardez en tête que ce n’est pas le plus optimal.</p>
 </div>
 </div>
-<p>Et voilà. Cette fois, l’application est pleinement fonctionnelle : les données se chargent, les graphiques s’affichent et le reporting est téléchargeable. Vous venez de boucler la chaîne complète, du code poussé jusqu’à un data product en ligne, accessible à n’importe qui via une simple URL.</p>
+<p>Si vous rafraîchissez votre application, vous devriez maintenant vous rendre compte qu’elle est pleinement fonctionnelle : les données se chargent, les graphiques s’affichent et le reporting est téléchargeable. Vous venez de boucler la chaîne complète, du code poussé jusqu’à un data product en ligne, accessible à n’importe qui via une simple URL.</p>
 <div style="text-align: center;">
 <p><img src="../images/happy.png" class="img-fluid" style="width:50.0%"></p>
 </div>
@@ -850,42 +881,42 @@ Voir le job-reporting.yaml
 Voir la solution
 </summary>
 <p>D’abord, on déclenche le workflow sur les tags Git en plus des branches :</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">on</span><span class="kw">:</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">push</span><span class="kw">:</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">branches</span><span class="kw">:</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> feat-docker</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> development</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> main</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">tags</span><span class="kw">:</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">"v*"</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">workflow_dispatch</span><span class="kw">:</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">on</span><span class="kw">:</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">push</span><span class="kw">:</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">branches</span><span class="kw">:</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> feat-docker</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> development</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> main</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">tags</span><span class="kw">:</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">"v*"</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">workflow_dispatch</span><span class="kw">:</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Ensuite, on ajoute une étape <code>docker/metadata-action</code> qui génère les tags d’image et on la branche sur <code>build-push-action</code> via son <code>id</code> :</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> 🏷️ Générer les tags de l'image</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">id</span><span class="kw">:</span><span class="at"> meta</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> docker/metadata-action@v5</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">with</span><span class="kw">:</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">images</span><span class="kw">:</span><span class="at"> &lt;username_docker&gt;/medas-financial-reporting</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="fu">          tags</span><span class="kw">: </span><span class="ch">|</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>            type=ref,event=branch</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>            type=semver,pattern={{version}}</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> 🏗️ Build et push de l'image</span></span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> docker/build-push-action@v6</span></span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">with</span><span class="kw">:</span></span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">context</span><span class="kw">:</span><span class="at"> .</span></span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">push</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">tags</span><span class="kw">:</span><span class="at"> ${{ steps.meta.outputs.tags }}</span></span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">labels</span><span class="kw">:</span><span class="at"> ${{ steps.meta.outputs.labels }}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> 🏷️ Générer les tags de l'image</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">id</span><span class="kw">:</span><span class="at"> meta</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> docker/metadata-action@v5</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">with</span><span class="kw">:</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">images</span><span class="kw">:</span><span class="at"> &lt;username_docker&gt;/medas-financial-reporting</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="fu">          tags</span><span class="kw">: </span><span class="ch">|</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>            type=ref,event=branch</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>            type=semver,pattern={{version}}</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> 🏗️ Build et push de l'image</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> docker/build-push-action@v6</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">with</span><span class="kw">:</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">context</span><span class="kw">:</span><span class="at"> .</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">push</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">tags</span><span class="kw">:</span><span class="at"> ${{ steps.meta.outputs.tags }}</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="at">          </span><span class="fu">labels</span><span class="kw">:</span><span class="at"> ${{ steps.meta.outputs.labels }}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <p>La ligne <code>type=semver,pattern={{version}}</code> est la clé : quand vous poussez un tag Git <code>v0.0.1</code>, elle produit une image taguée <code>0.0.1</code>. La ligne <code>type=ref,event=branch</code> conserve au passage un tag nommé d’après la branche pour vos pushs classiques.</p>
 </div>
 </div>
 <p>Ensuite, on crée une version. Modifiez un élément visible de l’application (par exemple le titre dans la sidebar <code>Streamlit</code>), commitez puis faites un tag :</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> tag <span class="at">-a</span> v0.0.1 <span class="at">-m</span> <span class="st">"Première version de l'application Streamlit"</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push <span class="at">--tags</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> tag <span class="at">-a</span> v0.0.1 <span class="at">-m</span> <span class="st">"Première version de l'application Streamlit"</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push <span class="at">--tags</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Vérifiez sur <code>GitHub</code> que ce tag déclenche bien un pipeline de <code>CI</code>, puis sur <code>DockerHub</code> que le tag <code>v0.0.1</code> apparaît dans les tags disponibles de l’image.</p>
 <p>La partie <code>CI</code> a fait son travail. Passons à la <code>CD</code> : sur le dépôt <code>GitOps</code>, mettez à jour la version de l’image dans <code>deployment/deployment.yaml</code>, en remplaçant <code>latest</code> par <code>v0.0.1</code>.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> &lt;username_docker&gt;/medas-financial-reporting:v0.0.1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> &lt;username_docker&gt;/medas-financial-reporting:v0.0.1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -916,7 +947,9 @@ Voir la solution
 <div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
 <ol>
-<li id="fn1"><p><code>Vault</code> est un gestionnaire de secrets développé par HashiCorp. Il stocke de façon chiffrée et centralisée les informations sensibles (mots de passe, clés d’API, tokens) et contrôle finement qui peut y accéder. Sur SSP Cloud, c’est le coffre-fort derrière la page <a href="https://docs.sspcloud.fr/content/secrets.html">Mes secrets</a>. Nous ne pouvons pas l’utiliser dans le cadre de notre application car il est utilisé uniquement au lancement d’un formulaire de service, ce qui ne colle pas à la situation actuelle.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>Oui les mêmes conteneurs qu’avec <code>Docker</code>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Les quatre principes fondateurs sont définis par le projet <a href="https://opengitops.dev/">OpenGitOps</a> (CNCF). Pour la pratique précise de la séparation des dépôts, voir la page <a href="https://argo-cd.readthedocs.io/en/stable/user-guide/best_practices/">best practices de la documentation Argo CD</a>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p><code>Vault</code> est un gestionnaire de secrets développé par HashiCorp. Il stocke de façon chiffrée et centralisée les informations sensibles (mots de passe, clés d’API, tokens) et contrôle finement qui peut y accéder. Sur SSP Cloud, c’est le coffre-fort derrière la page <a href="https://docs.sspcloud.fr/content/secrets.html">Mes secrets</a>. Nous ne pouvons pas l’utiliser dans le cadre de notre application car il est utilisé uniquement au lancement d’un formulaire de service, ce qui ne colle pas à la situation actuelle.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a></div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -1321,8 +1354,8 @@ Voir la solution
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../pages/09-docker.html" class="pagination-link" aria-label="Docker">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Docker</span>
+      <a href="../pages/09-docker.html" class="pagination-link" aria-label="À bord du conteneur">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">À bord du conteneur</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
