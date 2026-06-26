@@ -406,7 +406,8 @@ Bon... il manque un truc là. On a déployé l'application, elle est accessible 
 
 Jusqu'ici nous avons seulement déployé la brique qui **lit** (`Streamlit`) mais rien n'a encore **écrit** dans le bucket.
 
-Pour exécuter le pipeline, on pourrait lancer la commande à la main dans un `Terminal` mais c'est plutôt fragile et peu intuitif (et ça va à l'encontre de nos principes `GitOps`!). Nous allons donc plutôt respecter nos principes et le faire proprement avec un **Job Kubernetes** : une tâche ponctuelle qui réutilise notre image mais lancée avec la commande `reporting` (`uv run reporting`).
+Pour exécuter le pipeline, on pourrait lancer la commande à la main dans un `Terminal` mais c'est plutôt fragile et peu intuitif (et ça va à l'encontre de nos principes `GitOps`!). Nous allons donc plutôt respecter nos principes et le faire proprement avec un [**Job Kubernetes**](https://kubernetes.io/docs/concepts/workloads/controllers/job/) : une tâche ponctuelle qui réutilise notre image mais lancée avec la commande `reporting` (`uv run reporting`).
+
 
 <details>
 <summary>Voir le job-reporting.yaml</summary>
