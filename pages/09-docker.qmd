@@ -4,6 +4,32 @@ title: "À bord du conteneur"
 
 > Une précision avant de commencer. Mon objectif n'est pas de vous apprendre Docker dans son intégralité, le sujet est bien trop vaste pour tenir dans cette section et mériterait un cours à lui seul. Ce que je veux, c'est vous faire manipuler Docker dans un cas concret et utile : conteneuriser notre data product pour le déployer.
 
+## Pourquoi conteneuriser ?
+
+Jusqu'ici, notre application tourne très bien... sur notre machine. Le problème classique pointe le bout de son nez : "ça marche chez moi". Entre votre poste, celui d'un collègue et le serveur qui hébergera l'app, les versions de `Python` diffèrent (normalement non vu qu'on utilise `uv` !), les dépendances système ne sont pas les mêmes, une variable d'environnement manque... et ce qui tournait parfaitement en local refuse de démarrer ailleurs.
+
+**Docker** règle ce problème en empaquetant l'application *et* tout son environnement (la version de `Python`, les dépendances, la configuration) dans une **image** : un paquet autonome et reproductible. Cette image tourne ensuite à l'identique partout, sur votre machine comme sur le cluster.
+
+::: {.callout-note}
+## Image et conteneur, quelle différence ?
+Deux mots qu'on va employer en permanence, autant les distinguer tout de suite. L'**image** est le modèle figé, la recette empaquetée (notre application prête à tourner). Le **conteneur** est une instance vivante de cette image, une exécution concrète. Une image, plusieurs conteneurs : un peu comme une classe et ses instances, ou un moule et les gâteaux qu'on en tire.
+:::
+
+Sans image, impossible de livrer notre data product sur le cluster de façon fiable. C'est donc l'étape qui transforme notre code "qui marche chez nous" en quelque chose de déployable n'importe où.
+
+
+::: {.callout-note}
+## Docker n'est pas magique
+Il faut quand même nuancer un peu ces propos concernant `Docker`, ce dernier ne permet pas résoudre tout les problèmes d'environnement, il contribue très fortemment à les limiter sans les éliminer. L'architecture de la machine (ARM vs x86), tout ce qui vit *hors* du conteneur (réseau, volumes, secrets, services voisins) ou un build mal figé peuvent encore vous jouer des tours. Finalement, la bonne promesse de `Docker` n'est pas "ça marchera partout" mais "le même environnement applicatif partout". Sans vouloir vous spoiler, vous allez en faire l'expérience très vite : notre image va build et démarrer correctement, sans que l'application soit pour autant pleinement fonctionnelle. 👀
+
+::: {style="text-align: center;"}
+![](../images/worksonmymachine.png){width=60%}
+:::
+
+:::
+
+
+
 ::: {.callout-tip}
 ## Pour pratiquer Docker
 

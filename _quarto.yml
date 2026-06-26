@@ -33,6 +33,7 @@ website:
           - pages/08-streamlit.qmd
           - pages/09-docker.qmd
           - pages/10-argocd.qmd
+          - pages/11-conclusion.qmd
 
 format:
   html:
