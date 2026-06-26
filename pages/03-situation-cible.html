@@ -246,6 +246,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Déployer les amarres</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/11-conclusion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">À bon port</span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -284,7 +290,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>Le rôle de MinIO évolue</strong></p>
 <p>Dans la situation de départ, <code>MinIO</code> hébergeait uniquement la donnée source. Dans la situation cible, il devient le <em>storage</em> central du projet : il contient le fichier de données <code>data.parquet</code>, le template <code>Excel</code> <code>template.xlsx</code> et le rapport généré <code>reporting.xlsx</code>. Tout ce qui entre et tout ce qui sort du pipeline transite par <code>MinIO</code>. C’est votre source de vérité.</p>
 <div style="text-align: center;">
-<p><img src="../images/image-01.png" class="img-fluid"></p>
+<p><img src="../images/image-01.png" class="img-fluid" style="width:70.0%"></p>
 </div>
 <p>Avant de passer à l’étape suivante, assurez-vous que ces points sont remplis de votre côté :</p>
 <ul>
@@ -294,6 +300,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Je vous conseille de réutiliser ce <a href="https://github.com/surybang/MEDAS-TP-Financial-Reporting">template</a>.</li>
 </ul></li>
 </ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Biensûr, notre situation cible concerne uniquement le package, notre objectif final est encore plus grand. Comme vous pouvez le voir ci-dessous, le package constitue un maillon d’une chaine bien plus grande qui arrivera dans les chapitres suivants.</p>
+<div style="text-align: center;">
+<p><img src="../images/image-01-bis.png" class="img-fluid" style="width:70.0%"></p>
+</div>
+</div>
+</div>
 <p><strong>Comment récupérer les données ?</strong></p>
 <p>Récupérer les données via <a href="https://minio.lab.sspcloud.fr/fabienhos/MEDAS-FinancialReporting/data/financial_data.parquet">cette URL</a> et stockez-les dans <a href="https://datalab.sspcloud.fr/s3/?profile=default">votre stockage de données</a>.</p>
 <p>Dans ce dernier, faites un nouveau dossier avec la structure suivante pour faciliter l’exécution des commandes qui viendront tout au long de l’article :</p>

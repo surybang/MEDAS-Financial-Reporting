@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Planifions notre voyage – MEDAS Financial Reporting</title>
+<title>À bon port – MEDAS Financial Reporting</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -23,41 +23,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -68,8 +33,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../pages/05-le-code.html" rel="next">
-<link href="../pages/03-situation-cible.html" rel="prev">
+<link href="../pages/10-argocd.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -151,7 +115,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pages/01-introduction.html">Un long fleuve pas si tranquille</a></li><li class="breadcrumb-item"><a href="../pages/04-planification.html">Planifions notre voyage</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pages/01-introduction.html">Un long fleuve pas si tranquille</a></li><li class="breadcrumb-item"><a href="../pages/11-conclusion.html">À bon port</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -206,7 +170,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../pages/04-planification.html" class="sidebar-item-text sidebar-link active">
+  <a href="../pages/04-planification.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Planifions notre voyage</span></a>
   </div>
 </li>
@@ -248,7 +212,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../pages/11-conclusion.html" class="sidebar-item-text sidebar-link">
+  <a href="../pages/11-conclusion.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">À bon port</span></a>
   </div>
 </li>
@@ -264,17 +228,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#quest-ce-quun-package" id="toc-quest-ce-quun-package" class="nav-link active" data-scroll-target="#quest-ce-quun-package">Qu’est-ce qu’un package ?</a></li>
-  <li><a href="#comment-décider-ce-qui-constitue-un-package" id="toc-comment-décider-ce-qui-constitue-un-package" class="nav-link" data-scroll-target="#comment-décider-ce-qui-constitue-un-package">Comment décider ce qui constitue un package ?</a></li>
+  <li><a href="#le-voyage-en-une-carte" id="toc-le-voyage-en-une-carte" class="nav-link active" data-scroll-target="#le-voyage-en-une-carte">Le voyage en une carte</a></li>
+  <li><a href="#ce-que-vous-avez-appris" id="toc-ce-que-vous-avez-appris" class="nav-link" data-scroll-target="#ce-que-vous-avez-appris">Ce que vous avez appris</a></li>
+  <li><a href="#nos-raccourcis" id="toc-nos-raccourcis" class="nav-link" data-scroll-target="#nos-raccourcis">Nos raccourcis</a></li>
+  <li><a href="#et-maintenant" id="toc-et-maintenant" class="nav-link" data-scroll-target="#et-maintenant">Et maintenant ?</a></li>
+  <li><a href="#merci" id="toc-merci" class="nav-link" data-scroll-target="#merci">Merci</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pages/01-introduction.html">Un long fleuve pas si tranquille</a></li><li class="breadcrumb-item"><a href="../pages/04-planification.html">Planifions notre voyage</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pages/01-introduction.html">Un long fleuve pas si tranquille</a></li><li class="breadcrumb-item"><a href="../pages/11-conclusion.html">À bon port</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Planifions notre voyage</h1>
+<h1 class="title">À bon port</h1>
 </div>
 
 
@@ -291,125 +258,103 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>Avant de commencer à coder il faut savoir quoi coder. Nous avons déjà établi notre cible avec un premier schéma mais celui-ci présente une vue macro de la structure de notre projet. Je vous propose de faire un premier <em>dive</em> dans cette dernière.</p>
-<section id="quest-ce-quun-package" class="level2">
-<h2 class="anchored" data-anchor-id="quest-ce-quun-package">Qu’est-ce qu’un package ?</h2>
-<p>Qu’est-ce qui définit concrètement un package en <code>Python</code> ? Est-ce qu’il suffit de créer un dossier et d’y mettre des fichiers <code>.py</code> ?</p>
-<p>Pas tout à fait. Un dossier seul ne suffit pas : il faut également un fichier <code>__init__.py</code> à l’intérieur. Mais ce n’est pas tout car en Python le mot <em>package</em> recouvre en réalité deux notions qui se chevauchent et qu’il est important de distinguer.</p>
-<p><strong>Le package au sens import</strong> est un dossier contenant un fichier <code>__init__.py</code>. Ce fichier, même vide, indique à Python que ce dossier est un module importable. Sans lui vous pouvez avoir tous les <code>.py</code> que vous voulez dans un dossier : Python ne saura pas qu’il peut en importer le contenu. C’est ce qui vous permettra d’écrire <code>from medas_financial_reporting.financial_reporting.data import get_data</code> depuis n’importe où dans votre projet.</p>
-<p><strong>Le package au sens distribution</strong> est une unité de code empaquetée et installable. C’est ce que vous installez avec <code>pip install</code> ou <code>uv add</code>. Dans ce sens <code>pandas</code>, <code>openpyxl</code> et <code>streamlit</code> sont des packages. Cette configuration se fait dans le fichier <code>pyproject.toml</code>.</p>
-<p>Dans notre projet les deux notions se rejoignent : nous allons créer des packages Python structurés et les configurer dans <code>pyproject.toml</code> pour qu’ils soient installables proprement dans notre environnement. C’est justement l’un des avantages du <strong>src layout</strong> que nous allons adopter par la suite.</p>
-</section>
-<section id="comment-décider-ce-qui-constitue-un-package" class="level2">
-<h2 class="anchored" data-anchor-id="comment-décider-ce-qui-constitue-un-package">Comment décider ce qui constitue un package ?</h2>
-<div style="text-align: center;">
-<p><img src="https://kaamelott-gifboard.fr/gifs/peut-pas-vraiment-savoir.gif" class="img-fluid"></p>
-</div>
-<p>Il n’y a pas de règle absolue : c’est une question de cohésion. On regroupe dans un même package ce qui a une responsabilité commune et qui a du sens à être utilisé ensemble. Le bon découpage est celui qui rend votre code lisible et maintenable. Gardez ces trois <em>guidelines</em> en mémoire :</p>
-<p><strong>Ce qui change ensemble reste ensemble.</strong> Si deux modules sont toujours modifiés en même temps c’est qu’ils appartiennent probablement au même package.</p>
-<p><strong>Ce qui est réutilisable séparément mérite son propre package.</strong> La génération du reporting et l’application <code>Streamlit</code> ont des cycles de vie différents. Nous pourrions très bien remplacer <code>Streamlit</code> par <code>Flask</code>, <code>Reflex</code> ou <code>Django</code> sans toucher au reporting. Nous pourrions même décider que l’interface web sera en JavaScript avec <code>React</code>. Il faut donc les séparer.</p>
-<p><strong>La responsabilité unique.</strong> <code>financial_reporting</code> génère un fichier Excel à partir des données. <code>streamlit_app</code> expose le reporting à un utilisateur. Si vous n’arrivez pas à résumer la responsabilité d’un package en une phrase c’est peut-être parce qu’il en fait trop.</p>
-<div class="callout callout-style-default callout-caution callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Caution</span>À vous de jouer
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Imaginez l’arborescence du projet en respectant les contraintes suivantes :</p>
+<section id="le-voyage-en-une-carte" class="level2">
+<h2 class="anchored" data-anchor-id="le-voyage-en-une-carte">Le voyage en une carte</h2>
+<p>Souvenez-vous de notre point de départ : un notebook qui générait un reporting <code>Excel</code>. Du code versionné, certes, mais hardcodé, manuel, difficile à faire évoluer sans tout casser. Un bon début, mais pas une fin en soi.</p>
+<p>Regardez où nous en sommes maintenant. Une application accessible à n’importe qui via une simple URL, qui se redéploie automatiquement à chaque changement, sans qu’une seule commande ne soit lancée à la main sur le cluster. Entre les deux, vous avez traversé tout le cycle de vie d’un data product moderne :</p>
 <ul>
-<li>Un dossier <code>src/</code> contenant votre package Python</li>
-<li>Deux sous-packages : un pour le reporting et un pour l’interface utilisateur</li>
-<li>Chaque package doit avoir son <code>__init__.py</code></li>
-<li>Un dossier <code>tests/</code> à la racine</li>
-<li>Un dossier <code>notebooks/</code> à la racine</li>
-<li>Les autres éléments du projet à la racine</li>
+<li>Un projet <strong>structuré en packages</strong> avec une responsabilité claire pour chacun</li>
+<li>Une <strong>validation des données</strong> qui monte la garde contre le schema drift</li>
+<li>Une <strong>suite de tests</strong> unitaires, d’intégration et end-to-end</li>
+<li>Une <strong>intégration continue</strong> qui refuse le code cassé ou mal formaté</li>
+<li>Une <strong>interface utilisateur</strong> qui transforme un fichier en produit</li>
+<li>Une <strong>image Docker</strong> propre, légère et sécurisée</li>
+<li>Un <strong>déploiement GitOps</strong> où Git fait foi de source de vérité</li>
 </ul>
+<p>Chaque brique répondait à un besoin précis et s’emboîtait dans la suivante. C’est ça, une chaîne de production.</p>
+<div style="text-align: center;">
+<p><img src="../images/archi_prod_finale.png" class="img-fluid"></p>
 </div>
-</div>
-<details>
-<summary>
-Structure du projet
-</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>MEDAS-Financial-Reporting/          # nom du repo GitHub (tirets autorisés)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>├── src/</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>│   └── medas_financial_reporting/  # nom du package Python (underscores, minuscules)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>│       ├── __init__.py</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>│       ├── financial_reporting/</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>│       │   ├── __init__.py</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>│       └── streamlit_app/</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>│           ├── __init__.py</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>├── tests/</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>├── notebooks/</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>│   └── notebook.ipynb</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>├── pyproject.toml</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>├── uv.lock</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>└── README.md</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="ce-que-vous-avez-appris" class="level2">
+<h2 class="anchored" data-anchor-id="ce-que-vous-avez-appris">Ce que vous avez appris</h2>
+<p>Si vous ne deviez retenir qu’une chose de tout cet article, ce ne serait pas une commande <code>uv</code>, ni la syntaxe d’un manifest <code>Kubernetes</code>. Ces outils changeront, d’autres prendront leur place, c’est le propre de notre métier.</p>
+<p>Ce qui restera, c’est le <strong>pattern</strong>. Le même fil rouge a guidé chacune de nos décisions, du module jusqu’au dépôt : <strong>séparer les préoccupations</strong>. Une fonction fait une chose. Un package a une responsabilité. Le code applicatif vit dans un dépôt, le déploiement dans un autre. À chaque échelle, la même intuition.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Tirets ou underscores ?
+<span class="screen-reader-only">Note</span>Le SRP, encore et toujours
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Le repo GitHub s’appelle <code>MEDAS-Financial-Reporting</code> : les tirets sont la convention GitHub. Le package Python s’appelle <code>medas_financial_reporting</code> : le tiret est un opérateur de soustraction en Python et ne peut donc pas faire partie d’un identifiant. On utilise des underscores et des minuscules conformément à la PEP8.</p>
+<p>On a vu ce principe sous toutes ses formes : la responsabilité unique appliquée aux fonctions (<code>data.py</code> nettoie, <code>reporting.py</code> génère), aux packages (<code>financial_reporting</code> produit, <code>streamlit_app</code> expose), et même aux dépôts (applicatif contre GitOps). Ce n’est pas une coïncidence : c’est ce qui rend un système lisible, testable et maintenable dans le temps.</p>
 </div>
 </div>
-</details>
-<details>
-<summary>
-Le src layout : pourquoi ce niveau intermédiaire ?
-</summary>
-<p>Pourquoi avoir un dossier <code>medas_financial_reporting/</code> à l’intérieur de <code>src/</code> alors qu’on a déjà un dossier racine <code>MEDAS-Financial-Reporting/</code> ?</p>
-<p>La réponse vient de la distinction entre les deux notions évoquées plus tôt.</p>
-<p>Le dossier racine <code>MEDAS-Financial-Reporting/</code> est l’enveloppe du dépôt Git : il contient le <code>pyproject.toml</code>, le <code>README.md</code>, les <code>notebooks/</code> et les <code>tests/</code>. Ce n’est pas du code importable.</p>
-<p>Le dossier <code>src/medas_financial_reporting/</code> est le package importable, celui que Python chargera quand vous écrirez <code>from medas_financial_reporting.financial_reporting.data import get_data</code>.</p>
-La <em>Python Packaging Authority</em> <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> décrit le <em>src layout</em> comme le fait de déplacer le code destiné à être importable dans un sous-dossier typiquement nommé <code>src/</code>, séparé de la racine du projet. Ce séparateur évite un piège classique : sans lui Python trouve votre code directement à la racine et l’importe même s’il n’est pas installé ce qui peut masquer des erreurs de packaging.
-</details>
-<details>
-<summary>
-Solution automatique avec <code>uv</code> depuis le template
-</summary>
+<p>Ce pattern n’est pas réservé au reporting réglementaire. Un dashboard interactif, une API, un pipeline ETL ou la mise en production d’un modèle prédictif reposent tous sur le même socle : du code versionné, un environnement reproductible et une chaîne de déploiement automatisée. Vous l’avez maintenant entre les mains.</p>
+</section>
+<section id="nos-raccourcis" class="level2">
+<h2 class="anchored" data-anchor-id="nos-raccourcis">Nos raccourcis</h2>
+<p>Au fil de l’article, il y’a des vagues que je n’ai pas voulu prendre pour ne pas vous noyer.</p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Ce que nous n’avons pas fait (et qu’il faudrait faire en vrai)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>L’authentification.</strong> Notre application est ouverte : quiconque a l’URL y accède. Un reporting financier réel exigerait une couche d’authentification et de gestion des droits.</li>
+<li><strong>La gestion fine des erreurs.</strong> Nos <code>try/except</code> sont volontairement simples. En production, on distinguerait les erreurs de permissions, de réseau et d’intégrité, avec des exceptions métier dédiées.</li>
+<li><strong>Le stockage persistant.</strong> Notre <code>MinIO</code> tourne sur un <code>emptyDir</code> éphémère. Un usage réel passerait par un <code>PersistentVolumeClaim</code> ou un stockage distant distribué et partagé.</li>
+<li><strong>La gestion des secrets.</strong> Notre secret est créé à la main, hors du dépôt GitOps. Ce n’est pas du pur GitOps : la version propre passerait par <code>Vault</code> ou un opérateur dédié.</li>
+<li><strong>L’orchestration du pipeline.</strong> Notre <code>Job</code> tourne une fois. Un vrai reporting se régénère à intervalle régulier, via un <code>CronJob</code>, <code>Argo Workflows</code> ou un orchestrateur comme <code>Airflow</code>.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="et-maintenant" class="level2">
+<h2 class="anchored" data-anchor-id="et-maintenant">Et maintenant ?</h2>
+<p>Si vous voulez prolonger le voyage par vous-même, voici quelques pistes dans l’ordre de difficulté croissante :</p>
+<ol type="1">
+<li><strong>Découper l’application Streamlit.</strong> Reprenez le monolithe et appliquez-lui le SRP : une fonction par section de l’interface, voire des modules séparés pour la mise en page et la logique de données.</li>
+<li><strong>Enrichir le data product.</strong> Ajoutez un filtre par période, une génération de reporting à la demande sur le périmètre filtré, une comparaison entre plusieurs périodes.</li>
+<li><strong>Automatiser la mise à jour du tag.</strong> Faites en sorte que la CI mette elle-même à jour le tag d’image dans le dépôt GitOps ou explorez <code>Argo CD Image Updater</code>.</li>
+<li><strong>Planifier le pipeline.</strong> Remplacez le <code>Job</code> ponctuel par un <code>CronJob</code> pour régénérer le reporting automatiquement.</li>
+<li><strong>Mettez en place une chaîne ETL.</strong> Les données sont statiques depuis le <code>MinIO</code>, vous pourriez simuler une chaine ETL <code>Postgresql</code> -&gt; <code>MinIO</code>.</li>
+</ol>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Initialiser le projet avec <code>uv</code>
+<span class="screen-reader-only">Tip</span>Une remarque rassurante
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Si vous partez du template proposé, vous pouvez générer le src layout automatiquement avec <code>uv</code> plutôt que de tout créer à la main.</p>
-<p>Commencez par supprimer les fichiers de configuration existants puis lancez l’initialisation :</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> pyproject.toml uv.lock</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> init <span class="at">--package</span> .</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><code>uv</code> va créer le dossier <code>src/</code> avec votre package et réécrire un <code>pyproject.toml</code> correctement configuré. Vérifiez ensuite que le dossier généré sous <code>src/</code> s’appelle bien <code>medas_financial_reporting</code> avec des underscores. Si <code>uv</code> a utilisé des tirets renommez-le :</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> src/medas-financial-reporting src/medas_financial_reporting</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Il ne reste plus qu’à créer les sous-packages et les dossiers manquants :</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> src/medas_financial_reporting/<span class="dt">{financial_reporting</span><span class="op">,</span><span class="dt">streamlit_app}</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> src/medas_financial_reporting/<span class="dt">{financial_reporting</span><span class="op">,</span><span class="dt">streamlit_app}</span>/__init__.py</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> tests notebooks</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>En tant que data scientist, engineer ou analyst, il est très peu probable que vous ayez un jour à construire une chaîne CI/CD de zéro comme nous venons de le faire. En entreprise, ces briques existent déjà : votre rôle sera de les comprendre et de les utiliser. Et c’est précisément pour ça que cet article existe. Vous saurez désormais lire un <code>Dockerfile</code>, comprendre ce qu’<code>ArgoCD</code> manipule pour vous et dialoguer avec vos équipes IT sans vous sentir perdus.</p>
 </div>
 </div>
-</details>
+</section>
+<section id="merci" class="level2">
+<h2 class="anchored" data-anchor-id="merci">Merci</h2>
+<p>Merci d’avoir suivi cet article jusqu’au bout. J’espère qu’au delà des outils, vous repartez avec une intuition : celle de ce qui sépare un bout de code qui marche sur votre machine d’un produit que d’autres peuvent utiliser, faire évoluer et auditer.</p>
+<p>Le fleuve continue bien au delà de ce que nous avons parcouru ensemble. Mais vous savez maintenant naviguer.</p>
+<p>Bon vent. ⛵</p>
+<div style="text-align: center;">
+<p><img src="../images/aragorn-medas.gif" class="img-fluid"></p>
+</div>
 
 
 </section>
 
-
-<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
-
-<ol>
-<li id="fn1"><p><a href="https://packaging.python.org/en/latest/overview/">Python Packaging Authority</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol>
-</section><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a></div></div></section></div></main> <!-- /main -->
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a></div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
@@ -812,14 +757,11 @@ Solution automatique avec <code>uv</code> depuis le template
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../pages/03-situation-cible.html" class="pagination-link" aria-label="L'horizon visé">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">L’horizon visé</span>
+      <a href="../pages/10-argocd.html" class="pagination-link" aria-label="Déployer les amarres">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Déployer les amarres</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../pages/05-le-code.html" class="pagination-link" aria-label="On passe au code ! (enfin)">
-        <span class="nav-page-text">On passe au code ! (enfin)</span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->

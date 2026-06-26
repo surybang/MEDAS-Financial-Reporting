@@ -68,6 +68,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
+<link href="../pages/11-conclusion.html" rel="next">
 <link href="../pages/09-docker.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -246,6 +247,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="../pages/10-argocd.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Déployer les amarres</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/11-conclusion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">À bon port</span></a>
   </div>
 </li>
       </ul>
@@ -768,7 +775,7 @@ Voir le application.yaml
 <h2 class="anchored" data-anchor-id="alimenter-le-stockage-lancer-le-pipeline">Alimenter le stockage : lancer le pipeline</h2>
 <p>Bon… il manque un truc là. On a déployé l’application, elle est accessible mais elle affiche une erreur : impossible de charger les données. Et c’est logique : notre <code>MinIO</code> est tout neuf et vide. Il faut lancer notre pipeline ! Même si tout est statique, il faut bien au moins l’exécuter une première fois pour produire les données et le reporting que l’application va exposer.</p>
 <p>Jusqu’ici nous avons seulement déployé la brique qui <strong>lit</strong> (<code>Streamlit</code>) mais rien n’a encore <strong>écrit</strong> dans le bucket.</p>
-<p>Pour exécuter le pipeline, on pourrait lancer la commande à la main dans un <code>Terminal</code> mais c’est plutôt fragile et peu intuitif (et ça va à l’encontre de nos principes <code>GitOps</code>!). Nous allons donc plutôt respecter nos principes et le faire proprement avec un <strong>Job Kubernetes</strong> : une tâche ponctuelle qui réutilise notre image mais lancée avec la commande <code>reporting</code> (<code>uv run reporting</code>).</p>
+<p>Pour exécuter le pipeline, on pourrait lancer la commande à la main dans un <code>Terminal</code> mais c’est plutôt fragile et peu intuitif (et ça va à l’encontre de nos principes <code>GitOps</code>!). Nous allons donc plutôt respecter nos principes et le faire proprement avec un <a href="https://kubernetes.io/docs/concepts/workloads/controllers/job/"><strong>Job Kubernetes</strong></a> : une tâche ponctuelle qui réutilise notre image mais lancée avec la commande <code>reporting</code> (<code>uv run reporting</code>).</p>
 <details>
 <summary>
 Voir le job-reporting.yaml
@@ -1359,6 +1366,9 @@ Voir la solution
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="../pages/11-conclusion.html" class="pagination-link" aria-label="À bon port">
+        <span class="nav-page-text">À bon port</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->
