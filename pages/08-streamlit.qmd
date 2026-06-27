@@ -238,12 +238,12 @@ Soyons honnêtes : tout ce code vit dans un seul fichier et la fonction `main()`
 ![](https://64.media.tumblr.com/c8153f3ede4e755f1f68faced7cab9c3/e3540861a67dbd28-b4/s400x600/f3a0f6cd184dd195062ae219071e754da51efac3.gif)
 :::
 
-Vu le faible nombre de fonctionnalités, c'est acceptable pour une démonstration et ça garde l'app facile à lire d'un seul coup d'œil. Mais ce n'est pas ce qu'on ferait sur un produit destiné à grandir. On aurait alors tout intérêt à découper : une fonction par section de l'interface (les métriques, les graphiques, l'explorateur), voire des modules séparés pour la mise en page et la logique de données. C'est exactement le principe de **responsabilité unique** appliqué avec soin au package `financial_reporting` qu'on s'autorise ici à relâcher parce que le périmètre est petit. 🤏
+Vu le faible nombre de fonctionnalités, c'est acceptable pour une démonstration et ça garde l'app facile à lire d'un seul coup d'œil. Mais ce n'est pas ce qu'on ferait sur un produit destiné à grandir. On aurait alors tout intérêt à découper : une fonction par section de l'interface (les métriques, les graphiques, l'explorateur), voire des modules séparés pour la mise en page et la logique de données. C'est le principe de **responsabilité unique** qu'on s'était pourtant efforcé d'appliquer avec soin au package `financial_reporting` qu'on s'autorise ici à relâcher parce que le périmètre est petit. 🤏
 :::
 
 ## Ce qu'on n'a pas fait
 
-Deux limites assumées qu'il faut avoir en tête avant de parler de mise en production réelle :
+Deux limites qu'il faut avoir en tête avant de parler de mise en production réelle :
 
 - **L'authentification.** Notre app est ouverte : n'importe qui ayant l'URL y accède. Dans un contexte réel, un reporting financier exigerait une couche d'authentification et de gestion des droits que nous ne mettons pas en place ici.
 - **La gestion fine des erreurs.** Le chargement du reporting est protégé par un `try/except` très large qui se contente d'afficher un avertissement. C'est suffisant pour une démo, mais en production on distinguerait les cas (fichier absent, credentials expirés, stockage indisponible) pour donner un message clair à l'utilisateur et tracer l'incident dans les logs.
