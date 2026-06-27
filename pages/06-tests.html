@@ -447,7 +447,7 @@ Solution
 <li>après nettoyage, <code>score</code> et <code>score_prev</code> ne contiennent plus aucun <code>NaN</code></li>
 <li><code>clean_data</code> ne supprime aucune ligne</li>
 </ul>
-<p>Règle d’or : un test vérifie un seul comportement et son nom doit dire exactement ce qu’il vérifie.</p>
+<p>Règle d’or : un test vérifie un seul comportement et son nom doit dire ce qu’il vérifie.</p>
 </div>
 </div>
 <details>
@@ -484,13 +484,13 @@ Solution
 </details>
 <p>Quelques explications maintenant que vous avez essayé.</p>
 <p>Pourquoi ne pas utiliser les vraies données dans la fixture ? Pour deux raisons. Elles sont trop volumineuses pour des tests unitaires censés être instantanés et surtout parcequ’elles introduiraient une dépendance externe. Or on veut ici tester la logique de nos transformations, pas la lecture d’un fichier distant ou local. Un <code>DataFrame</code> écrit à la main suffit et reste totalement sous contrôle.</p>
-<p>Sur la façon d’écrire les tests, on s’impose une règle simple : un test par comportement attendu. On prévoit aussi les cas limites, comme la suppression involontaire de lignes. Chaque test vérifie une seule chose et son nom dit exactement ce qu’il vérifie. Ainsi lorsqu’un test échoue, vous savez immédiatement quoi chercher sans avoir à lire son contenu.</p>
+<p>Sur la façon d’écrire les tests, on s’impose une règle simple : un test par comportement attendu. On prévoit aussi les cas limites, comme la suppression involontaire de lignes. Chaque test doit vérifier une seule chose. Ainsi lorsqu’un test échoue, vous savez immédiatement quoi chercher.</p>
 <p>Vous vous demandez peut-être pourquoi <code>get_data</code> n’est pas testée ici. La réponse découle directement de ce qu’on vient de dire : elle fait un appel réseau vers <code>MinIO</code>, ce qui en fait un <strong>test d’intégration</strong> et non un test unitaire. Retenez bien qu’un test unitaire ne dépend de rien d’externe, on la testera donc dans la section suivante.</p>
 </section>
 <section id="test_reporting.py" class="level3">
 <h3 class="anchored" data-anchor-id="test_reporting.py">test_reporting.py</h3>
 <p>Pour tester <code>fill_indicators</code> et <code>write_data_to_excel</code>, on a besoin d’un fichier Excel. Là encore on ne va pas utiliser un vrai fichier du projet mais des fixtures : un workbook minimal créé à la volée et un petit DataFrame simulant des données nettoyées.</p>
-<p>Cette fois je vous laisse écrire les fixtures vous-mêmes, vous avez vu le principe juste avant.</p>
+<p>Cette fois je vous laisse écrire les fixtures vous-mêmes.</p>
 <div class="callout callout-style-default callout-caution callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -608,7 +608,7 @@ Voir le code
 </section>
 <section id="la-couverture-de-tests" class="level2">
 <h2 class="anchored" data-anchor-id="la-couverture-de-tests">La couverture de tests</h2>
-<p>En parlant de ne rien oublier, ce serait pratique d’avoir un outil qui affiche la part de notre code réellement couverte par les tests. Bonne nouvelle, c’est exactement le rôle de <code>pytest-cov</code>, la dépendance ajoutée plus tôt. Pour générer le rapport :</p>
+<p>En parlant de ne rien oublier, ce serait pratique d’avoir un outil qui affiche la part de notre code réellement couverte par les tests. Bonne nouvelle, c’est le rôle de <code>pytest-cov</code>, la dépendance ajoutée plus tôt. Pour générer le rapport :</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> run pytest <span class="at">--cov</span><span class="op">=</span>src/medas_financial_reporting</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div style="text-align: center;">
 <p><img src="../images/image-11.png" class="img-fluid"></p>
