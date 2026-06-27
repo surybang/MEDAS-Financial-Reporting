@@ -127,7 +127,7 @@ En partant de la fixture `raw_df`, écrivez un test par comportement attendu. Ch
 - après nettoyage, `score` et `score_prev` ne contiennent plus aucun `NaN`
 - `clean_data` ne supprime aucune ligne
 
-Règle d'or : un test vérifie un seul comportement et son nom doit dire exactement ce qu'il vérifie.
+Règle d'or : un test vérifie un seul comportement et son nom doit dire ce qu'il vérifie.
 :::
 
 <details>
@@ -169,7 +169,7 @@ Quelques explications maintenant que vous avez essayé.
 
 Pourquoi ne pas utiliser les vraies données dans la fixture ? Pour deux raisons. Elles sont trop volumineuses pour des tests unitaires censés être instantanés et surtout parcequ'elles introduiraient une dépendance externe. Or on veut ici tester la logique de nos transformations, pas la lecture d'un fichier distant ou local. Un `DataFrame` écrit à la main suffit et reste totalement sous contrôle.
 
-Sur la façon d'écrire les tests, on s'impose une règle simple : un test par comportement attendu. On prévoit aussi les cas limites, comme la suppression involontaire de lignes. Chaque test vérifie une seule chose et son nom dit exactement ce qu'il vérifie. Ainsi lorsqu'un test échoue, vous savez immédiatement quoi chercher sans avoir à lire son contenu.
+Sur la façon d'écrire les tests, on s'impose une règle simple : un test par comportement attendu. On prévoit aussi les cas limites, comme la suppression involontaire de lignes. Chaque test doit vérifier une seule chose. Ainsi lorsqu'un test échoue, vous savez immédiatement quoi chercher.
 
 Vous vous demandez peut-être pourquoi `get_data` n'est pas testée ici. La réponse découle directement de ce qu'on vient de dire : elle fait un appel réseau vers `MinIO`, ce qui en fait un **test d'intégration** et non un test unitaire. Retenez bien qu'un test unitaire ne dépend de rien d'externe, on la testera donc dans la section suivante.
 
@@ -177,7 +177,7 @@ Vous vous demandez peut-être pourquoi `get_data` n'est pas testée ici. La rép
 
 Pour tester `fill_indicators` et `write_data_to_excel`, on a besoin d'un fichier Excel. Là encore on ne va pas utiliser un vrai fichier du projet mais des fixtures : un workbook minimal créé à la volée et un petit DataFrame simulant des données nettoyées.
 
-Cette fois je vous laisse écrire les fixtures vous-mêmes, vous avez vu le principe juste avant.
+Cette fois je vous laisse écrire les fixtures vous-mêmes.
 
 ::: {.callout-caution}
 ## À vous de jouer
@@ -293,7 +293,7 @@ Le twist par rapport au module précédent : on regroupe ici les tests dans des 
 
 ## La couverture de tests
 
-En parlant de ne rien oublier, ce serait pratique d'avoir un outil qui affiche la part de notre code réellement couverte par les tests. Bonne nouvelle, c'est exactement le rôle de `pytest-cov`, la dépendance ajoutée plus tôt. Pour générer le rapport :
+En parlant de ne rien oublier, ce serait pratique d'avoir un outil qui affiche la part de notre code réellement couverte par les tests. Bonne nouvelle, c'est le rôle de `pytest-cov`, la dépendance ajoutée plus tôt. Pour générer le rapport :
 
 ```bash
 uv run pytest --cov=src/medas_financial_reporting

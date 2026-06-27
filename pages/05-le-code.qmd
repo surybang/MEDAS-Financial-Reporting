@@ -129,7 +129,7 @@ build-backend = "uv_build"
 
 </details>
 
-La section `[build-system]` indique à `uv` comment construire et installer votre projet. Depuis ses dernières versions, `uv` utilise par défaut son propre build backend `uv_build` qui s'attend à trouver vos packages dans `src/`. Cela correspond exactement à notre structure. Sans cette section, `uv` ne saurait pas installer votre code comme un package et vos imports ne fonctionneraient pas.
+La section `[build-system]` indique à `uv` comment construire et installer votre projet. Depuis ses dernières versions, `uv` utilise par défaut son propre build backend `uv_build` qui s'attend à trouver vos packages dans `src/`. Sans cette section, `uv` ne saurait pas installer votre code comme un package et vos imports ne fonctionneraient pas.
 
 Une fois votre structure en place et votre `pyproject.toml` à jour, vous pouvez commit, push et ouvrir une PR vers `main`. Créez enfin les deux branches *feature* `feat-reporting` et `feat-streamlit` depuis `development`.
 
