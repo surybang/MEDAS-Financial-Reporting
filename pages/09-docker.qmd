@@ -173,7 +173,7 @@ C'est un réflexe que vous devez intégrer le plus tôt possible : on ne déploi
 
 ## **Le .dockerignore, le pendant du .gitignore**
 
-Notre instruction `COPY . .` copie tout le contenu du projet dans l'image. Or beaucoup de choses n'ont rien à y faire : le site Quarto (`_site/`, `pages/`, `images/`), l'environnement virtuel `.venv/`, les caches, le dossier `.git/`, les notebooks d'exploration...
+Notre instruction `COPY . .` copie tout le contenu du projet dans l'image. Or beaucoup de choses n'ont rien à y faire : l'environnement virtuel `.venv/`, les caches, le dossier `.git/`, les notebooks d'exploration...
 
 On crée donc un fichier `.dockerignore` à la racine, qui fonctionne exactement comme un `.gitignore` mais pour Docker : il liste ce qui doit être exclu de l'image. Les bénéfices sont concrets : une image plus **légère**, des builds plus **rapides** (moins de fichiers à copier, meilleur usage du cache) et une surface d'attaque **réduite** puisqu'on n'embarque que le strict nécessaire à l'exécution.
 
@@ -188,15 +188,6 @@ __pycache__/
 .pytest_cache/
 .ruff_cache/
 .coverage
-
-# Site Quarto
-_site/
-.quarto/
-pages/
-images/
-index.qmd
-_quarto.yml
-styles.css
 
 # Notebooks
 notebooks/
