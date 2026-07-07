@@ -521,7 +521,7 @@ Voir le Dockerfile
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Notre instruction <code>COPY . .</code> copie tout le contenu du projet dans l’image. Or beaucoup de choses n’ont rien à y faire : le site Quarto (<code>_site/</code>, <code>pages/</code>, <code>images/</code>), l’environnement virtuel <code>.venv/</code>, les caches, le dossier <code>.git/</code>, les notebooks d’exploration…</p>
+<p>Notre instruction <code>COPY . .</code> copie tout le contenu du projet dans l’image. Or beaucoup de choses n’ont rien à y faire : l’environnement virtuel <code>.venv/</code>, les caches, le dossier <code>.git/</code>, les notebooks d’exploration…</p>
 <p>On crée donc un fichier <code>.dockerignore</code> à la racine, qui fonctionne exactement comme un <code>.gitignore</code> mais pour Docker : il liste ce qui doit être exclu de l’image. Les bénéfices sont concrets : une image plus <strong>légère</strong>, des builds plus <strong>rapides</strong> (moins de fichiers à copier, meilleur usage du cache) et une surface d’attaque <strong>réduite</strong> puisqu’on n’embarque que le strict nécessaire à l’exécution.</p>
 <details>
 <summary>
@@ -534,15 +534,6 @@ __pycache__/
 .pytest_cache/
 .ruff_cache/
 .coverage
-
-# Site Quarto
-_site/
-.quarto/
-pages/
-images/
-index.qmd
-_quarto.yml
-styles.css
 
 # Notebooks
 notebooks/
