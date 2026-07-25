@@ -1,5 +1,7 @@
 """Streamlit app for financial reporting."""
 
+from importlib.metadata import PackageNotFoundError, version
+
 import matplotlib.pyplot as plt
 import pandas as pd
 import streamlit as st
@@ -22,6 +24,11 @@ def run():
     sys.argv = ["streamlit", "run", __file__]
     stcli.main()
 
+
+try:
+    APP_VERSION = version("medas_financial_reporting")
+except PackageNotFoundError:
+    APP_VERSION = "dev"
 
 # Palette partagée
 PALETTE = {
@@ -71,6 +78,7 @@ def main():
 
     # Sidebar
     st.sidebar.title("📊 Reporting Financier")
+    st.sidebar.caption(f"version {APP_VERSION}")
     st.sidebar.markdown("---")
 
     try:
