@@ -226,8 +226,14 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#dernières-modifications-du-cours" id="toc-dernières-modifications-du-cours" class="nav-link active" data-scroll-target="#dernières-modifications-du-cours">Dernières modifications du cours</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -269,8 +275,65 @@ ul.task-list li input[type="checkbox"] {
 <p>Suivez les chapitres dans l’ordre via la barre latérale en commençant par l’<a href="./pages/01-introduction.html">introduction</a>.</p>
 </div>
 </div>
+<section id="dernières-modifications-du-cours" class="level2">
+<h2 class="anchored" data-anchor-id="dernières-modifications-du-cours">Dernières modifications du cours</h2>
+<div id="commit-feed" data-repo="surybang/MEDAS-Financial-Reporting" data-branch="main">
+  <p class="text-muted">Chargement de l'historique…</p>
+</div>
+<script>
+(function () {
+  const el = document.getElementById("commit-feed");
+  const repo = el.dataset.repo;
+  const branch = el.dataset.branch;
+  const apiUrl = `https://api.github.com/repos/${repo}/commits?sha=${branch}&per_page=8`;
+  const branchUrl = `https://github.com/${repo}/commits/${branch}`;
+
+  const rel = (d) => {
+    const s = Math.floor((Date.now() - new Date(d)) / 1000);
+    const units = [["an", "ans", 31536000], ["mois", "mois", 2592000],
+                   ["j", "j", 86400], ["h", "h", 3600], ["min", "min", 60]];
+    for (const [sing, plur, secs] of units) {
+      const n = Math.floor(s / secs);
+      if (n >= 1) return `il y a ${n} ${n > 1 ? plur : sing}`;
+    }
+    return "à l'instant";
+  };
+
+  fetch(apiUrl, { headers: { Accept: "application/vnd.github+json" } })
+    .then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then((commits) => {
+      if (!Array.isArray(commits) || commits.length === 0) {
+        el.innerHTML = "<p class='text-muted'>Aucun commit trouvé.</p>";
+        return;
+      }
+      const ul = document.createElement("ul");
+      ul.style.listStyle = "none";
+      ul.style.paddingLeft = "0";
+      commits.forEach((c) => {
+        const li = document.createElement("li");
+        li.style.marginBottom = "0.6rem";
+        const link = document.createElement("a");
+        link.href = c.html_url;
+        link.textContent = c.sha.substring(0, 7);
+        link.style.fontFamily = "monospace";
+        const msg = document.createElement("span");
+        msg.textContent = " " + c.commit.message.split("\n")[0];
+        const meta = document.createElement("span");
+        meta.className = "text-muted";
+        meta.textContent = ` (${c.commit.author.name}, ${rel(c.commit.author.date)})`;
+        li.append(link, msg, meta);
+        ul.appendChild(li);
+      });
+      el.replaceChildren(ul);
+    })
+    .catch(() => {
+      el.innerHTML = `<p class="text-muted">Historique indisponible. Voir <a href="${branchUrl}">les commits sur GitHub</a>.</p>`;
+    });
+})();
+</script>
 
 
+</section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a></div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
