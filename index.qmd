@@ -14,3 +14,62 @@ Ne vous inquiétez pas si certains de ces termes vous sont inconnus : tout sera 
 ## Parcours
 Suivez les chapitres dans l'ordre via la barre latérale en commençant par l'[introduction](pages/01-introduction.qmd).
 :::
+
+## Dernières modifications du cours
+
+```{=html}
+<div id="commit-feed" data-repo="surybang/MEDAS-Financial-Reporting" data-branch="main">
+  <p class="text-muted">Chargement de l'historique…</p>
+</div>
+<script>
+(function () {
+  const el = document.getElementById("commit-feed");
+  const repo = el.dataset.repo;
+  const branch = el.dataset.branch;
+  const apiUrl = `https://api.github.com/repos/${repo}/commits?sha=${branch}&per_page=8`;
+  const branchUrl = `https://github.com/${repo}/commits/${branch}`;
+
+  const rel = (d) => {
+    const s = Math.floor((Date.now() - new Date(d)) / 1000);
+    const units = [["an", "ans", 31536000], ["mois", "mois", 2592000],
+                   ["j", "j", 86400], ["h", "h", 3600], ["min", "min", 60]];
+    for (const [sing, plur, secs] of units) {
+      const n = Math.floor(s / secs);
+      if (n >= 1) return `il y a ${n} ${n > 1 ? plur : sing}`;
+    }
+    return "à l'instant";
+  };
+
+  fetch(apiUrl, { headers: { Accept: "application/vnd.github+json" } })
+    .then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then((commits) => {
+      if (!Array.isArray(commits) || commits.length === 0) {
+        el.innerHTML = "<p class='text-muted'>Aucun commit trouvé.</p>";
+        return;
+      }
+      const ul = document.createElement("ul");
+      ul.style.listStyle = "none";
+      ul.style.paddingLeft = "0";
+      commits.forEach((c) => {
+        const li = document.createElement("li");
+        li.style.marginBottom = "0.6rem";
+        const link = document.createElement("a");
+        link.href = c.html_url;
+        link.textContent = c.sha.substring(0, 7);
+        link.style.fontFamily = "monospace";
+        const msg = document.createElement("span");
+        msg.textContent = " " + c.commit.message.split("\n")[0];
+        const meta = document.createElement("span");
+        meta.className = "text-muted";
+        meta.textContent = ` (${c.commit.author.name}, ${rel(c.commit.author.date)})`;
+        li.append(link, msg, meta);
+        ul.appendChild(li);
+      });
+      el.replaceChildren(ul);
+    })
+    .catch(() => {
+      el.innerHTML = `<p class="text-muted">Historique indisponible. Voir <a href="${branchUrl}">les commits sur GitHub</a>.</p>`;
+    });
+})();
+</script>
+```
